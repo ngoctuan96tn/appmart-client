@@ -7,9 +7,11 @@ import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Login from './screens/Login';
 import Register from './screens/Register';
-import Index from './Index';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import RegisterApartment from './screens/RegisterApartment';
+import ImagePickerExample from './screens/ImagePicker';
+import ForgetPassword from './screens/ForgetPassWord';
 
 const Stack = createStackNavigator();
 
@@ -21,17 +23,21 @@ export default function App() {
     return null;
   } else {
     return (
-      //   <><SafeAreaProvider>
+      //   <SafeAreaProvider>
       //     {/* <Navigation colorScheme={colorScheme} />
       // <StatusBar /> */}
       //     {/* <Login /> */}
-      //     <Register />
-      //   </SafeAreaProvider><Index></Index></>
-
+      //     <RegisterApartment />
+      //   </SafeAreaProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login">
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="Register" component={Register}/>
+        <Stack.Navigator initialRouteName="Login" screenOptions={{
+          headerShown: false
+        }}>
+          <Stack.Screen name="Login" component={Login} options={{ title: 'null', headerLeft: null, gestureEnabled: false }} />
+          <Stack.Screen name="Register" component={Register} />
+          <Stack.Screen name="RegisterApartment" component={RegisterApartment} />
+          <Stack.Screen name="ImagePickerExample" component={ImagePickerExample} />
+          <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
         </Stack.Navigator>
       </NavigationContainer>
     );

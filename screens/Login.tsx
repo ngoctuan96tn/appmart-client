@@ -18,12 +18,13 @@ export default function Login() {
   return (
     <SafeAreaView style={styles.container}>
       <NativeBaseProvider >
-        <Heading size="md" textAlign='center' marginTop='40' fontSize={20}>ĐĂNG NHẬP</Heading>
+        <Heading size="md" textAlign='center' marginTop='20' fontSize={20} color='#fff'>ĐĂNG NHẬP</Heading>
         <Input
           width='300'
           size="sm"
-          marginTop='70'
-          marginBottom='10'
+          marginTop='20'
+          backgroundColor='#f0f9ff'
+          marginBottom='5'
           variant="outline"
           placeholder="Email"
           _light={{
@@ -35,6 +36,7 @@ export default function Login() {
         />
         <Input
           size="sm"
+          backgroundColor='#f0f9ff'
           marginBottom='10'
           type={show ? "text" : "password"}
           InputRightElement={
@@ -44,12 +46,12 @@ export default function Login() {
           }
           placeholder="Password"
         />
-        <Text style={{ textAlign: 'right', textDecorationLine: 'underline' }}>Quên mật khẩu</Text>
-        <Button size="md" marginBottom='5' marginTop='5' backgroundColor='green' onPress={() => navigation.navigate('Register')}>Đăng nhập</Button>
+        <Link onPress={() => navigation.navigate('ForgetPassword')}>Quên mật khẩu</Link>
+        <Button size="md" marginBottom='5' marginTop='5' backgroundColor='#6CDDED' onPress={() => console.log()}>Đăng nhập</Button>
         <Text style={{ textAlign: 'center', textDecorationLine: 'underline' }}>Chưa có tài khoản? <Link onPress={() => navigation.navigate('Register')}>Đăng ký</Link></Text>
-        <Text style={{ textAlign: 'center' }}>---------------- Hoặc đăng nhập bằng ----------------</Text>
-        <Button size="md" marginTop='10' colorScheme="secondary" onPress={() => console.log()}>Số điện thoại</Button>
-        <Button size="md" marginTop='2' colorScheme="primary" onPress={() => console.log()}>Facebook</Button>
+        <Text style={{ textAlign: 'center' }}> Hoặc đăng nhập bằng </Text>
+        <Button size="md" marginTop='10' backgroundColor='#c4b5fd' onPress={() => console.log()}>Số điện thoại</Button>
+        <Button size="md" marginTop='2' backgroundColor="#1d4ed8" onPress={() => console.log()}>Facebook</Button>
       </NativeBaseProvider>
     </SafeAreaView>
   );
@@ -60,5 +62,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#0ea5e9'
   },
 });
