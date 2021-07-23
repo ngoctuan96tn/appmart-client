@@ -5,12 +5,16 @@ import {
   Heading,
   NativeBaseProvider,
   Button,
+  Link
 } from "native-base"
+import { useNavigation } from '@react-navigation/native';
 
 export default function Login() {
   const [show, setShow] = React.useState(false)
 
   const handleClick = () => setShow(!show)
+
+  const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.container}>
       <NativeBaseProvider >
@@ -40,10 +44,10 @@ export default function Login() {
           }
           placeholder="Password"
         />
-        <Text style={{textAlign:'right', textDecorationLine:'underline'}}>Quên mật khẩu</Text>
-        <Button size="md" marginBottom='5' marginTop='5' backgroundColor='green' onPress={() => console.log()}>Đăng nhập</Button>
-        <Text style={{textAlign:'center', textDecorationLine:'underline'}}>Chưa có tài khoản? Đăng ký</Text>
-        <Text style={{textAlign:'center'}}>---------------- Hoặc đăng nhập bằng ----------------</Text>
+        <Text style={{ textAlign: 'right', textDecorationLine: 'underline' }}>Quên mật khẩu</Text>
+        <Button size="md" marginBottom='5' marginTop='5' backgroundColor='green' onPress={() => navigation.navigate('Register')}>Đăng nhập</Button>
+        <Text style={{ textAlign: 'center', textDecorationLine: 'underline' }}>Chưa có tài khoản? <Link onPress={() => navigation.navigate('Register')}>Đăng ký</Link></Text>
+        <Text style={{ textAlign: 'center' }}>---------------- Hoặc đăng nhập bằng ----------------</Text>
         <Button size="md" marginTop='10' colorScheme="secondary" onPress={() => console.log()}>Số điện thoại</Button>
         <Button size="md" marginTop='2' colorScheme="primary" onPress={() => console.log()}>Facebook</Button>
       </NativeBaseProvider>
