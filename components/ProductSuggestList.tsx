@@ -1,9 +1,8 @@
 import React from "react"
 import { FlatList, Center, NativeBaseProvider, Text, Box } from "native-base"
-import ProductCard from "./ProductCard"
-import { right } from "styled-system"
+import ProductSuggestCard from "./ProductSuggestCard"
 import { View } from "react-native"
-export function ProductList() {
+export function ProductSuggestList() {
   const data = [
     {
       id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
@@ -46,15 +45,15 @@ export function ProductList() {
   return (
     <>
       <View style={{ flexDirection: 'row' }}>
-        <Text style={{ marginLeft: 5, flex: 1, fontWeight: 'bold' }}>Sản phẩm phổ biến</Text>
-        <Text style={{ textAlign: 'right', flex: 1, marginRight: 5 }}>Xem thêm</Text>
+        <Text style={{ marginLeft: 5, flex: 1, fontWeight: 'bold', }}>Sản phẩm gợi ý</Text>
+        <Text style={{ textAlign: 'right', flex: 1, marginRight: 5 }} onPress={() => console.log("hello world")}>Xem thêm</Text>
       </View>
       <FlatList
         horizontal={true}
         data={data}
         height={300}
         renderItem={({ item }) => (
-          <ProductCard />
+          <ProductSuggestCard />
         )}
         keyExtractor={(item) => item.id} />
     </>
@@ -66,7 +65,7 @@ export default () => {
     <NativeBaseProvider>
       <Box bg="white"
         shadow={2}>
-        <ProductList />
+        <ProductSuggestList />
       </Box>
     </NativeBaseProvider>
   )
