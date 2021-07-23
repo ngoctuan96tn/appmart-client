@@ -20,3 +20,19 @@ export type TabOneParamList = {
 export type TabTwoParamList = {
   TabTwoScreen: undefined;
 };
+
+export type TabThreeParamList = {
+  TabThreeScreen: undefined;
+};
+
+export type TabFourParamList = {
+  TabFourScreen: undefined;
+};
+
+export type TabFiveParamList = {
+  TabFiveScreen: undefined;
+};
+
+export type TabSixParamList = {
+  TabSixScreen: undefined;
+};

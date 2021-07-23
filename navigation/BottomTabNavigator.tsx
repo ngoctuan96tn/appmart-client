@@ -3,18 +3,22 @@
  * https://reactnavigation.org/docs/bottom-tab-navigator
  */
 
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
-import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
+import ShopScreen from '../screens/ShopScreen';
+import NotifyScreen from '../screens/NotifyScreen';
+import NewFeedScreen from '../screens/NewFeedScreen';
+import LibraryScreen from '../screens/LibraryScreen';
+import MessageScreen from '../screens/MessageScreen';
+import ProfileScreen from '../screens/ProfileScreen';
+import { TabFiveParamList, TabFourParamList, TabOneParamList, TabSixParamList, TabThreeParamList, TabTwoParamList } from '../types';
 
-const BottomTab = createBottomTabNavigator<BottomTabParamList>();
+const BottomTab = createBottomTabNavigator();
 
 export default function BottomTabNavigator() {
   const colorScheme = useColorScheme();
@@ -24,17 +28,57 @@ export default function BottomTabNavigator() {
       initialRouteName="TabOne"
       tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
       <BottomTab.Screen
-        name="TabOne"
+        name="Mua sắm"
         component={TabOneNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="shopping" color={color} size={size} />
+          ),
         }}
       />
       <BottomTab.Screen
-        name="TabTwo"
+        name="Thông báo"
         component={TabTwoNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="earth" color={color} size={size} />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Bảng tin"
+        component={TabThreeNavigator}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="newspaper" color={color} size={size} />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Thư viện"
+        component={TabFourNavigator}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="library" color={color} size={size} />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Tin nhắn"
+        component={TabFiveNavigator}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="message" color={color} size={size} />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Cá nhân"
+        component={TabSixNavigator}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="menu" color={color} size={size} />
+          ),
         }}
       />
     </BottomTab.Navigator>
@@ -56,8 +100,8 @@ function TabOneNavigator() {
     <TabOneStack.Navigator>
       <TabOneStack.Screen
         name="TabOneScreen"
-        component={TabOneScreen}
-        options={{ headerTitle: 'Tab One Title' }}
+        component={ShopScreen}
+        options={{ headerTitle: 'Mua sắm' }}
       />
     </TabOneStack.Navigator>
   );
@@ -70,9 +114,65 @@ function TabTwoNavigator() {
     <TabTwoStack.Navigator>
       <TabTwoStack.Screen
         name="TabTwoScreen"
-        component={TabTwoScreen}
-        options={{ headerTitle: 'Tab Two Title' }}
+        component={NotifyScreen}
+        options={{ headerTitle: 'Thông báo' }}
       />
     </TabTwoStack.Navigator>
+  );
+}
+
+const TabThreeStack = createStackNavigator<TabThreeParamList>();
+
+function TabThreeNavigator() {
+  return (
+    <TabThreeStack.Navigator>
+      <TabThreeStack.Screen
+        name="TabThreeScreen"
+        component={NewFeedScreen}
+        options={{ headerTitle: 'Bảng tin' }}
+      />
+    </TabThreeStack.Navigator>
+  );
+}
+
+const TabFourStack = createStackNavigator<TabFourParamList>();
+
+function TabFourNavigator() {
+  return (
+    <TabFourStack.Navigator>
+      <TabFourStack.Screen
+        name="TabFourScreen"
+        component={LibraryScreen}
+        options={{ headerTitle: 'Thư viện' }}
+      />
+    </TabFourStack.Navigator>
+  );
+}
+
+const TabFiveStack = createStackNavigator<TabFiveParamList>();
+
+function TabFiveNavigator() {
+  return (
+    <TabFiveStack.Navigator>
+      <TabFiveStack.Screen
+        name="TabFiveScreen"
+        component={MessageScreen}
+        options={{ headerTitle: 'Tin nhắn' }}
+      />
+    </TabFiveStack.Navigator>
+  );
+}
+
+const TabSixStack = createStackNavigator<TabSixParamList>();
+
+function TabSixNavigator() {
+  return (
+    <TabSixStack.Navigator>
+      <TabSixStack.Screen
+        name="TabSixScreen"
+        component={ProfileScreen}
+        options={{ headerTitle: 'Cá nhân' }}
+      />
+    </TabSixStack.Navigator>
   );
 }
