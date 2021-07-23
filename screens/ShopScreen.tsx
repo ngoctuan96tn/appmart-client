@@ -5,6 +5,8 @@ import Swiper from 'react-native-swiper';
 import { View } from '../components/Themed';
 import { Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import Animated from 'react-native-reanimated';
+import ProductCard from '../components/ProductCard';
+import ProductList from '../components/ProductList';
 const { width } = Dimensions.get('window')
 
 
@@ -120,9 +122,9 @@ export default function ShopScreen() {
           {/* slideshow */}
           <Swiper
             style={styles.wrapper}
-            onMomentumScrollEnd={(e, state, context) =>
-              console.log('index:', state.index)
-            }
+            // onMomentumScrollEnd={(e, state, context) =>
+            //   console.log('index:', state.index)
+            // }
             dot={
               <View
                 style={{
@@ -181,9 +183,9 @@ export default function ShopScreen() {
           {/* end slide show */}
 
 
-          <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-
+          <View style={styles.separator} />
           <NativeBaseProvider>
+            <ProductList />
             <FlatList
               data={data}
               renderItem={({ item }) => (
@@ -204,7 +206,7 @@ export default function ShopScreen() {
 function SearchBar() {
   return (
     <Input
-      placeholder="Search"
+      placeholder="  Tìm kiếm  "
       variant="filled"
       width="100%"
       bg="white"
@@ -212,7 +214,7 @@ function SearchBar() {
       py={1}
       px={2}
     />
-   
+
   )
 }
 
