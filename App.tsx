@@ -12,6 +12,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import RegisterApartment from './screens/RegisterApartment';
 import ImagePickerExample from './screens/ImagePicker';
 import ForgetPassword from './screens/ForgetPassWord';
+import BottomTabNavigator from './navigation/BottomTabNavigator';
 
 const Stack = createStackNavigator();
 
@@ -30,14 +31,15 @@ export default function App() {
       //     <RegisterApartment />
       //   </SafeAreaProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login" screenOptions={{
+        <Stack.Navigator initialRouteName="Main" screenOptions={{
           headerShown: false
         }}>
-          <Stack.Screen name="Login" component={Login} options={{ title: 'null', headerLeft: null, gestureEnabled: false }} />
+          <Stack.Screen name="Login" component={Login} options={{ title: null, headerLeft: null, gestureEnabled: false }} />
           <Stack.Screen name="Register" component={Register} />
           <Stack.Screen name="RegisterApartment" component={RegisterApartment} />
           <Stack.Screen name="ImagePickerExample" component={ImagePickerExample} />
           <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
+          <Stack.Screen name="Main" component={BottomTabNavigator} options={{ title: null, headerLeft: null, gestureEnabled: false }}/>
         </Stack.Navigator>
       </NavigationContainer>
     );
