@@ -1,5 +1,5 @@
 import { Button, Input, NativeBaseProvider, Radio, VStack, Icon, Text, Box, FlatList, ScrollView } from 'native-base';
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Dimensions, Image } from 'react-native';
 import Swiper from 'react-native-swiper';
 import { View } from '../components/Themed';
@@ -9,6 +9,7 @@ import ProductList from '../components/ProductList';
 import CategoryList from '../components/CategoryList';
 import { StoreList } from '../components/StoreList';
 import ProductSuggestList from '../components/ProductSuggestList';
+import ApiCommon from '../constants/ApiCommon';
 const { width } = Dimensions.get('window')
 
 
@@ -66,8 +67,19 @@ const styles = StyleSheet.create({
 
 });
 
-export default function ShopScreen() {
 
+export default function ShopScreen() {
+  const [data, setData] = useState([]);
+  const [isLoading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(ApiCommon.rootUrl + '/api/categories')
+      .then((response) => response.json())
+      .then((json) => setData(json))
+      .catch((error) => console.error(error))
+      .finally(() => setLoading(false));
+
+  });
   return (
     <View style={styles.container}>
       <NativeBaseProvider>
@@ -146,7 +158,7 @@ export default function ShopScreen() {
               <ProductList />
             </View>
             <View style={{ marginTop: 10 }}>
-              <CategoryList />
+              <CategoryList data={data}/>
             </View>
             <View style={{ marginTop: 10 }}>
               <StoreList />
