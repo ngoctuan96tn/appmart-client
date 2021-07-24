@@ -1,12 +1,15 @@
 import { Button, Input, NativeBaseProvider, Radio, VStack, Icon, Text, Box, FlatList, ScrollView } from 'native-base';
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Dimensions, Image } from 'react-native';
 import Swiper from 'react-native-swiper';
 import { View } from '../components/Themed';
 import { Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import Animated from 'react-native-reanimated';
-import ProductCard from '../components/ProductCard';
 import ProductList from '../components/ProductList';
+import CategoryList from '../components/CategoryList';
+import { StoreList } from '../components/StoreList';
+import ProductSuggestList from '../components/ProductSuggestList';
+import ApiCommon from '../constants/ApiCommon';
 const { width } = Dimensions.get('window')
 
 
@@ -19,11 +22,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
   },
   wrapper: {
     height: 200,
@@ -69,46 +67,19 @@ const styles = StyleSheet.create({
 
 });
 
-export default function ShopScreen() {
-  const data = [
-    {
-      id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-      title: "First Item",
-    },
-    {
-      id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-      title: "Second Item",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-145571e29d72",
-      title: "Third Item",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-145571e29d73",
-      title: "Four Item",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-145571e29d74",
-      title: "Five Item",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-145571e29d75",
-      title: "Six Item",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-145571e29d76",
-      title: "Third Item",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-145571e29d77",
-      title: "Third Item",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-145571e29d78",
-      title: "Third Item",
-    },
-  ]
 
+export default function ShopScreen() {
+  const [data, setData] = useState([]);
+  const [isLoading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(ApiCommon.rootUrl + '/api/categories')
+      .then((response) => response.json())
+      .then((json) => setData(json))
+      .catch((error) => console.error(error))
+      .finally(() => setLoading(false));
+
+  });
   return (
     <View style={styles.container}>
       <NativeBaseProvider>
@@ -182,19 +153,19 @@ export default function ShopScreen() {
           </Swiper>
           {/* end slide show */}
 
-
-          <View style={styles.separator} />
           <NativeBaseProvider>
-            <ProductList />
-            <FlatList
-              data={data}
-              renderItem={({ item }) => (
-                <Box px={5} py={2} rounded="md" my={2} bg="primary.300">
-                  {item.title}
-                </Box>
-              )}
-              keyExtractor={(item) => item.id}
-            />
+            <View style={{ marginTop: 5 }}>
+              <ProductList />
+            </View>
+            <View style={{ marginTop: 10 }}>
+              <CategoryList data={data}/>
+            </View>
+            <View style={{ marginTop: 10 }}>
+              <StoreList />
+            </View>
+            <View style={{ marginTop: 15 }}>
+              <ProductSuggestList />
+            </View>
           </NativeBaseProvider>
         </ScrollView>
       </NativeBaseProvider>
@@ -210,7 +181,6 @@ function SearchBar() {
       variant="filled"
       width="100%"
       bg="white"
-      borderRadius={10}
       py={1}
       px={2}
     />

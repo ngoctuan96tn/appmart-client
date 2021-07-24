@@ -2,7 +2,7 @@ import React from "react";
 import {
   Image, Text, NativeBaseProvider, Center, Box, Stack, Heading, Button
 } from "native-base";
-function ProductCard() {
+function ProductSuggestCard() {
   return (
     <Box
       bg="white"
@@ -44,7 +44,7 @@ export default function () {
   return (
     <NativeBaseProvider>
       <Center flex={1}>
-        <ProductCard />
+        <ProductSuggestCard />
       </Center>
     </NativeBaseProvider>
   );
