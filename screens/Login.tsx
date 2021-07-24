@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, SafeAreaView } from 'react-native';
 import {
   Input,
@@ -8,8 +8,11 @@ import {
   Link
 } from "native-base"
 import { useNavigation } from '@react-navigation/native';
+import ApiCommon from '../constants/ApiCommon';
 
 export default function Login() {
+  const [email, setEmail] = useState('');
+  const [passWord, setPassWord] = useState('');
   const [show, setShow] = React.useState(false)
 
   const handleClick = () => setShow(!show)
@@ -27,6 +30,7 @@ export default function Login() {
           marginBottom='5'
           variant="outline"
           placeholder="Email"
+          onChangeText={email => setEmail(email)}
           _light={{
             placeholderTextColor: "blueGray.400",
           }}
@@ -39,6 +43,7 @@ export default function Login() {
           backgroundColor='#f0f9ff'
           marginBottom='10'
           type={show ? "text" : "password"}
+          onChangeText={passWord => setPassWord(passWord)}
           InputRightElement={
             <Button ml={1} roundedLeft={0} roundedRight="md" onPress={handleClick}>
               {show ? "Hide" : "Show"}
@@ -47,7 +52,7 @@ export default function Login() {
           placeholder="Password"
         />
         <Link onPress={() => navigation.navigate('ForgetPassword')}>Quên mật khẩu</Link>
-        <Button size="md" marginBottom='5' marginTop='5' backgroundColor='#6CDDED' onPress={() => console.log()}>Đăng nhập</Button>
+        <Button size="md" marginBottom='5' marginTop='5' backgroundColor='#6CDDED' onPress={() => onLogin(email, passWord)}>Đăng nhập</Button>
         <Text style={{ textAlign: 'center', textDecorationLine: 'underline' }}>Chưa có tài khoản? <Link onPress={() => navigation.navigate('Register')}>Đăng ký</Link></Text>
         <Text style={{ textAlign: 'center' }}> Hoặc đăng nhập bằng </Text>
         <Button size="md" marginTop='10' backgroundColor='#c4b5fd' onPress={() => console.log()}>Số điện thoại</Button>
@@ -65,3 +70,29 @@ const styles = StyleSheet.create({
     backgroundColor: '#0ea5e9'
   },
 });
+
+function onLogin(email: any, passWord: any) {
+  fetch(ApiCommon.rootUrl + '/authenticate', {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      email: email,
+      password: passWord,
+    }),
+  }).then((response) => response.json())
+    .then((responseJson) => {
+      console.log(responseJson);
+      if (responseJson.code == 1) {
+        console.log(responseJson.message)
+      } else {
+        console.log('đăng nhập thất bại')
+      }
+    })
+    .catch((error) => {
+      console.log(error)
+    });
+}

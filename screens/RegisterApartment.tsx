@@ -68,7 +68,7 @@ export default function RegisterApartment() {
                     <Select.Item label="JavaScript" value="js" />
                     <Select.Item label="TypeScript" value="ts" />
                 </Select>
-                <Button size="md" backgroundColor='#6CDDED' onPress={() => console.log()}>Cập nhật</Button>
+                <Button size="md" backgroundColor='#6CDDED' onPress={() => onSave()}>Cập nhật</Button>
             </NativeBaseProvider>
         </SafeAreaView>
     );
@@ -82,3 +82,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#0ea5e9'
     },
 });
+
+function onSave() {
+    
+}
