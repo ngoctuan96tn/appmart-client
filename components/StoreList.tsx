@@ -1,14 +1,16 @@
 import React from "react"
 import { HStack, Stack, Center, NativeBaseProvider, Text, Box } from "native-base"
 import StoreCard from "./StoreCard"
-import { View } from "react-native"
+import { SafeAreaView, View } from "react-native"
 export function StoreList() {
     return (
         <><View style={{ flexDirection: 'row' }}>
             <Text style={{ marginLeft: 5, flex: 1, fontWeight: 'bold', }}>CỬA HÀNG</Text>
-            <Text style={{ textAlign: 'right', flex: 1, marginRight: 5 }}>Xem thêm</Text>
+            <Text style={{ textAlign: 'right', flex: 1, marginRight: 5, fontWeight: 'bold', color: '#ffa500' }}>Xem thêm</Text>
         </View>
+        <SafeAreaView style={{ flex: 1, marginTop: 10 }}>
             <StoreCard />
+        </SafeAreaView>    
         </>
     )
 }
