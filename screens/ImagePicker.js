@@ -24,8 +24,6 @@ export default function ImagePickerExample() {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
       setImage(result.uri);
     }
@@ -33,8 +31,10 @@ export default function ImagePickerExample() {
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Button title="Pick an image from camera roll" onPress={pickImage} />
-      {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+      <Button title="Choose Photo" onPress={pickImage} />
+      {image && <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />}
+      {/* <Button title="Quay lại trang đăng ký" onPress={() => navigation.navigate('Register')} /> */}
+      <Button title="Quay lại trang đăng ký" onPress={() => uploadImage()} />
     </View>
   );
 }

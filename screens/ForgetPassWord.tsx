@@ -1,26 +1,24 @@
-import React from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView, StyleSheet, Alert } from 'react-native';
 import {
   Input,
   Heading,
   NativeBaseProvider,
   Button,
 } from "native-base"
+import ApiCommon from '../constants/ApiCommon';
+import { useNavigation } from '@react-navigation/native';
 
 export default function ForgetPassword() {
-  const [show, setShow] = React.useState(false)
-
-  const handleClick = () => setShow(!show)
-
-  const [showConfirm, setShowConfirm] = React.useState(false)
-
-  const handleClickConfirm = () => setShowConfirm(!showConfirm)
+  const [phone, setPhone] = useState('');
+  const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.container}>
       <NativeBaseProvider >
         <Heading size="md" textAlign='center' marginTop='20' color='#fff' fontSize={20}>QUÊN MẬT KHẨU</Heading>
         <Input
           size="sm"
+          onChangeText={phone => setPhone(phone)}
           keyboardType='numeric'
           backgroundColor='#f0f9ff'
           marginTop='20'
@@ -34,35 +32,39 @@ export default function ForgetPassword() {
             placeholderTextColor: "blueGray.50",
           }}
         />
-        <Input
-          size="sm"
-          marginBottom='5'
-          backgroundColor='#f0f9ff'
-          type={show ? "text" : "password"}
-          InputRightElement={
-            <Button ml={1} roundedLeft={0} roundedRight="md" onPress={handleClick}>
-              {show ? "Hide" : "Show"}
-            </Button>
-          }
-          placeholder="Mật khẩu"
-        />
-        <Input
-          marginBottom='10'
-          width={300}
-          size="sm"
-          backgroundColor='#f0f9ff'
-          type={show ? "text" : "password"}
-          InputRightElement={
-            <Button ml={1} roundedLeft={0} roundedRight="md" onPress={handleClickConfirm}>
-              {show ? "Hide" : "Show"}
-            </Button>
-          }
-          placeholder="Nhập lại mật khẩu"
-        />
-        <Button size="md" backgroundColor='#6CDDED' onPress={() => console.log()}>Lấy lại mật khẩu</Button>
+        <Button size="md" backgroundColor='#6CDDED' onPress={() => getPassWord(phone, navigation)}>Lấy lại mật khẩu</Button>
       </NativeBaseProvider>
     </SafeAreaView>
   );
+}
+
+function getPassWord(phone: string, navigation: any) {
+  fetch(ApiCommon.rootUrl + '/api/user/reset', {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      phone: phone,
+    }),
+  }).then((response) => response.json())
+    .then((responseJson) => {
+      if (responseJson.code == 1) {
+        navigation.navigate('Login');
+        Alert.alert(
+          responseJson.message,
+        );
+      } else {
+        Alert.alert(
+          responseJson.message,
+        );
+      }
+    })
+    .catch((error) => {
+      console.log(error)
+    });
 }
 
 const styles = StyleSheet.create({
