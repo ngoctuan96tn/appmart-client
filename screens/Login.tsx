@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, SafeAreaView, Alert } from 'react-native';
+import { StyleSheet, Text, SafeAreaView } from 'react-native';
 import {
   Input,
   Heading,
@@ -9,6 +9,7 @@ import {
 } from "native-base"
 import { useNavigation } from '@react-navigation/native';
 import ApiCommon from '../constants/ApiCommon';
+import  AsyncStorage  from '@react-native-async-storage/async-storage';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -52,7 +53,7 @@ export default function Login() {
           placeholder="Password"
         />
         <Link onPress={() => navigation.navigate('ForgetPassword')}>Quên mật khẩu</Link>
-        <Button size="md" marginBottom='5' marginTop='5' backgroundColor='#6CDDED' onPress={() => onLogin(email, passWord)}>Đăng nhập</Button>
+        <Button size="md" marginBottom='5' marginTop='5' backgroundColor='#6CDDED' onPress={() => onLogin(email, passWord, navigation)}>Đăng nhập</Button>
         <Text style={{ textAlign: 'center', textDecorationLine: 'underline' }}>Chưa có tài khoản? <Link onPress={() => navigation.navigate('Register')}>Đăng ký</Link></Text>
         <Text style={{ textAlign: 'center' }}> Hoặc đăng nhập bằng </Text>
         <Button size="md" marginTop='10' backgroundColor='#c4b5fd' onPress={() => console.log()}>Số điện thoại</Button>
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function onLogin(email: any, passWord: any) {
+function onLogin(email: any, passWord: any, navigation: any) {
   fetch(ApiCommon.rootUrl + '/authenticate', {
     method: 'POST',
     mode: 'no-cors',
@@ -85,16 +86,9 @@ function onLogin(email: any, passWord: any) {
     }),
   }).then((response) => response.json())
     .then((responseJson) => {
-      console.log(responseJson);
       if (responseJson.code == 1) {
-        console.log(responseJson.message)
-        Alert.alert(
-          "Đăng nhập thành công",
-        );
-      } else {
-        Alert.alert(
-          "Đăng nhập thất bại",
-        );
+        AsyncStorage.setItem('token', responseJson.listData[0].token)
+        navigation.navigate('Main');
       }
     })
     .catch((error) => {
