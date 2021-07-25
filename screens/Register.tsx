@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import {
   Input,
@@ -17,6 +17,12 @@ export default function Register() {
 
   const handleClickConfirm = () => setShowConfirm(!showConfirm)
   const navigation = useNavigation();
+  const [userName, setUserName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [passWord, setPassWord] = useState('');
+  const [image, setImage] = useState('');
+  
   return (
     <SafeAreaView style={styles.container}>
       <NativeBaseProvider>
@@ -27,6 +33,7 @@ export default function Register() {
           marginBottom={5}
           variant="outline"
           placeholder="Họ tên"
+          onChangeText={userName => setUserName(userName)}
           _light={{
             placeholderTextColor: "blueGray.400",
           }}
@@ -35,10 +42,11 @@ export default function Register() {
           }}
         />
         <Input
-          marginBottom='5'
+          marginBottom={5}
           variant="outline"
           backgroundColor='#f0f9ff'
           placeholder="Email"
+          onChangeText={email => setEmail(email)}
           _light={{
             placeholderTextColor: "blueGray.400",
           }}
@@ -49,9 +57,10 @@ export default function Register() {
         <Input
           keyboardType='numeric'
           backgroundColor='#f0f9ff'
-          marginBottom='5'
+          marginBottom={5}
           variant="outline"
           placeholder="Số điện thoại"
+          onChangeText={phoneNumber => setPhoneNumber(phoneNumber)}
           _light={{
             placeholderTextColor: "blueGray.400",
           }}
@@ -61,9 +70,10 @@ export default function Register() {
         />
         <Input
           size="sm"
-          marginBottom='5'
+          marginBottom={5}
           backgroundColor='#f0f9ff'
           type={show ? "text" : "password"}
+          onChangeText={passWord => setPassWord(passWord)}
           InputRightElement={
             <Button ml={1} roundedLeft={0} roundedRight="md" onPress={handleClick}>
               {show ? "Hide" : "Show"}
@@ -72,9 +82,9 @@ export default function Register() {
           placeholder="Mật khẩu"
         />
         <Input
-          width={'300'}
+          width={300}
           backgroundColor='#f0f9ff'
-          marginBottom='10'
+          marginBottom={10}
           size="sm"
           type={show ? "text" : "password"}
           InputRightElement={
@@ -84,7 +94,12 @@ export default function Register() {
           }
           placeholder="Nhập lại mật khẩu"
         />
-        <Button size="md" backgroundColor='#6CDDED' onPress={() => navigation.navigate('RegisterApartment')}>Tiếp theo</Button>
+        <Button size="md" backgroundColor='#6CDDED' onPress={() => navigation.navigate('RegisterApartment', {
+          userName: userName,
+          email: email,
+          phone: phoneNumber,
+          password: passWord
+        })}>Tiếp theo</Button>
       </NativeBaseProvider>
     </SafeAreaView>
   );

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, SafeAreaView, Alert } from 'react-native';
 import {
   Input,
   Heading,
@@ -23,11 +23,11 @@ export default function Login() {
       <NativeBaseProvider >
         <Heading size="md" textAlign='center' marginTop='20' fontSize={20} color='#fff'>ĐĂNG NHẬP</Heading>
         <Input
-          width='300'
+          width={300}
           size="sm"
-          marginTop='20'
+          marginTop={20}
           backgroundColor='#f0f9ff'
-          marginBottom='5'
+          marginBottom={5}
           variant="outline"
           placeholder="Email"
           onChangeText={email => setEmail(email)}
@@ -41,7 +41,7 @@ export default function Login() {
         <Input
           size="sm"
           backgroundColor='#f0f9ff'
-          marginBottom='10'
+          marginBottom={10}
           type={show ? "text" : "password"}
           onChangeText={passWord => setPassWord(passWord)}
           InputRightElement={
@@ -88,8 +88,13 @@ function onLogin(email: any, passWord: any) {
       console.log(responseJson);
       if (responseJson.code == 1) {
         console.log(responseJson.message)
+        Alert.alert(
+          "Đăng nhập thành công",
+        );
       } else {
-        console.log('đăng nhập thất bại')
+        Alert.alert(
+          "Đăng nhập thất bại",
+        );
       }
     })
     .catch((error) => {
