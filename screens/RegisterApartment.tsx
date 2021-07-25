@@ -7,7 +7,6 @@ import {
     Button,
     Select,
 } from "native-base"
-import { useNavigation } from '@react-navigation/native';
 import ApiCommon from '../constants/ApiCommon';
 
 export default function RegisterApartment(route: any) {
