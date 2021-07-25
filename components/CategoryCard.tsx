@@ -13,7 +13,7 @@ function CategoryCard(data: any) {
       marginLeft={3}
       marginRight={3}
     >
-      <Image source={{ uri: "https://sample-example.nativebase.io/static/media/dawki-river.ebbf5434.png" }} alt="image base" resizeMode="cover" height={150} roundedTop="md" />
+      <Image source={{ uri: `data:image/jpeg;base64,${item.categoryImageBase64}` }} alt="image base" resizeMode="cover" height={150} roundedTop="md" />
       <Text color='black' left={1}>{item.categoryName}</Text>
     </Box>
   );

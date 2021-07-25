@@ -1,15 +1,16 @@
-import { Button, Input, NativeBaseProvider, Radio, VStack, Icon, Text, Box, FlatList, ScrollView } from 'native-base';
+import { Button, Input, NativeBaseProvider, Radio, VStack, Text, Box, FlatList, ScrollView } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Dimensions, Image } from 'react-native';
 import Swiper from 'react-native-swiper';
 import { View } from '../components/Themed';
-import { Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import Animated from 'react-native-reanimated';
 import ProductList from '../components/ProductList';
 import CategoryList from '../components/CategoryList';
 import { StoreList } from '../components/StoreList';
 import ProductSuggestList from '../components/ProductSuggestList';
 import ApiCommon from '../constants/ApiCommon';
+import Icon from 'react-native-vector-icons/FontAwesome'
+import { red } from '@material-ui/core/colors';
 const { width } = Dimensions.get('window')
 
 
@@ -70,15 +71,24 @@ const styles = StyleSheet.create({
 
 export default function ShopScreen() {
   const [data, setData] = useState([]);
+
+  const [dataProduct, setDataproduct] = useState([]);
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(ApiCommon.rootUrl + '/api/categories')
-      .then((response) => response.json())
-      .then((json) => setData(json))
-      .catch((error) => console.error(error))
-      .finally(() => setLoading(false));
+    if (isLoading) {
+      fetch(ApiCommon.rootUrl + '/api/categories')
+        .then((response) => response.json())
+        .then((json) => setData(json))
+        .catch((error) => console.error(error))
+        .finally(() => setLoading(false));
 
+      fetch(ApiCommon.rootUrl + '/api/products/popular')
+        .then((response) => response.json())
+        .then((json) => setDataproduct(json))
+        .catch((error) => console.error(error))
+        .finally(() => setLoading(false));
+    }
   });
   return (
     <View style={styles.container}>
@@ -155,10 +165,10 @@ export default function ShopScreen() {
 
           <NativeBaseProvider>
             <View style={{ marginTop: 5 }}>
-              <ProductList />
+              <ProductList data={dataProduct} />
             </View>
             <View style={{ marginTop: 10 }}>
-              <CategoryList data={data}/>
+              <CategoryList data={data} />
             </View>
             <View style={{ marginTop: 10 }}>
               <StoreList />
@@ -176,15 +186,25 @@ export default function ShopScreen() {
 
 function SearchBar() {
   return (
-    <Input
-      placeholder="  Tìm kiếm  "
-      variant="filled"
-      width="100%"
-      bg="white"
-      py={1}
-      px={2}
-    />
+    <View style={{ flexDirection: 'row' }}>
+      <Input
+        placeholder="  Tìm kiếm  "
+        variant="filled"
+        bg="white"
+        py={1}
+        px={2}
+        width="85%"
+      />
+
+      <Button
+        style={{ alignSelf: 'flex-end' }}
+        size="sm"
+        variant="link"
+        onPress={() => console.log("hello world")}
+      >
+        <Icon name="shopping-cart" size={25} color='#ffa500' />
+      </Button>
+    </View>
 
   )
 }
-
