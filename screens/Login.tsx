@@ -20,7 +20,7 @@ export default function Login() {
       <NativeBaseProvider >
         <Heading size="md" textAlign='center' marginTop='20' fontSize={20} color='#fff'>ĐĂNG NHẬP</Heading>
         <Input
-          width='300'
+          width={300}
           size="sm"
           marginTop='20'
           backgroundColor='#f0f9ff'

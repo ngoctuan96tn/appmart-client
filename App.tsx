@@ -31,7 +31,7 @@ export default function App() {
       //     <RegisterApartment />
       //   </SafeAreaProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Main" screenOptions={{
+        <Stack.Navigator initialRouteName="Login" screenOptions={{
           headerShown: false
         }}>
           <Stack.Screen name="Login" component={Login} options={{ title: null, headerLeft: null, gestureEnabled: false }} />

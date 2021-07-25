@@ -71,15 +71,24 @@ const styles = StyleSheet.create({
 
 export default function ShopScreen() {
   const [data, setData] = useState([]);
+
+  const [dataProduct, setDataproduct] = useState([]);
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(ApiCommon.rootUrl + '/api/categories')
-      .then((response) => response.json())
-      .then((json) => setData(json))
-      .catch((error) => console.error(error))
-      .finally(() => setLoading(false));
+    if (isLoading) {
+      fetch(ApiCommon.rootUrl + '/api/categories')
+        .then((response) => response.json())
+        .then((json) => setData(json))
+        .catch((error) => console.error(error))
+        .finally(() => setLoading(false));
 
+      fetch(ApiCommon.rootUrl + '/api/products/popular')
+        .then((response) => response.json())
+        .then((json) => setDataproduct(json))
+        .catch((error) => console.error(error))
+        .finally(() => setLoading(false));
+    }
   });
   return (
     <View style={styles.container}>
@@ -156,7 +165,7 @@ export default function ShopScreen() {
 
           <NativeBaseProvider>
             <View style={{ marginTop: 5 }}>
-              <ProductList />
+              <ProductList data={dataProduct} />
             </View>
             <View style={{ marginTop: 10 }}>
               <CategoryList data={data} />
@@ -193,10 +202,9 @@ function SearchBar() {
         variant="link"
         onPress={() => console.log("hello world")}
       >
-        <Icon name="shopping-cart" size={25} color='#ffa500'/>
+        <Icon name="shopping-cart" size={25} color='#ffa500' />
       </Button>
     </View>
 
   )
 }
-
