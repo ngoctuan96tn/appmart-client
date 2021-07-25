@@ -13,7 +13,6 @@ import useColorScheme from '../hooks/useColorScheme';
 import ShopScreen from '../screens/ShopScreen';
 import NotifyScreen from '../screens/NotifyScreen';
 import NewFeedScreen from '../screens/NewFeedScreen';
-import LibraryScreen from '../screens/LibraryScreen';
 import MessageScreen from '../screens/MessageScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import { TabFiveParamList, TabFourParamList, TabOneParamList, TabSixParamList, TabThreeParamList, TabTwoParamList } from '../types';
@@ -54,15 +53,7 @@ export default function BottomTabNavigator() {
           ),
         }}
       />
-      <BottomTab.Screen
-        name="Thư viện"
-        component={TabFourNavigator}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="library" color={color} size={size} />
-          ),
-        }}
-      />
+
       <BottomTab.Screen
         name="Tin nhắn"
         component={TabFiveNavigator}
@@ -132,20 +123,6 @@ function TabThreeNavigator() {
         options={{ headerTitle: 'Bảng tin' }}
       />
     </TabThreeStack.Navigator>
-  );
-}
-
-const TabFourStack = createStackNavigator<TabFourParamList>();
-
-function TabFourNavigator() {
-  return (
-    <TabFourStack.Navigator>
-      <TabFourStack.Screen
-        name="TabFourScreen"
-        component={LibraryScreen}
-        options={{ headerTitle: 'Thư viện' }}
-      />
-    </TabFourStack.Navigator>
   );
 }
 
