@@ -9,13 +9,13 @@ export function CategoryList(data: any) {
     return (
         <><View style={{ flexDirection: 'row' }}>
             <Text style={{ marginLeft: 5, flex: 1, fontWeight: 'bold', }}>DANH MỤC NGÀNH HÀNG</Text>
-            <Text style={{ textAlign: 'right', flex: 1, marginRight: 5, fontWeight: 'bold', color: '#ffa500' }}  onPress={() => navigation.navigate('AllCategory')} >Xem thêm</Text>
+            <Text style={{ textAlign: 'right', flex: 1, marginRight: 5, fontWeight: 'bold', color: '#ffa500' }} onPress={() => navigation.navigate('AllCategory')} >Xem thêm</Text>
         </View>
             <SafeAreaView style={{ flex: 1, marginTop: 10 }}>
                 <FlatList
                     data={list}
                     renderItem={({ item }) => (
-                        <View style={{marginTop:3}}><CategoryCard data={item} /></View>
+                        <View style={{ marginTop: 3 }}><CategoryCard data={item} /></View>
                     )}
                     keyExtractor={item => item.id.toString()}
                     numColumns={3}

@@ -9,8 +9,8 @@ function ProductCard(data: any) {
       bg="white"
       shadow={2}
       rounded="lg"
-      width={165}
-      marginLeft={3}
+      width={120}
+      marginLeft={2}
     >
       <Image source={{ uri: "https://sample-example.nativebase.io/static/media/dawki-river.ebbf5434.png" }} alt="image base" resizeMode="cover" height={150} roundedTop="md" />
 
@@ -26,7 +26,7 @@ function ProductCard(data: any) {
           right={0}
           m={2}
           top={0}
-          left={100}
+          left={70}
           _text={{
             color: "white",
             textAlign: "center",
@@ -40,7 +40,7 @@ function ProductCard(data: any) {
 
       <Text color='black' left={1}>{dataProduct.productName}</Text>
       <Text color='red.500'>{dataProduct.unitPrice}</Text>
-      <Button size="sm" variant='outline' bottom={0} onPress={() => console.log("hello world")}>
+      <Button size="sm" variant='outline' borderColor='#0ea5e9' bottom={0} onPress={() => console.log("hello world")}>
         <Text>Chọn mua</Text>
       </Button>
     </Box>
