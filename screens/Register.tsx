@@ -7,6 +7,8 @@ import {
   Button,
 } from "native-base"
 import { useNavigation } from '@react-navigation/native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 export default function Register(route: any) {
   const avatarImg = route.route.params.data;
@@ -22,13 +24,13 @@ export default function Register(route: any) {
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [passWord, setPassWord] = useState('');
-  
-  
+  const BottomTab = createBottomTabNavigator();
+
   return (
     <SafeAreaView style={styles.container}>
       <NativeBaseProvider>
         <Heading size="md" textAlign='center' marginTop={20} fontSize={20} color='#fff'>ĐĂNG KÝ</Heading>
-        <Button size="md" marginTop='20' marginBottom='5' backgroundColor='#6CDDED' onPress={() => navigation.navigate('ImagePickerExample')}>Cập nhật ảnh đại diện</Button>
+        <MaterialCommunityIcons name="camera-image" color='#fff' size={40} style={{ marginBottom: 10 }} onPress={() => navigation.navigate('ImagePickerExample')} />
         <Input
           backgroundColor='#f0f9ff'
           marginBottom={5}
