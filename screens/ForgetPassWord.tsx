@@ -15,14 +15,14 @@ export default function ForgetPassword() {
   return (
     <SafeAreaView style={styles.container}>
       <NativeBaseProvider >
-        <Heading size="md" textAlign='center' marginTop='20' color='#fff' fontSize={20}>QUÊN MẬT KHẨU</Heading>
+        <Heading size="md" textAlign='center' marginTop={20} color='#fff' fontSize={20}>QUÊN MẬT KHẨU</Heading>
         <Input
           size="sm"
           onChangeText={phone => setPhone(phone)}
           keyboardType='numeric'
           backgroundColor='#f0f9ff'
-          marginTop='20'
-          marginBottom='5'
+          marginTop={20}
+          marginBottom={5}
           variant="outline"
           placeholder="Nhập số điện thoại"
           _light={{

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import {
     Input,
@@ -8,6 +8,7 @@ import {
     Select,
 } from "native-base"
 import ApiCommon from '../constants/ApiCommon';
+import RNPickerSelect from 'react-native-picker-select';
 
 export default function RegisterApartment(route: any) {
     const userName = route.route.params.userName;
@@ -26,6 +27,21 @@ export default function RegisterApartment(route: any) {
     const [itemRoomValue, setItemRoomValue] = React.useState('');
     const [itemFloorValue, setItemFloorValue] = React.useState('');
     const [itemBuildingValue, setItemBuildingValue] = React.useState('');
+    const [isLoading, setLoading] = useState(true);
+    const [data, setData] = useState<any[]>([]);
+    useEffect(() => {
+        if (isLoading) {
+            fetch(ApiCommon.rootUrl + '/api/buildings')
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    if (responseJson.code == 1) {
+                        console.log(responseJson.listData)
+                        setData(responseJson.listData)
+                    }
+                });
+        }
+    });
+
     return (
         <SafeAreaView style={styles.container}>
             <NativeBaseProvider>
@@ -69,7 +85,7 @@ export default function RegisterApartment(route: any) {
                         placeholderTextColor: "blueGray.50",
                     }}
                 /> */}
-                <Select width={300} marginBottom={5} placeholder="Tòa nhà" backgroundColor='#f0f9ff'
+                {/* <Select width={300} marginBottom={5} placeholder="Tòa nhà" backgroundColor='#f0f9ff'
                     onValueChange={(itemBuildingValue) => {
                         setItemBuildingValue(itemBuildingValue)
                     }}>
@@ -89,7 +105,16 @@ export default function RegisterApartment(route: any) {
                     }}>
                     <Select.Item label="JavaScript" value="1" />
                     <Select.Item label="TypeScript" value="2" />
-                </Select>
+                </Select> */}
+                <RNPickerSelect
+                    onValueChange={(value) => console.log('1')}
+                    items={data.map(item => {
+                        return {
+                            label: item.buildingName,
+                            value: item.id
+                        };
+                    })}
+                />
                 <Button size="md" backgroundColor='#6CDDED' onPress={() => onSave(photo, email, userName, phone, password, itemBuildingValue, itemFloorValue, itemRoomValue)}>Cập nhật</Button>
             </NativeBaseProvider>
         </SafeAreaView>
@@ -106,7 +131,6 @@ const styles = StyleSheet.create({
 });
 
 function onSave(photo: any, email: any, userName: any, phone: any, password: any, itemBuildingValue: any, itemFloorValue: any, itemRoomValue: any) {
-
     const data = new FormData();
     data.append('avatarImg', photo);
     data.append('email', email);

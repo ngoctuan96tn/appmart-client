@@ -33,9 +33,9 @@ export default function ImagePickerExample() {
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Button title="Choose Photo" onPress={pickImage} />
-      {image && <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />}
-      <Button title="Quay lại trang đăng ký" onPress={() => navigation.navigate('Register', {
+      <Button title="Chọn ảnh" onPress={pickImage} color='#0ea5e9' />
+      {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+      <Button title="Quay lại trang đăng ký" color='#0ea5e9' onPress={() => navigation.navigate('Register', {
         data: image
       })} />
     </View>
