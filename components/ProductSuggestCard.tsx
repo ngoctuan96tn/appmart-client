@@ -37,7 +37,7 @@ function ProductSuggestCard(data: any) {
       }
       <Text color='black' left={1}>{dataProduct.productName}</Text>
       <Text color='red.500'>{dataProduct.unitPrice}</Text>
-      <Button size="sm" variant='outline' bottom={0} onPress={() => console.log("hello world")}>
+      <Button size="sm" variant='outline' borderColor='#0ea5e9' bottom={0} onPress={() => console.log("hello world")}>
         <Text>Chọn mua</Text>
       </Button>
     </Box>
