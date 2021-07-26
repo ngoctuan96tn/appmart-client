@@ -9,8 +9,8 @@ function ProductCard(data: any) {
       bg="white"
       shadow={2}
       rounded="lg"
-      width={165}
-      marginLeft={3}
+      width={120}
+      marginLeft={2}
     >
       <Image source={{ uri: "https://sample-example.nativebase.io/static/media/dawki-river.ebbf5434.png" }} alt="image base" resizeMode="cover" height={150} roundedTop="md" />
 
@@ -26,7 +26,7 @@ function ProductCard(data: any) {
           right={0}
           m={2}
           top={0}
-          left={100}
+          left={70}
           _text={{
             color: "white",
             textAlign: "center",
