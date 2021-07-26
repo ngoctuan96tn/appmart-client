@@ -14,6 +14,12 @@ export default function RegisterApartment(route: any) {
     const email = route.route.params.email;
     const phone = route.route.params.phone;
     const password = route.route.params.password;
+    const avatarImg = route.route.params.avatarImg
+    const photo = {
+        uri: avatarImg,
+        type: 'image/jpeg',
+        name: userName + 'photo.jpg',
+    };
     const [show, setShow] = React.useState(false)
 
     const handleClick = () => setShow(!show)
@@ -63,7 +69,7 @@ export default function RegisterApartment(route: any) {
                         placeholderTextColor: "blueGray.50",
                     }}
                 /> */}
-                <Select marginBottom={5} placeholder="Tòa nhà" backgroundColor='#f0f9ff'
+                <Select width={300} marginBottom={5} placeholder="Tòa nhà" backgroundColor='#f0f9ff'
                     onValueChange={(itemBuildingValue) => {
                         setItemBuildingValue(itemBuildingValue)
                     }}>
@@ -84,7 +90,7 @@ export default function RegisterApartment(route: any) {
                     <Select.Item label="JavaScript" value="1" />
                     <Select.Item label="TypeScript" value="2" />
                 </Select>
-                <Button size="md" backgroundColor='#6CDDED' onPress={() => onSave(email, userName, phone, password, itemBuildingValue, itemFloorValue, itemRoomValue)}>Cập nhật</Button>
+                <Button size="md" backgroundColor='#6CDDED' onPress={() => onSave(photo, email, userName, phone, password, itemBuildingValue, itemFloorValue, itemRoomValue)}>Cập nhật</Button>
             </NativeBaseProvider>
         </SafeAreaView>
     );
@@ -99,23 +105,24 @@ const styles = StyleSheet.create({
     },
 });
 
-function onSave(email: any, userName: any, phone: any, password: any, itemBuildingValue: any, itemFloorValue: any, itemRoomValue: any) {
+function onSave(photo: any, email: any, userName: any, phone: any, password: any, itemBuildingValue: any, itemFloorValue: any, itemRoomValue: any) {
+
+    const data = new FormData();
+    data.append('avatarImg', photo);
+    data.append('email', email);
+    data.append('userName', userName);
+    data.append('phone', phone);
+    data.append('password', password);
+    data.append('roomId', itemRoomValue);
+    data.append('floorId', itemFloorValue);
+    data.append('buildingId', itemBuildingValue);
+
     fetch(ApiCommon.rootUrl + '/api/register', {
-        method: 'POST',
-        mode: 'no-cors',
+        method: 'post',
+        body: data,
         headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
+            'Content-Type': 'multipart/form-data; ',
         },
-        body: JSON.stringify({
-            email: email,
-            name: userName,
-            password: password,
-            phone: phone,   
-            roomId: itemRoomValue,
-            floorId: itemFloorValue,
-            buildingId: itemBuildingValue
-        }),
     }).then((response) => response.json())
         .then((responseJson) => {
             console.log(responseJson);

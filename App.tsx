@@ -12,7 +12,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import RegisterApartment from './screens/RegisterApartment';
 import ImagePickerExample from './screens/ImagePicker';
 import ForgetPassword from './screens/ForgetPassWord';
-import BottomTabNavigator from './navigation/BottomTabNavigator';
+import MainNavigator from './navigation/MainNavigator';
+import AllCategoryList from './components/AllCategoryList';
 
 const Stack = createStackNavigator();
 
@@ -39,7 +40,8 @@ export default function App() {
           <Stack.Screen name="RegisterApartment" component={RegisterApartment} />
           <Stack.Screen name="ImagePickerExample" component={ImagePickerExample} />
           <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
-          <Stack.Screen name="Main" component={BottomTabNavigator} options={{ title: null, headerLeft: null, gestureEnabled: false }}/>
+          <Stack.Screen name="Main" component={MainNavigator} options={{ title: null, headerLeft: null, gestureEnabled: false }}/>
+          <Stack.Screen name="AllCategory" component={AllCategoryList}/>
         </Stack.Navigator>
       </NavigationContainer>
     );

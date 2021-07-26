@@ -19,7 +19,7 @@ import { TabFiveParamList, TabFourParamList, TabOneParamList, TabSixParamList, T
 
 const BottomTab = createBottomTabNavigator();
 
-export default function BottomTabNavigator() {
+export default function MainNavigator() {
   const colorScheme = useColorScheme();
 
   return (

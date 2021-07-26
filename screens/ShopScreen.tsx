@@ -1,6 +1,6 @@
 import { Button, Input, NativeBaseProvider, Radio, VStack, Text, Box, FlatList, ScrollView } from 'native-base';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Dimensions, Image } from 'react-native';
+import { StyleSheet, Dimensions, Image, ActivityIndicator } from 'react-native';
 import Swiper from 'react-native-swiper';
 import { View } from '../components/Themed';
 import Animated from 'react-native-reanimated';
@@ -90,98 +90,107 @@ export default function ShopScreen() {
         .finally(() => setLoading(false));
     }
   });
-  return (
-    <View style={styles.container}>
-      <NativeBaseProvider>
-        <Animated.View>
-          <SearchBar />
-        </Animated.View>
-        <ScrollView
-          height={400}
-        >
 
-          {/* slideshow */}
-          <Swiper
-            style={styles.wrapper}
-            // onMomentumScrollEnd={(e, state, context) =>
-            //   console.log('index:', state.index)
-            // }
-            dot={
-              <View
-                style={{
-                  backgroundColor: 'rgba(0,0,0,.2)',
-                  width: 5,
-                  height: 5,
-                  borderRadius: 4,
-                  marginLeft: 3,
-                }}
-              />
-            }
-            activeDot={
-              <View
-                style={{
-                  backgroundColor: '#f7a70a',
-                  width: 8,
-                  height: 8,
-                  borderRadius: 4,
-                  marginLeft: 3,
-                }}
-              />
-            }
-            loop
-            autoplay={true}
-            autoplayTimeout={2.5}
+  if (!isLoading) {
+    return (
+      <View style={styles.container}>
+        <NativeBaseProvider>
+          <Animated.View>
+            <SearchBar />
+          </Animated.View>
+          <ScrollView
+            height={400}
           >
-            <View
-              style={styles.slide}
-            >
-              <Image
-                resizeMode="stretch"
-                style={styles.image}
-                source={require('../assets/images/slideshow1.jpg')}
-              />
-            </View>
-            <View
-              style={styles.slide}
-            >
-              <Image
-                resizeMode="stretch"
-                style={styles.image}
-                source={require('../assets/images/slideshow2.jpg')}
-              />
-            </View>
-            <View
-              style={styles.slide}
-            >
-              <Image
-                resizeMode="stretch"
-                style={styles.image}
-                source={require('../assets/images/slideshow3.jpg')}
-              />
-            </View>
 
-          </Swiper>
-          {/* end slide show */}
+            {/* slideshow */}
+            <Swiper
+              style={styles.wrapper}
+              // onMomentumScrollEnd={(e, state, context) =>
+              //   console.log('index:', state.index)
+              // }
+              dot={
+                <View
+                  style={{
+                    backgroundColor: 'rgba(0,0,0,.2)',
+                    width: 5,
+                    height: 5,
+                    borderRadius: 4,
+                    marginLeft: 3,
+                  }}
+                />
+              }
+              activeDot={
+                <View
+                  style={{
+                    backgroundColor: '#f7a70a',
+                    width: 8,
+                    height: 8,
+                    borderRadius: 4,
+                    marginLeft: 3,
+                  }}
+                />
+              }
+              loop
+              autoplay={true}
+              autoplayTimeout={2.5}
+            >
+              <View
+                style={styles.slide}
+              >
+                <Image
+                  resizeMode="stretch"
+                  style={styles.image}
+                  source={require('../assets/images/slideshow1.jpg')}
+                />
+              </View>
+              <View
+                style={styles.slide}
+              >
+                <Image
+                  resizeMode="stretch"
+                  style={styles.image}
+                  source={require('../assets/images/slideshow2.jpg')}
+                />
+              </View>
+              <View
+                style={styles.slide}
+              >
+                <Image
+                  resizeMode="stretch"
+                  style={styles.image}
+                  source={require('../assets/images/slideshow3.jpg')}
+                />
+              </View>
 
-          <NativeBaseProvider>
-            <View style={{ marginTop: 5 }}>
-              <ProductList data={dataProduct} />
-            </View>
-            <View style={{ marginTop: 10 }}>
-              <CategoryList data={data} />
-            </View>
-            <View style={{ marginTop: 10 }}>
-              <StoreList />
-            </View>
-            <View style={{ marginTop: 15 }}>
-              <ProductSuggestList />
-            </View>
-          </NativeBaseProvider>
-        </ScrollView>
-      </NativeBaseProvider>
+            </Swiper>
+            {/* end slide show */}
 
-    </View>
-  );
+            <NativeBaseProvider>
+              <View style={{ marginTop: 5 }}>
+                <ProductList data={dataProduct} />
+              </View>
+              <View style={{ marginTop: 10 }}>
+                <CategoryList data={data} />
+              </View>
+              <View style={{ marginTop: 10 }}>
+                <StoreList />
+              </View>
+              <View style={{ marginTop: 15 }}>
+                <ProductSuggestList data={dataProduct} />
+              </View>
+            </NativeBaseProvider>
+          </ScrollView>
+        </NativeBaseProvider>
+
+      </View>
+    );
+  } else {
+    return (
+      <View>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
 }
 
 function SearchBar() {

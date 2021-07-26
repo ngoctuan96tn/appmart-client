@@ -54,7 +54,9 @@ export default function Login() {
         />
         <Link onPress={() => navigation.navigate('ForgetPassword')}>Quên mật khẩu</Link>
         <Button size="md" marginBottom='5' marginTop='5' backgroundColor='#6CDDED' onPress={() => onLogin(email, passWord, navigation)}>Đăng nhập</Button>
-        <Text style={{ textAlign: 'center', textDecorationLine: 'underline' }}>Chưa có tài khoản? <Link onPress={() => navigation.navigate('Register')}>Đăng ký</Link></Text>
+        <Text style={{ textAlign: 'center', textDecorationLine: 'underline' }}>Chưa có tài khoản? <Link onPress={() => navigation.navigate('Register', {
+          data: null
+        })}>Đăng ký</Link></Text>
         <Text style={{ textAlign: 'center' }}> Hoặc đăng nhập bằng </Text>
         <Button size="md" marginTop='10' backgroundColor='#c4b5fd' onPress={() => console.log()}>Số điện thoại</Button>
         <Button size="md" marginTop='2' backgroundColor="#1d4ed8" onPress={() => console.log()}>Facebook</Button>
