@@ -8,7 +8,8 @@ import {
 } from "native-base"
 import { useNavigation } from '@react-navigation/native';
 
-export default function Register() {
+export default function Register(route: any) {
+  const avatarImg = route.route.params.data;
   const [show, setShow] = React.useState(false)
 
   const handleClick = () => setShow(!show)
@@ -21,7 +22,7 @@ export default function Register() {
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [passWord, setPassWord] = useState('');
-  const [image, setImage] = useState('');
+  
   
   return (
     <SafeAreaView style={styles.container}>
@@ -98,7 +99,8 @@ export default function Register() {
           userName: userName,
           email: email,
           phone: phoneNumber,
-          password: passWord
+          password: passWord,
+          avatarImg: avatarImg
         })}>Tiếp theo</Button>
       </NativeBaseProvider>
     </SafeAreaView>
