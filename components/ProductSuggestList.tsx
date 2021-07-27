@@ -8,7 +8,7 @@ export function ProductSuggestList(data: any) {
   return (
     <>
       <View style={{ flexDirection: 'row' }}>
-        <Text style={{ marginLeft: 5, flex: 1, fontWeight: 'bold', }}>SẢN PHẨM GỢI Ý</Text>
+        <Text style={{ marginLeft: 5, flex: 1, fontWeight: 'bold', marginTop:'3%'}}>SẢN PHẨM GỢI Ý</Text>
       </View>
       <SafeAreaView style={{ flex: 1 }}>
         <FlatList
