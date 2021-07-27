@@ -15,6 +15,7 @@ import ForgetPassword from './screens/ForgetPassWord';
 import MainNavigator from './navigation/MainNavigator';
 import AllCategoryList from './components/AllCategoryList';
 import ListProduct from './screens/ListProduct';
+import DetailProduct from './screens/DetailProduct';
 
 const Stack = createStackNavigator();
 
@@ -44,6 +45,7 @@ export default function App() {
           <Stack.Screen name="Main" component={MainNavigator} options={{ title: null, headerLeft: null, gestureEnabled: false }}/>
           <Stack.Screen name="AllCategory" component={AllCategoryList}/>
           <Stack.Screen name="ListProduct" component={ListProduct}/>
+          <Stack.Screen name="DetailProduct" component={DetailProduct}/>
         </Stack.Navigator>
       </NavigationContainer>
     );
