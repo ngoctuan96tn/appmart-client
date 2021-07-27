@@ -6,6 +6,7 @@ import {
     NativeBaseProvider,
     Button,
     Select,
+    Icon,
 } from "native-base"
 import ApiCommon from '../constants/ApiCommon';
 import RNPickerSelect from 'react-native-picker-select';
@@ -21,14 +22,19 @@ export default function RegisterApartment(route: any) {
         type: 'image/jpeg',
         name: userName + 'photo.jpg',
     };
-    const [show, setShow] = React.useState(false)
+    const [show, setShow] = useState(false)
 
     const handleClick = () => setShow(!show)
-    const [itemRoomValue, setItemRoomValue] = React.useState('');
-    const [itemFloorValue, setItemFloorValue] = React.useState('');
-    const [itemBuildingValue, setItemBuildingValue] = React.useState('');
-    const [isLoading, setLoading] = useState(true);
     const [data, setData] = useState<any[]>([]);
+    const [isLoading, setLoading] = useState(true);
+    const [isLoadFloors, setIsLoadFloors] = useState(false);
+    const [idBuilding, setIdBuilding] = useState(Number);
+    const [floors, setFloors] = useState<any[]>([]);
+    const [isLoadRoom, setIsLoadRoom] = useState(false);
+    const [rooms, setRooms] = useState<any[]>([]);
+    const [idFloor, setIdFloor] = useState(Number);
+    const [idRoom, setIdRoom] = useState(Number);
+
     useEffect(() => {
         if (isLoading) {
             fetch(ApiCommon.rootUrl + '/api/buildings')
@@ -37,8 +43,36 @@ export default function RegisterApartment(route: any) {
                     if (responseJson.code == 1) {
                         console.log(responseJson.listData)
                         setData(responseJson.listData)
+                        setLoading(false)
                     }
-                });
+                })
+                .catch((error) => console.error(error))
+                .finally(() => setLoading(false));
+        }
+
+        if (isLoadFloors) {
+            fetch(ApiCommon.rootUrl + `/api/buildings/${idBuilding}/floors`)
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    if (responseJson.code == 1) {
+                        setFloors(responseJson.listData)
+                        setIsLoadFloors(false)
+                    }
+                })
+                .catch((error) => console.error(error))
+                .finally(() => setIsLoadFloors(false));
+        }
+        if (isLoadRoom) {
+            fetch(ApiCommon.rootUrl + `/api/floors/${idFloor}/rooms`)
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    if (responseJson.code == 1) {
+                        setRooms(responseJson.listData)
+                        setIsLoadRoom(false)
+                    }
+                })
+                .catch((error) => console.error(error))
+                .finally(() => setIsLoadRoom(false));
         }
     });
 
@@ -107,19 +141,80 @@ export default function RegisterApartment(route: any) {
                     <Select.Item label="TypeScript" value="2" />
                 </Select> */}
                 <RNPickerSelect
-                    onValueChange={(value) => console.log('1')}
+                    onValueChange={(value) => [setIsLoadFloors(true), setIdBuilding(value)]}
+                    placeholder={{
+                        label: 'Chọn tòa nhà',
+                        value: null,
+                        color: '#fff'
+                    }}
                     items={data.map(item => {
                         return {
                             label: item.buildingName,
                             value: item.id
                         };
                     })}
+                    style={pickerSelectStyles}
                 />
-                <Button size="md" backgroundColor='#6CDDED' onPress={() => onSave(photo, email, userName, phone, password, itemBuildingValue, itemFloorValue, itemRoomValue)}>Cập nhật</Button>
+
+                <RNPickerSelect
+                    onValueChange={(value) => [setIsLoadRoom(true), setIdFloor(value)]}
+                    placeholder={{
+                        label: 'Chọn phòng',
+                        value: null,
+                        color: '#fff'
+                    }}
+                    items={floors.map(item => {
+                        return {
+                            label: item.floorName,
+                            value: item.id
+                        };
+                    })}
+                    style={pickerSelectStyles}
+                />
+
+                <RNPickerSelect
+                    onValueChange={(value) => setIdRoom(value)}
+                    placeholder={{
+                        label: 'Chọn phòng',
+                        value: null,
+                        color: '#fff'
+                    }}
+                    items={rooms.map(item => {
+                        return {
+                            label: item.roomName,
+                            value: item.id
+                        };
+                    })}
+                    style={pickerSelectStyles}
+                />
+                <Button size="md" backgroundColor='#6CDDED' onPress={() => onSave(photo, email, userName, phone, password, idBuilding, idFloor, idRoom)}>Cập nhật</Button>
             </NativeBaseProvider>
         </SafeAreaView>
     );
 }
+
+const pickerSelectStyles = StyleSheet.create({
+    inputIOS: {
+      fontSize: 16,
+      paddingVertical: 12,
+      paddingHorizontal: 10,
+      borderWidth: 1,
+      borderColor: 'gray',
+      borderRadius: 4,
+      color: 'black',
+      paddingRight: 30, // to ensure the text is never behind the icon
+    },
+    inputAndroid: {
+      fontSize: 16,
+      paddingHorizontal: 10,
+      paddingVertical: 8,
+      borderWidth: 0.5,
+      borderColor: 'purple',
+      borderRadius: 8,
+      color: 'black',
+      paddingRight: 30, // to ensure the text is never behind the icon
+    },
+  });
 
 const styles = StyleSheet.create({
     container: {
@@ -130,16 +225,16 @@ const styles = StyleSheet.create({
     },
 });
 
-function onSave(photo: any, email: any, userName: any, phone: any, password: any, itemBuildingValue: any, itemFloorValue: any, itemRoomValue: any) {
+function onSave(photo: any, email: any, userName: any, phone: any, password: any, idBuilding: any, idFloor: any, idRoom: any) {
     const data = new FormData();
     data.append('avatarImg', photo);
     data.append('email', email);
     data.append('userName', userName);
     data.append('phone', phone);
     data.append('password', password);
-    data.append('roomId', itemRoomValue);
-    data.append('floorId', itemFloorValue);
-    data.append('buildingId', itemBuildingValue);
+    data.append('roomId', idBuilding);
+    data.append('floorId', idFloor);
+    data.append('buildingId', idRoom);
 
     fetch(ApiCommon.rootUrl + '/api/register', {
         method: 'post',
@@ -153,7 +248,7 @@ function onSave(photo: any, email: any, userName: any, phone: any, password: any
             if (responseJson.code == 1) {
                 console.log(responseJson.message)
             } else {
-                console.log('đăng nhập thất bại')
+                console.log('đăng ký thất bại')
             }
         })
         .catch((error) => {
