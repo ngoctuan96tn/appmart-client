@@ -4,7 +4,7 @@ import {
 } from "native-base";
 import { TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-function ProductCard(data: any) {
+function ProductSuggestCard(data: any) {
   const dataProduct = data.data.data;
   const navigation = useNavigation();
   return (
@@ -15,10 +15,8 @@ function ProductCard(data: any) {
       width={120}
       marginLeft={2}
     >
-      <TouchableOpacity onPress={() => navigation.navigate('DetailProduct', {productId: dataProduct.productId})}>
+      <TouchableOpacity onPress={() => navigation.reset({ index: 0, routes: [{ name: 'DetailProduct', params: {productId: dataProduct.productId} }],})}>
         <Image source={{ uri: `data:image/jpeg;base64,${dataProduct.productImageBase64}` }} alt="image base" resizeMode="cover" height={150} roundedTop="md" />
-
-
         {dataProduct.discount > 0 &&
 
           <Center
@@ -26,7 +24,7 @@ function ProductCard(data: any) {
             rounded="full"
             bg="red.500"
             boxSize={10}
-            position="absolute"
+            position="absolute"   
             right={0}
             m={2}
             top={0}
@@ -41,7 +39,6 @@ function ProductCard(data: any) {
             <Text>{dataProduct.discount}%</Text>
           </Center>
         }
-
         <Text color='black' left={1}>{dataProduct.productName}</Text>
         <Text color='red.500'>{dataProduct.unitPrice}</Text>
       </TouchableOpacity>
@@ -56,7 +53,7 @@ export default function (data: any) {
   return (
     <NativeBaseProvider>
       <Center flex={1}>
-        <ProductCard data={data} />
+        <ProductSuggestCard data={data} />
       </Center>
     </NativeBaseProvider>
   );
