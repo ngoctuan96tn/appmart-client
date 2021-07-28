@@ -30,7 +30,7 @@ export default function Register(route: any) {
     <SafeAreaView style={styles.container}>
       <NativeBaseProvider>
         <Heading size="md" textAlign='center' marginTop={20} fontSize={20} color='#fff'>ĐĂNG KÝ</Heading>
-        <MaterialCommunityIcons name="camera-image" color='#fff' size={40} style={{ marginBottom: 10 }} onPress={() => navigation.navigate('ImagePickerExample')} />
+        <MaterialCommunityIcons name="camera" color='#fff' size={40} style={{ marginBottom: 10 }} onPress={() => navigation.navigate('ImagePickerExample')} />
         <Input
           backgroundColor='#f0f9ff'
           marginBottom={5}

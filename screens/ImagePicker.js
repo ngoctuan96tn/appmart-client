@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Image, View, Platform } from 'react-native';
+import { Image, View, Platform } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
+import { Button, NativeBaseProvider } from 'native-base';
+import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons"
 
 export default function ImagePickerExample() {
   const [image, setImage] = useState(null);
@@ -32,12 +34,16 @@ export default function ImagePickerExample() {
   };
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Button title="Chọn ảnh" onPress={pickImage} color='#0ea5e9' />
-      {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-      <Button title="Quay lại trang đăng ký" color='#0ea5e9' onPress={() => navigation.navigate('Register', {
-        data: image
-      })} />
-    </View>
+    <NativeBaseProvider>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+
+        <Button width={200} startIcon={<MaterialCommunityIcons name="camera" size={40} />} onPress={pickImage} color='#0ea5e9' > Chọn ảnh </Button>
+        {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+        <Button color='#0ea5e9' width={200} marginTop={5} onPress={() => navigation.navigate('Register', {
+          data: image
+        })} > Xác nhận </Button>
+
+      </View>
+    </NativeBaseProvider>
   );
 }
