@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet, View, Platform } from 'react-native';
 import {
     Input,
     Heading,
@@ -10,6 +10,8 @@ import {
 } from "native-base"
 import ApiCommon from '../constants/ApiCommon';
 import RNPickerSelect from 'react-native-picker-select';
+import { border, color } from 'styled-system';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function RegisterApartment(route: any) {
     const userName = route.route.params.userName;
@@ -140,7 +142,7 @@ export default function RegisterApartment(route: any) {
                     <Select.Item label="JavaScript" value="1" />
                     <Select.Item label="TypeScript" value="2" />
                 </Select> */}
-                <RNPickerSelect
+                {/* <RNPickerSelect
                     onValueChange={(value) => [setIsLoadFloors(true), setIdBuilding(value)]}
                     placeholder={{
                         label: 'Chọn tòa nhà',
@@ -154,22 +156,60 @@ export default function RegisterApartment(route: any) {
                         };
                     })}
                     style={pickerSelectStyles}
+                /> */}
+
+                <RNPickerSelect
+                    placeholder={{
+                        label: 'Chọn tòa nhà',
+                        value: null,
+                    }}
+                    items={data.map(item => {
+                        return {
+                            label: item.buildingName,
+                            value: item.id,
+                            color: "#0ea5e9"
+                        };
+                    })}
+                    onValueChange={(value) => [setIsLoadFloors(true), setIdBuilding(value), setFloors([]), setRooms([])]}
+                    style={{
+                        ...pickerSelectStyles,
+                        iconContainer: {
+                            top: 32,
+                            right: 12,
+                        },
+                    }}
+                    value={idBuilding}
+                    useNativeAndroidPickerStyle={false}
+                    Icon={() => {
+                        return <Ionicons name="caret-down-sharp" size={24} color="gray" />;
+                    }}
                 />
 
                 <RNPickerSelect
-                    onValueChange={(value) => [setIsLoadRoom(true), setIdFloor(value)]}
+                    onValueChange={(value) => [setIsLoadRoom(true), setIdFloor(value), setRooms([])]}
                     placeholder={{
-                        label: 'Chọn phòng',
+                        label: 'Chọn tầng',
                         value: null,
-                        color: '#fff'
+                    }}
+                    style={{
+                        ...pickerSelectStyles,
+                        iconContainer: {
+                            top: 32,
+                            right: 12,
+                        },
                     }}
                     items={floors.map(item => {
                         return {
                             label: item.floorName,
-                            value: item.id
+                            value: item.id,
+                            color: "#0ea5e9"
                         };
                     })}
-                    style={pickerSelectStyles}
+                    value={idFloor}
+                    useNativeAndroidPickerStyle={false}
+                    Icon={() => {
+                        return <Ionicons name="caret-down-sharp" size={24} color="gray" />;
+                    }}
                 />
 
                 <RNPickerSelect
@@ -177,17 +217,29 @@ export default function RegisterApartment(route: any) {
                     placeholder={{
                         label: 'Chọn phòng',
                         value: null,
-                        color: '#fff'
                     }}
                     items={rooms.map(item => {
                         return {
                             label: item.roomName,
-                            value: item.id
+                            value: item.id,
+                            color: "#0ea5e9"
                         };
                     })}
-                    style={pickerSelectStyles}
+                    style={{
+                        ...pickerSelectStyles,
+                        iconContainer: {
+                            top: 32,
+                            right: 12,
+                        },
+                    }}
+                    value={idRoom}
+                    useNativeAndroidPickerStyle={false}
+                    Icon={() => {
+                        return <Ionicons name="caret-down-sharp" size={24} color="gray" />;
+                    }}
                 />
-                <Button size="md" backgroundColor='#6CDDED' onPress={() => onSave(photo, email, userName, phone, password, idBuilding, idFloor, idRoom)}>Cập nhật</Button>
+
+                <Button size="md" marginTop={30} backgroundColor='#6CDDED' onPress={() => onSave(photo, email, userName, phone, password, idBuilding, idFloor, idRoom)}>Cập nhật</Button>
             </NativeBaseProvider>
         </SafeAreaView>
     );
@@ -195,26 +247,34 @@ export default function RegisterApartment(route: any) {
 
 const pickerSelectStyles = StyleSheet.create({
     inputIOS: {
-      fontSize: 16,
-      paddingVertical: 12,
-      paddingHorizontal: 10,
-      borderWidth: 1,
-      borderColor: 'gray',
-      borderRadius: 4,
-      color: 'black',
-      paddingRight: 30, // to ensure the text is never behind the icon
+        marginBottom: 30,
+        width: 300,
+        marginTop: 30,
+        fontSize: 16,
+        paddingVertical: 12,
+        paddingHorizontal: 10,
+        borderWidth: 1,
+        borderColor: '#000',
+        borderRadius: 4,
+        color: '#000',
+        paddingRight: 30,
+        backgroundColor: '#fff'
     },
     inputAndroid: {
-      fontSize: 16,
-      paddingHorizontal: 10,
-      paddingVertical: 8,
-      borderWidth: 0.5,
-      borderColor: 'purple',
-      borderRadius: 8,
-      color: 'black',
-      paddingRight: 30, // to ensure the text is never behind the icon
+        width: 300,
+        marginTop: 30,
+        fontSize: 16,
+        paddingHorizontal: 10,
+        paddingVertical: 8,
+        borderWidth: 0.5,
+        borderColor: '#000',
+        borderRadius: 8,
+        color: '#000',
+        paddingRight: 30,
+        backgroundColor: '#fff',
+        top: -10,
     },
-  });
+});
 
 const styles = StyleSheet.create({
     container: {
