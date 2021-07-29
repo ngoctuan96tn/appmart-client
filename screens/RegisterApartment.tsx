@@ -247,8 +247,6 @@ export default function RegisterApartment(route: any) {
 
 const pickerSelectStyles = StyleSheet.create({
     inputIOS: {
-        marginBottom: 30,
-        width: 300,
         marginTop: 30,
         fontSize: 16,
         paddingVertical: 12,
