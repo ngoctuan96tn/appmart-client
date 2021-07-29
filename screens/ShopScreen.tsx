@@ -10,9 +10,8 @@ import { StoreList } from '../components/StoreList';
 import ProductSuggestList from '../components/ProductSuggestList';
 import ApiCommon from '../constants/ApiCommon';
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { red } from '@material-ui/core/colors';
+import { useNavigation } from '@react-navigation/native';
 const { width } = Dimensions.get('window')
-
 
 const styles = StyleSheet.create({
   container: {
@@ -71,7 +70,6 @@ const styles = StyleSheet.create({
 
 export default function ShopScreen() {
   const [data, setData] = useState([]);
-
   const [dataProduct, setDataproduct] = useState([]);
   const [isLoading, setLoading] = useState(true);
 
@@ -194,6 +192,7 @@ export default function ShopScreen() {
 }
 
 function SearchBar() {
+  let navigation = useNavigation();
   return (
     <View style={{ flexDirection: 'row' }}>
       <Input
@@ -209,7 +208,7 @@ function SearchBar() {
         style={{ alignSelf: 'flex-end' }}
         size="sm"
         variant="link"
-        onPress={() => console.log("hello world")}
+        onPress={() => navigation.navigate('Cart')}
       >
         <Icon name="shopping-cart" size={25} color='#ffa500' />
       </Button>
