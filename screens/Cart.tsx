@@ -7,7 +7,7 @@ import { Text, View } from '../components/Themed';
 export default function Cart() {
   return (
     <SafeAreaView style={styles.container}>
-      <NativeBaseProvider config={config}>
+      <NativeBaseProvider>
         <Text style={styles.title}>Giỏ hàng</Text>
       </NativeBaseProvider>
     </SafeAreaView>
