@@ -1,7 +1,39 @@
+
+// import AsyncStorage, { useAsyncStorage } from '@react-native-async-storage/async-storage';
 // import * as React from 'react';
-// import { Text, View } from 'react-native';
+// import { useEffect, useState } from 'react';
+// import { SafeAreaView, Text, View } from 'react-native';
+// import ApiCommon from '../constants/ApiCommon';
 
 // export default function ProfileScreen() {
+    // const [userLogin, setUserLogin] = useState<any>({});
+    // const [isLoading, setLoading] = useState(false);
+    // const [value, setValue] = useState<string | null>('');
+    // const { getItem, setItem } = useAsyncStorage('token');
+    // const [retrieve, setRetrieve] = useState(true);
+
+    // useEffect(() => {
+    //     const readToken = async () => {
+    //         const item = await getItem();
+    //         console.log('item: ' + item);
+    //         setValue(item);
+    //         setRetrieve(false);
+    //     };
+
+    //     if (retrieve) {
+    //         readToken();
+    //     }
+    //     if (retrieve === false) {
+    //         console.log('token' + value)
+    //         const headers = { 'Authorization': `Bearer ${value}` }
+    //         fetch(ApiCommon.rootUrl + '/api/user/login', { headers })
+    //             .then((response) => response.json())
+    //             .then((json) => console.log(json))
+    //             .catch((error) => console.error(error));
+    //     }
+
+    // }, [retrieve]);
+
 //     return (
 //         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
 //             <Text>Cá nhân!</Text>
@@ -9,7 +41,8 @@
 //     );
 // }
 
-import React from 'react';
+
+import React, { useEffect } from 'react';
 import { View, SafeAreaView, StyleSheet } from 'react-native';
 import {
   Avatar,
@@ -20,11 +53,42 @@ import {
 } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useState } from 'react';
+import { useAsyncStorage } from '@react-native-async-storage/async-storage';
+import ApiCommon from '../constants/ApiCommon';
 // import files from '../assets/filesBase64';
 
 export default function ProfileScreen() {
 
   const navigation = useNavigation();
+  const [userLogin, setUserLogin] = useState<any>({});
+  const [isLoading, setLoading] = useState(false);
+  const [value, setValue] = useState<string | null>('');
+  const { getItem, setItem } = useAsyncStorage('token');
+  const [retrieve, setRetrieve] = useState(true);
+
+  useEffect(() => {
+      const readToken = async () => {
+          const item = await getItem();
+          console.log('item: ' + item);
+          setValue(item);
+          setRetrieve(false);
+      };
+
+      if (retrieve) {
+          readToken();
+      }
+      if (retrieve === false) {
+          console.log('token' + value)
+          const headers = { 'Authorization': `Bearer ${value}` }
+          fetch(ApiCommon.rootUrl + '/api/user/login', { headers })
+              .then((response) => response.json())
+              .then((json) => setUserLogin(json))
+              .catch((error) => console.error(error));
+      }
+
+  }, [retrieve]);
+  
   const myCustomShare = async () => {
     const shareOptions = {
       message: 'Order your next meal from FoodFinder App. I\'ve already ordered more than 10 meals on it.',
@@ -46,7 +110,7 @@ export default function ProfileScreen() {
           <View style={{ flexDirection: 'row', marginTop: 15 }}>
             <Avatar.Image
               source={{
-                uri: 'https://api.adorable.io/avatars/80/abott@adorable.png',
+                uri: `data:image/jpeg;base64,${userLogin.avatarHashCode}`,
               }}
               size={80}
             />
@@ -54,41 +118,12 @@ export default function ProfileScreen() {
               <Title style={[styles.title, {
                 marginTop: 15,
                 marginBottom: 5,
-              }]}>John Doe</Title>
-              <Caption style={styles.caption}>@j_doe</Caption>
+              }]}>{userLogin.userName}</Title>
+              <Caption style={styles.caption}>@Admin</Caption>
             </View>
           </View>
         </View>
       </TouchableRipple>
-
-      {/* <View style={styles.userInfoSection}>
-        <View style={styles.row}>
-          <Icon name="map-marker-radius" color="#777777" size={20}/>
-          <Text style={{color:"#777777", marginLeft: 20}}>Kolkata, India</Text>
-        </View>
-        <View style={styles.row}>
-          <Icon name="phone" color="#777777" size={20}/>
-          <Text style={{color:"#777777", marginLeft: 20}}>+91-900000009</Text>
-        </View>
-        <View style={styles.row}>
-          <Icon name="email" color="#777777" size={20}/>
-          <Text style={{color:"#777777", marginLeft: 20}}>john_doe@email.com</Text>
-        </View>
-      </View> */}
-
-      {/* <View style={styles.infoBoxWrapper}>
-          <View style={[styles.infoBox, {
-            borderRightColor: '#dddddd',
-            borderRightWidth: 1
-          }]}>
-            <Title>₹140.50</Title>
-            <Caption>Wallet</Caption>
-          </View>
-          <View style={styles.infoBox}>
-            <Title>12</Title>
-            <Caption>Orders</Caption>
-          </View>
-      </View> */}
 
       <View style={styles.menuWrapper}>
         <TouchableRipple onPress={() => { }}>
