@@ -9,6 +9,8 @@
 //     );
 // }
 
+import { createStackNavigator } from '@react-navigation/stack';
+import { NativeBaseProvider } from 'native-base';
 import React from 'react';
 import {View, SafeAreaView, StyleSheet} from 'react-native';
 import {
@@ -20,10 +22,11 @@ import {
 } from 'react-native-paper';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { TabOneParamList } from '../types';
 
 // import files from '../assets/filesBase64';
 
-export default function ProfileScreen() {
+export function UserInfor() {
 
   const myCustomShare = async() => {
     const shareOptions = {
@@ -174,3 +177,26 @@ const styles = StyleSheet.create({
     lineHeight: 26,
   },
 });
+
+export default () => {
+  return (
+      <NativeBaseProvider>
+          <TabOneNavigator />
+      </NativeBaseProvider>
+  )
+}
+
+
+const TabOneStack = createStackNavigator<TabOneParamList>();
+
+function TabOneNavigator(data: any) {
+  return (
+      <TabOneStack.Navigator>
+          <TabOneStack.Screen
+              name="TabOneScreen"
+              component={UserInfor}
+              options={{ headerTitle: "THÔNG TIN CÁ NHÂN" }}
+          />
+      </TabOneStack.Navigator>
+  );
+}

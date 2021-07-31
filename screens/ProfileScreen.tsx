@@ -110,7 +110,7 @@ export default function ProfileScreen() {
           <View style={{ flexDirection: 'row', marginTop: 15 }}>
             <Avatar.Image
               source={{
-                uri: 'https://api.adorable.io/avatars/80/abott@adorable.png',
+                uri: `data:image/jpeg;base64,${userLogin.avatarHashCode}`,
               }}
               size={80}
             />
@@ -118,8 +118,8 @@ export default function ProfileScreen() {
               <Title style={[styles.title, {
                 marginTop: 15,
                 marginBottom: 5,
-              }]}>John Doe</Title>
-              <Caption style={styles.caption}>@j_doe</Caption>
+              }]}>{userLogin.userName}</Title>
+              <Caption style={styles.caption}>@Admin</Caption>
             </View>
           </View>
         </View>
