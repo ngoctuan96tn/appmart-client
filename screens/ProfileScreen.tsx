@@ -26,7 +26,6 @@ export default function ProfileScreen() {
   useEffect(() => {
     const readToken = async () => {
       const item = await getItem();
-      console.log('item: ' + item);
       setValue(item);
       setRetrieve(false);
     };
@@ -35,7 +34,6 @@ export default function ProfileScreen() {
       readToken();
     }
     if (retrieve === false) {
-      console.log('token' + value)
       const headers = { 'Authorization': `Bearer ${value}` }
       fetch(ApiCommon.rootUrl + '/api/user/login', { headers })
         .then((response) => response.json())
@@ -44,7 +42,6 @@ export default function ProfileScreen() {
     }
 
   }, [retrieve]);
-
 
   const myCustomShare = async () => {
     const shareOptions = {
@@ -107,14 +104,14 @@ export default function ProfileScreen() {
         </TouchableRipple>
         <TouchableRipple onPress={() => { }}>
           <View style={styles.menuItem}>
-            <Icon name="account-check-outline" color="#FF6347" size={25} />
-            <Text style={styles.menuItemText}>Support</Text>
-          </View>
-        </TouchableRipple>
-        <TouchableRipple onPress={() => { }}>
-          <View style={styles.menuItem}>
             <Icon name="settings-outline" color="#FF6347" size={25} />
             <Text style={styles.menuItemText}>Settings</Text>
+          </View>
+        </TouchableRipple>
+        <TouchableRipple onPress={() => navigation.navigate('ChangePassWord')}>
+          <View style={styles.menuItem}>
+            <Icon name="account-check-outline" color="#FF6347" size={25} />
+            <Text style={styles.menuItemText}>Thay đổi mật khẩu</Text>
           </View>
         </TouchableRipple>
       </View>
