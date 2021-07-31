@@ -1,7 +1,5 @@
 import 'react-native-gesture-handler';
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
@@ -16,6 +14,9 @@ import MainNavigator from './navigation/MainNavigator';
 import AllCategoryList from './components/AllCategoryList';
 import ListProduct from './screens/ListProduct';
 import DetailProduct from './screens/DetailProduct';
+import Cart from './screens/Cart';
+import ProfileScreen from './screens/ProfileScreen';
+import InfoUser from './screens/InfoUser';
 
 const Stack = createStackNavigator();
 
@@ -42,10 +43,13 @@ export default function App() {
           <Stack.Screen name="RegisterApartment" component={RegisterApartment} />
           <Stack.Screen name="ImagePickerExample" component={ImagePickerExample} />
           <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
-          <Stack.Screen name="Main" component={MainNavigator} options={{ title: null, headerLeft: null, gestureEnabled: false }}/>
-          <Stack.Screen name="AllCategory" component={AllCategoryList}/>
-          <Stack.Screen name="ListProduct" component={ListProduct}/>
-          <Stack.Screen name="DetailProduct" component={DetailProduct}/>
+          <Stack.Screen name="Main" component={MainNavigator} options={{ title: null, headerLeft: null, gestureEnabled: false }} />
+          <Stack.Screen name="AllCategory" component={AllCategoryList} />
+          <Stack.Screen name="ListProduct" component={ListProduct} />
+          <Stack.Screen name="DetailProduct" component={DetailProduct} />
+          <Stack.Screen name="Cart" component={Cart} />
+          <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+          <Stack.Screen name="InfoUser" component={InfoUser} />
         </Stack.Navigator>
       </NavigationContainer>
     );
