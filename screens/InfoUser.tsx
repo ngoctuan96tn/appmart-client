@@ -1,18 +1,8 @@
-// import * as React from 'react';
-// import { Text, View } from 'react-native';
-
-// export default function ProfileScreen() {
-//     return (
-//         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-//             <Text>Cá nhân!</Text>
-//         </View>
-//     );
-// }
-
+import { Ionicons } from '@expo/vector-icons';
 import { createStackNavigator } from '@react-navigation/stack';
-import { NativeBaseProvider } from 'native-base';
-import React from 'react';
-import {View, SafeAreaView, StyleSheet} from 'react-native';
+import { NativeBaseProvider, Input, Button } from 'native-base';
+import React, { useEffect, useState } from 'react';
+import { View, SafeAreaView, StyleSheet, ActivityIndicator } from 'react-native';
 import {
   Avatar,
   Title,
@@ -20,15 +10,17 @@ import {
   Text,
   TouchableRipple,
 } from 'react-native-paper';
+import RNPickerSelect from 'react-native-picker-select';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import ApiCommon from '../constants/ApiCommon';
 import { TabOneParamList } from '../types';
 
 // import files from '../assets/filesBase64';
 
-export function UserInfor() {
-
-  const myCustomShare = async() => {
+export function UserInfor(route: any) {
+  const userLogin = route.route.params.data.route.params.data;
+  const myCustomShare = async () => {
     const shareOptions = {
       message: 'Order your next meal from FoodFinder App. I\'ve already ordered more than 10 meals on it.',
       url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/PNG_transparency_demonstration_2.png/200px-PNG_transparency_demonstration_2.png',
@@ -37,97 +29,205 @@ export function UserInfor() {
     }
 
     try {
-    } catch(error) {
+    } catch (error) {
       console.log('Error => ', error);
     }
   };
+  const [data, setData] = useState<any[]>([]);
+  const [isLoading, setLoading] = useState(true);
+  const [isLoadFloors, setIsLoadFloors] = useState(false);
+  const [idBuilding, setIdBuilding] = useState(Number);
+  const [floors, setFloors] = useState<any[]>([]);
+  const [isLoadRoom, setIsLoadRoom] = useState(false);
+  const [rooms, setRooms] = useState<any[]>([]);
+  const [idFloor, setIdFloor] = useState(Number);
+  const [idRoom, setIdRoom] = useState(Number);
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.userInfoSection}>
-        <View style={{flexDirection: 'row', marginTop: 15}}>
-          <Avatar.Image 
-            source={{
-              uri: 'https://api.adorable.io/avatars/80/abott@adorable.png',
-            }}
-            size={80}
-          />
-          <View style={{marginLeft: 20}}>
-            <Title style={[styles.title, {
-              marginTop:15,
-              marginBottom: 5,
-            }]}>John Doe</Title>
-            <Caption style={styles.caption}>@j_doe</Caption>
+  useEffect(() => {
+    if (isLoading) {
+      fetch(ApiCommon.rootUrl + '/api/buildings')
+        .then((response) => response.json())
+        .then((responseJson) => {
+          if (responseJson.code == 1) {
+            console.log(responseJson.listData)
+            setData(responseJson.listData)
+            setLoading(false)
+            setIdBuilding(userLogin.buildingId)
+          }
+        })
+        .catch((error) => console.error(error))
+        .finally(() => setLoading(false));
+    }
+
+    if (isLoadFloors) {
+      fetch(ApiCommon.rootUrl + `/api/buildings/${idBuilding}/floors`)
+        .then((response) => response.json())
+        .then((responseJson) => {
+          if (responseJson.code == 1) {
+            setFloors(responseJson.listData)
+            setIsLoadFloors(false)
+            setIdFloor(userLogin.floorId)
+          }
+        })
+        .catch((error) => console.error(error))
+        .finally(() => setIsLoadFloors(false));
+    }
+    if (isLoadRoom) {
+      fetch(ApiCommon.rootUrl + `/api/floors/${idFloor}/rooms`)
+        .then((response) => response.json())
+        .then((responseJson) => {
+          if (responseJson.code == 1) {
+            setRooms(responseJson.listData)
+            setIsLoadRoom(false)
+            setIdRoom(userLogin.roomId)
+          }
+        })
+        .catch((error) => console.error(error))
+        .finally(() => setIsLoadRoom(false));
+    }
+  });
+
+  if (isLoading === false && isLoadRoom === false && isLoadFloors === false) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.userInfoSection}>
+          <View style={{ flexDirection: 'row', marginTop: 15 }}>
+            <Avatar.Image
+              source={{
+                uri: `data:image/jpeg;base64,${userLogin.avatarHashCode}`,
+              }}
+              size={80}
+            />
+            <View style={{ marginLeft: 20 }}>
+              <Title style={[styles.title, {
+                marginTop: 15,
+                marginBottom: 5,
+              }]}>{userLogin.userName}</Title>
+              {userLogin.roleId == 1 ?
+                <Caption style={styles.caption}>@Quản trị viên</Caption>
+                :
+                <Caption style={styles.caption}>@Khách hàng</Caption>
+              }
+            </View>
           </View>
         </View>
-      </View>
 
-      <View style={styles.userInfoSection}>
-        <View style={styles.row}>
-          <Icon name="map-marker-radius" color="#777777" size={20}/>
-          <Text style={{color:"#777777", marginLeft: 20}}>Kolkata, India</Text>
+        <View style={styles.userInfoSection}>
+          <View style={styles.row}>
+            <Icon name="phone" color="#777777" size={20} />
+            <Text style={{ color: "#777777", marginLeft: 20 }}>{userLogin.phone}</Text>
+          </View>
+          <View style={styles.row}>
+            <Icon name="email" color="#777777" size={20} />
+            <Text style={{ color: "#777777", marginLeft: 20 }}>{userLogin.email}</Text>
+          </View>
         </View>
-        <View style={styles.row}>
-          <Icon name="phone" color="#777777" size={20}/>
-          <Text style={{color:"#777777", marginLeft: 20}}>+91-900000009</Text>
-        </View>
-        <View style={styles.row}>
-          <Icon name="email" color="#777777" size={20}/>
-          <Text style={{color:"#777777", marginLeft: 20}}>john_doe@email.com</Text>
-        </View>
-      </View>
+        <SafeAreaView style={styles.exContainer}>
+          <NativeBaseProvider>
+            <RNPickerSelect
+              placeholder={{
+                label: 'Chọn tòa nhà',
+                value: null,
+              }}
+              items={data.map(item => {
+                return {
+                  label: item.buildingName,
+                  value: item.id,
+                  color: "#0ea5e9"
+                };
+              })}
+              onValueChange={(value) => [setIsLoadFloors(true), setIdBuilding(value), setFloors([]), setRooms([])]}
+              style={{
+                ...pickerSelectStyles,
+                iconContainer: {
+                  top: 32,
+                  right: 70,
+                },
+              }}
+              value={idBuilding}
+              useNativeAndroidPickerStyle={false}
+              Icon={() => {
+                return <Ionicons name="caret-down-sharp" size={24} color="gray" />;
+              }}
+            />
 
-      <View style={styles.infoBoxWrapper}>
-          <View style={[styles.infoBox, {
-            borderRightColor: '#dddddd',
-            borderRightWidth: 1
-          }]}>
-            <Title>₹140.50</Title>
-            <Caption>Wallet</Caption>
-          </View>
-          <View style={styles.infoBox}>
-            <Title>12</Title>
-            <Caption>Orders</Caption>
-          </View>
-      </View>
+            <RNPickerSelect
+              onValueChange={(value) => [setIsLoadRoom(true), setIdFloor(value), setRooms([])]}
+              placeholder={{
+                label: 'Chọn tầng',
+                value: null,
+              }}
+              style={{
+                ...pickerSelectStyles,
+                iconContainer: {
+                  top: 32,
+                  right: 70,
+                },
+              }}
+              items={floors.map(item => {
+                return {
+                  label: item.floorName,
+                  value: item.id,
+                  color: "#0ea5e9"
+                };
+              })}
+              value={idFloor}
+              useNativeAndroidPickerStyle={false}
+              Icon={() => {
+                return <Ionicons name="caret-down-sharp" size={24} color="gray" />;
+              }}
+            />
 
-      <View style={styles.menuWrapper}>
-        <TouchableRipple onPress={() => {}}>
-          <View style={styles.menuItem}>
-            <Icon name="heart-outline" color="#FF6347" size={25}/>
-            <Text style={styles.menuItemText}>Your Favorites</Text>
-          </View>
-        </TouchableRipple>
-        <TouchableRipple onPress={() => {}}>
-          <View style={styles.menuItem}>
-            <Icon name="credit-card" color="#FF6347" size={25}/>
-            <Text style={styles.menuItemText}>Payment</Text>
-          </View>
-        </TouchableRipple>
-        <TouchableRipple onPress={myCustomShare}>
-          <View style={styles.menuItem}>
-            <Icon name="share-outline" color="#FF6347" size={25}/>
-            <Text style={styles.menuItemText}>Tell Your Friends</Text>
-          </View>
-        </TouchableRipple>
-        <TouchableRipple onPress={() => {}}>
-          <View style={styles.menuItem}>
-            <Icon name="account-check-outline" color="#FF6347" size={25}/>
-            <Text style={styles.menuItemText}>Support</Text>
-          </View>
-        </TouchableRipple>
-        <TouchableRipple onPress={() => {}}>
-          <View style={styles.menuItem}>
-            <Icon name="settings-outline" color="#FF6347" size={25}/>
-            <Text style={styles.menuItemText}>Settings</Text>
-          </View>
-        </TouchableRipple>
+            <RNPickerSelect
+              onValueChange={(value) => setIdRoom(value)}
+              placeholder={{
+                label: 'Chọn phòng',
+                value: null,
+              }}
+              items={rooms.map(item => {
+                return {
+                  label: item.roomName,
+                  value: item.id,
+                  color: "#0ea5e9"
+                };
+              })}
+              style={{
+                ...pickerSelectStyles,
+                iconContainer: {
+                  top: 32,
+                  right: 70,
+                },
+              }}
+              value={idRoom}
+              useNativeAndroidPickerStyle={false}
+              Icon={() => {
+                return <Ionicons name="caret-down-sharp" size={24} color="gray" />;
+              }}
+            />
+          </NativeBaseProvider>
+        </SafeAreaView>
+
+
+
+        <Button onPress={() => console.log("hello world")}>Cập nhật thông tin</Button>
+
+      </SafeAreaView>
+    );
+  } else {
+    return (
+      <View>
+        <ActivityIndicator size="large" color="#0000ff" />
       </View>
-    </SafeAreaView>
-  );
+    );
+  }
 };
 
+
 const styles = StyleSheet.create({
+  exContainer: {
+    flex: 1,
+    marginLeft: '8%',
+  },
   container: {
     flex: 1,
   },
@@ -141,12 +241,13 @@ const styles = StyleSheet.create({
   },
   caption: {
     fontSize: 14,
-    lineHeight: 14,
+    lineHeight: 16,
     fontWeight: '500',
   },
   row: {
     flexDirection: 'row',
     marginBottom: 10,
+
   },
   infoBoxWrapper: {
     borderBottomColor: '#dddddd',
@@ -178,11 +279,40 @@ const styles = StyleSheet.create({
   },
 });
 
-export default () => {
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    marginTop: 30,
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: '#000',
+    borderRadius: 4,
+    color: '#000',
+    paddingRight: 30,
+    backgroundColor: '#fff'
+  },
+  inputAndroid: {
+    width: 300,
+    marginTop: 30,
+    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderWidth: 0.5,
+    borderColor: '#000',
+    borderRadius: 8,
+    color: '#000',
+    paddingRight: 30,
+    backgroundColor: '#fff',
+    top: -10,
+  },
+});
+
+export default (data: any) => {
   return (
-      <NativeBaseProvider>
-          <TabOneNavigator />
-      </NativeBaseProvider>
+    <NativeBaseProvider>
+      <TabOneNavigator data={data} />
+    </NativeBaseProvider>
   )
 }
 
@@ -191,12 +321,13 @@ const TabOneStack = createStackNavigator<TabOneParamList>();
 
 function TabOneNavigator(data: any) {
   return (
-      <TabOneStack.Navigator>
-          <TabOneStack.Screen
-              name="TabOneScreen"
-              component={UserInfor}
-              options={{ headerTitle: "THÔNG TIN CÁ NHÂN" }}
-          />
-      </TabOneStack.Navigator>
+    <TabOneStack.Navigator>
+      <TabOneStack.Screen
+        name="TabOneScreen"
+        component={UserInfor}
+        options={{ headerTitle: "THÔNG TIN CÁ NHÂN" }}
+        initialParams={data}
+      />
+    </TabOneStack.Navigator>
   );
 }
