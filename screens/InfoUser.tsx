@@ -1,8 +1,7 @@
-import { Ionicons } from '@expo/vector-icons';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NativeBaseProvider, Input, Button } from 'native-base';
-import React, { useEffect, useState } from 'react';
-import { View, SafeAreaView, StyleSheet, ActivityIndicator } from 'react-native';
+import React from 'react';
+import { View, SafeAreaView, StyleSheet } from 'react-native';
 import {
   Avatar,
   Title,
@@ -10,10 +9,8 @@ import {
   Text,
   TouchableRipple,
 } from 'react-native-paper';
-import RNPickerSelect from 'react-native-picker-select';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import ApiCommon from '../constants/ApiCommon';
 import { TabOneParamList } from '../types';
 
 // import files from '../assets/filesBase64';
@@ -33,61 +30,6 @@ export function UserInfor(route: any) {
       console.log('Error => ', error);
     }
   };
-  const [data, setData] = useState<any[]>([]);
-  const [isLoading, setLoading] = useState(true);
-  const [isLoadFloors, setIsLoadFloors] = useState(false);
-  const [idBuilding, setIdBuilding] = useState(Number);
-  const [floors, setFloors] = useState<any[]>([]);
-  const [isLoadRoom, setIsLoadRoom] = useState(false);
-  const [rooms, setRooms] = useState<any[]>([]);
-  const [idFloor, setIdFloor] = useState(Number);
-  const [idRoom, setIdRoom] = useState(Number);
-
-  useEffect(() => {
-    if (isLoading) {
-      fetch(ApiCommon.rootUrl + '/api/buildings')
-        .then((response) => response.json())
-        .then((responseJson) => {
-          if (responseJson.code == 1) {
-            console.log(responseJson.listData)
-            setData(responseJson.listData)
-            setLoading(false)
-            setIdBuilding(userLogin.buildingId)
-          }
-        })
-        .catch((error) => console.error(error))
-        .finally(() => setLoading(false));
-    }
-
-    if (isLoadFloors) {
-      fetch(ApiCommon.rootUrl + `/api/buildings/${idBuilding}/floors`)
-        .then((response) => response.json())
-        .then((responseJson) => {
-          if (responseJson.code == 1) {
-            setFloors(responseJson.listData)
-            setIsLoadFloors(false)
-            setIdFloor(userLogin.floorId)
-          }
-        })
-        .catch((error) => console.error(error))
-        .finally(() => setIsLoadFloors(false));
-    }
-    if (isLoadRoom) {
-      fetch(ApiCommon.rootUrl + `/api/floors/${idFloor}/rooms`)
-        .then((response) => response.json())
-        .then((responseJson) => {
-          if (responseJson.code == 1) {
-            setRooms(responseJson.listData)
-            setIsLoadRoom(false)
-            setIdRoom(userLogin.roomId)
-          }
-        })
-        .catch((error) => console.error(error))
-        .finally(() => setIsLoadRoom(false));
-    }
-  });
-
-  if (isLoading === false && isLoadRoom === false && isLoadFloors === false) {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.userInfoSection}>
@@ -121,91 +63,11 @@ export function UserInfor(route: any) {
             <Icon name="email" color="#777777" size={20} />
             <Text style={{ color: "#777777", marginLeft: 20 }}>{userLogin.email}</Text>
           </View>
+          <View style={styles.row}>
+          <Icon name="map-marker-radius" color="#777777" size={20}/>
+          <Text style={{color:"#777777", marginLeft: 20}}>{userLogin.roomName} - {userLogin.floorName} - {userLogin.buildingName}</Text>
         </View>
-        <SafeAreaView style={styles.exContainer}>
-          <NativeBaseProvider>
-            <RNPickerSelect
-              placeholder={{
-                label: 'Chọn tòa nhà',
-                value: null,
-              }}
-              items={data.map(item => {
-                return {
-                  label: item.buildingName,
-                  value: item.id,
-                  color: "#0ea5e9"
-                };
-              })}
-              onValueChange={(value) => [setIsLoadFloors(true), setIdBuilding(value), setFloors([]), setRooms([])]}
-              style={{
-                ...pickerSelectStyles,
-                iconContainer: {
-                  top: 32,
-                  right: 70,
-                },
-              }}
-              value={idBuilding}
-              useNativeAndroidPickerStyle={false}
-              Icon={() => {
-                return <Ionicons name="caret-down-sharp" size={24} color="gray" />;
-              }}
-            />
-
-            <RNPickerSelect
-              onValueChange={(value) => [setIsLoadRoom(true), setIdFloor(value), setRooms([])]}
-              placeholder={{
-                label: 'Chọn tầng',
-                value: null,
-              }}
-              style={{
-                ...pickerSelectStyles,
-                iconContainer: {
-                  top: 32,
-                  right: 70,
-                },
-              }}
-              items={floors.map(item => {
-                return {
-                  label: item.floorName,
-                  value: item.id,
-                  color: "#0ea5e9"
-                };
-              })}
-              value={idFloor}
-              useNativeAndroidPickerStyle={false}
-              Icon={() => {
-                return <Ionicons name="caret-down-sharp" size={24} color="gray" />;
-              }}
-            />
-
-            <RNPickerSelect
-              onValueChange={(value) => setIdRoom(value)}
-              placeholder={{
-                label: 'Chọn phòng',
-                value: null,
-              }}
-              items={rooms.map(item => {
-                return {
-                  label: item.roomName,
-                  value: item.id,
-                  color: "#0ea5e9"
-                };
-              })}
-              style={{
-                ...pickerSelectStyles,
-                iconContainer: {
-                  top: 32,
-                  right: 70,
-                },
-              }}
-              value={idRoom}
-              useNativeAndroidPickerStyle={false}
-              Icon={() => {
-                return <Ionicons name="caret-down-sharp" size={24} color="gray" />;
-              }}
-            />
-          </NativeBaseProvider>
-        </SafeAreaView>
+        </View>
 
 
 
@@ -213,21 +75,10 @@ export function UserInfor(route: any) {
 
       </SafeAreaView>
     );
-  } else {
-    return (
-      <View>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
-    );
-  }
 };
 
 
 const styles = StyleSheet.create({
-  exContainer: {
-    flex: 1,
-    marginLeft: '8%',
-  },
   container: {
     flex: 1,
   },
