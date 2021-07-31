@@ -59,7 +59,7 @@ export default function ProfileScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableRipple onPress={() => navigation.navigate('InfoUser')}>
+      <TouchableRipple onPress={() => navigation.navigate('InfoUser', { data: userLogin })}>
         <View style={styles.userInfoSection}>
           <View style={{ flexDirection: 'row', marginTop: 15 }}>
             <Avatar.Image
@@ -73,7 +73,11 @@ export default function ProfileScreen() {
                 marginTop: 15,
                 marginBottom: 5,
               }]}>{userLogin.userName}</Title>
-              <Caption style={styles.caption}>@Admin</Caption>
+              {userLogin.roleId == 1 ?
+                <Caption style={styles.caption}>@Quản trị viên</Caption>
+                :    
+                <Caption style={styles.caption}>@Khách hàng</Caption>          
+                }
             </View>
           </View>
         </View>
@@ -129,7 +133,7 @@ const styles = StyleSheet.create({
   },
   caption: {
     fontSize: 14,
-    lineHeight: 14,
+    lineHeight: 16,
     fontWeight: '500',
   },
   row: {
