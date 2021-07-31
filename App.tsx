@@ -15,6 +15,8 @@ import AllCategoryList from './components/AllCategoryList';
 import ListProduct from './screens/ListProduct';
 import DetailProduct from './screens/DetailProduct';
 import Cart from './screens/Cart';
+import ProfileScreen from './screens/ProfileScreen';
+import InfoUser from './screens/InfoUser';
 
 const Stack = createStackNavigator();
 
@@ -46,6 +48,8 @@ export default function App() {
           <Stack.Screen name="ListProduct" component={ListProduct} />
           <Stack.Screen name="DetailProduct" component={DetailProduct} />
           <Stack.Screen name="Cart" component={Cart} />
+          <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+          <Stack.Screen name="InfoUser" component={InfoUser} />
         </Stack.Navigator>
       </NavigationContainer>
     );
