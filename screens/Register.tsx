@@ -6,9 +6,9 @@ import {
   NativeBaseProvider,
   Button,
 } from "native-base"
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 export default function Register(route: any) {
   const avatarImg = route.route.params.data;
@@ -21,7 +21,6 @@ export default function Register(route: any) {
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [passWord, setPassWord] = useState('');
-  const BottomTab = createBottomTabNavigator();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -75,9 +74,7 @@ export default function Register(route: any) {
           type={show ? "text" : "password"}
           onChangeText={passWord => setPassWord(passWord)}
           InputRightElement={
-            <Button ml={1} roundedLeft={0} roundedRight="md" onPress={handleClick}>
-              {show ? "Hide" : "Show"}
-            </Button>
+            <Icon name="eye" size={25} style={{ marginRight: 10 }} onPress={handleClick} />
           }
           placeholder="Mật khẩu"
         />
@@ -86,11 +83,9 @@ export default function Register(route: any) {
           backgroundColor='#f0f9ff'
           marginBottom={10}
           size="sm"
-          type={show ? "text" : "password"}
+          type={showConfirm ? "text" : "password"}
           InputRightElement={
-            <Button ml={1} roundedLeft={0} roundedRight="md" onPress={handleClickConfirm}>
-              {show ? "Hide" : "Show"}
-            </Button>
+            <Icon name="eye" size={25} style={{ marginRight: 10 }} onPress={handleClickConfirm} />
           }
           placeholder="Nhập lại mật khẩu"
         />

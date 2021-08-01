@@ -1,14 +1,13 @@
 import { NativeBaseProvider, Button } from 'native-base';
 import * as React from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
-export default function NewFeedScreen() {
-    const navigation = useNavigation();
+export default function PostArticle() {
+    
     return (
         <SafeAreaView style={styles.container}>
             <NativeBaseProvider>
-                <Button size="md" marginTop='10' backgroundColor='#c4b5fd' onPress={() => navigation.navigate('PostArticle')}>Tạo bài viết</Button>
+                <Button size="md" marginTop='10' backgroundColor='#c4b5fd' onPress={() => console.log()}>Tạo bài viết</Button>
             </NativeBaseProvider>
         </SafeAreaView>
     );
