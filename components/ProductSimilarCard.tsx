@@ -4,9 +4,19 @@ import {
 } from "native-base";
 import { TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { IProduct, getItemFromStorage, addToCart } from "./CartProvider";
 function ProductSuggestCard(data: any) {
   const dataProduct = data.data.data;
   const navigation = useNavigation();
+
+  const price = dataProduct.discount > 0 ? dataProduct.unitPrice - (dataProduct.unitPrice*dataProduct.discount/100) : dataProduct.unitPrice;
+  const product: IProduct = {id: dataProduct.productId, name: dataProduct.productName, image: dataProduct.productImageBase64, price: price};
+
+  const addCart = async () => {
+    const lineItems = await getItemFromStorage();
+    addToCart(product, lineItems); 
+  } 
+  
   return (
     <Box
       bg="white"
@@ -42,7 +52,7 @@ function ProductSuggestCard(data: any) {
         <Text color='black' left={1}>{dataProduct.productName}</Text>
         <Text color='red.500'>{dataProduct.unitPrice}</Text>
       </TouchableOpacity>
-      <Button size="sm" variant='outline' borderColor='#0ea5e9' bottom={0} onPress={() => console.log("hello world")}>
+      <Button size="sm" variant='outline' borderColor='#0ea5e9' bottom={0} onPress={() => addCart()}>
         <Text>Chọn mua</Text>
       </Button>
     </Box>
