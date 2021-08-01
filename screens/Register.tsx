@@ -13,11 +13,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 export default function Register(route: any) {
   const avatarImg = route.route.params.data;
   const [show, setShow] = React.useState(false)
-
   const handleClick = () => setShow(!show)
-
   const [showConfirm, setShowConfirm] = React.useState(false)
-
   const handleClickConfirm = () => setShowConfirm(!showConfirm)
   const navigation = useNavigation();
   const [userName, setUserName] = useState('');
