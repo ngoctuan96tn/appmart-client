@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, SafeAreaView, StyleSheet } from 'react-native';
+import { View, SafeAreaView, StyleSheet, Alert } from 'react-native';
 import {
   Avatar,
   Title,
@@ -12,6 +12,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useState } from 'react';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import ApiCommon from '../constants/ApiCommon';
+import { AsyncStorage } from 'react-native';
 // import files from '../assets/filesBase64';
 
 export default function ProfileScreen() {
@@ -75,9 +76,9 @@ export default function ProfileScreen() {
               }]}>{userLogin.userName}</Title>
               {userLogin.roleId == 1 ?
                 <Caption style={styles.caption}>@Quản trị viên</Caption>
-                :    
-                <Caption style={styles.caption}>@Khách hàng</Caption>          
-                }
+                :
+                <Caption style={styles.caption}>@Khách hàng</Caption>
+              }
             </View>
           </View>
         </View>
@@ -90,7 +91,7 @@ export default function ProfileScreen() {
             <Text style={styles.menuItemText}>Thay đổi mật khẩu</Text>
           </View>
         </TouchableRipple>
-        <TouchableRipple onPress={() => console.log()}>
+        <TouchableRipple onPress={() => logout(navigation)}>
           <View style={styles.menuItem}>
             <Icon name="logout" color="#FF6347" size={25} />
             <Text style={styles.menuItemText}>Đăng xuất</Text>
@@ -100,6 +101,26 @@ export default function ProfileScreen() {
     </SafeAreaView>
   );
 };
+
+function logout(navigation: any) {
+  Alert.alert(
+    'Thông báo',
+    'Bạn có muốn đăng xuất khỏi thiết bị?',
+    [
+      {
+        text: 'Yes',
+        onPress: () => {
+          AsyncStorage.removeItem('token');
+          navigation.navigate('Login');
+        }
+      },
+      {
+        text: 'No',
+      },
+    ],
+    { cancelable: false },
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
