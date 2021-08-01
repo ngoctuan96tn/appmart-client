@@ -120,7 +120,6 @@ function changePassWord(navigation: any, email: any, passWord: any, newPassWord:
         }),
     }).then((response) => response.json())
         .then((responseJson) => {
-            console.log(responseJson)
             if (responseJson.code == 1) {
                 Alert.alert(
                     'Thông báo',
