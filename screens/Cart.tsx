@@ -11,6 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { addToCart, cartSum, getItemFromStorage, IProduct, minusToCart, removeFromCart } from '../components/CartProvider';
 import { TabOneParamList } from '../types';
+import NumberFormat from 'react-number-format';
 
 export class Cart extends Component<{}, any> {
 
@@ -99,7 +100,13 @@ export class Cart extends Component<{}, any> {
                           {/* <Text>{item.product.name}</Text> */}
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                          <Text style={{ fontWeight: 'bold', color: "#33c37d", fontSize: 20 }}>đ{item.product.price * item.quantity}</Text>
+                          <NumberFormat
+                            value={item.product.price * item.quantity}
+                            displayType={'text'}
+                            thousandSeparator={true}
+                            suffix={'đ'}
+                            renderText={formattedValue => <Text style={{ fontWeight: 'bold', color: "#33c37d", fontSize: 20 }}>{formattedValue}</Text>} // <--- Don't forget this!
+                          />
                           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <TouchableOpacity onPress={() => this.removeQuantity(item.product)}>
                               <Icon name="ios-remove-circle" size={35} color={"#33c37d"} />
@@ -128,7 +135,14 @@ export class Cart extends Component<{}, any> {
             <View style={{ flex: 1 }}>
               <View style={{ position: 'absolute', bottom: 60, backgroundColor: '#f8f8ff', flexDirection: "row", flexWrap: "wrap", width: '100%', height: 30 }}>
                 <Text style={{ width: '60%', marginLeft: 10, fontSize: 18, fontWeight: 'bold' }}>Tổng tiền</Text>
-                <Text style={{ width: '35%', textAlign: 'right', fontSize: 18, fontWeight: 'bold', color: 'red' }}>{this.state.totalAmount} VNĐ</Text>
+                <NumberFormat
+                  value={this.state.totalAmount}
+                  displayType={'text'}
+                  thousandSeparator={true}
+                  suffix={'đ'}
+                  renderText={formattedValue => <Text style={{ width: '35%', textAlign: 'right', fontSize: 18, fontWeight: 'bold', color: 'red' }}>{formattedValue}</Text>} // <--- Don't forget this!
+                />
+
               </View>
               <View style={{ position: 'absolute', bottom: 0, backgroundColor: '#f8f8ff', flexDirection: "row", flexWrap: "wrap", justifyContent: 'center', width: '100%', height: 60 }}>
                 <Button borderColor='#f8f8ff' borderRadius={0} size="sm" variant="outline" onPress={() => navigation.navigate('Main')} width='59%'>
