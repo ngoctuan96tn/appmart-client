@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, SafeAreaView, StyleSheet } from 'react-native';
+import { View, SafeAreaView, StyleSheet, Alert } from 'react-native';
 import {
   Avatar,
   Title,
@@ -12,6 +12,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useState } from 'react';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import ApiCommon from '../constants/ApiCommon';
+import { AsyncStorage } from 'react-native';
 // import files from '../assets/filesBase64';
 
 export default function ProfileScreen() {
@@ -75,49 +76,51 @@ export default function ProfileScreen() {
               }]}>{userLogin.userName}</Title>
               {userLogin.roleId == 1 ?
                 <Caption style={styles.caption}>@Quản trị viên</Caption>
-                :    
-                <Caption style={styles.caption}>@Khách hàng</Caption>          
-                }
+                :
+                <Caption style={styles.caption}>@Khách hàng</Caption>
+              }
             </View>
           </View>
         </View>
       </TouchableRipple>
 
       <View style={styles.menuWrapper}>
-        <TouchableRipple onPress={() => { }}>
-          <View style={styles.menuItem}>
-            <Icon name="heart-outline" color="#FF6347" size={25} />
-            <Text style={styles.menuItemText}>Your Favorites</Text>
-          </View>
-        </TouchableRipple>
-        <TouchableRipple onPress={() => { }}>
-          <View style={styles.menuItem}>
-            <Icon name="credit-card" color="#FF6347" size={25} />
-            <Text style={styles.menuItemText}>Payment</Text>
-          </View>
-        </TouchableRipple>
-        <TouchableRipple onPress={myCustomShare}>
-          <View style={styles.menuItem}>
-            <Icon name="share-outline" color="#FF6347" size={25} />
-            <Text style={styles.menuItemText}>Tell Your Friends</Text>
-          </View>
-        </TouchableRipple>
-        <TouchableRipple onPress={() => { }}>
-          <View style={styles.menuItem}>
-            <Icon name="settings-outline" color="#FF6347" size={25} />
-            <Text style={styles.menuItemText}>Settings</Text>
-          </View>
-        </TouchableRipple>
         <TouchableRipple onPress={() => navigation.navigate('ChangePassWord')}>
           <View style={styles.menuItem}>
-            <Icon name="account-check-outline" color="#FF6347" size={25} />
+            <Icon name="onepassword" color="#FF6347" size={25} />
             <Text style={styles.menuItemText}>Thay đổi mật khẩu</Text>
+          </View>
+        </TouchableRipple>
+        <TouchableRipple onPress={() => logout(navigation)}>
+          <View style={styles.menuItem}>
+            <Icon name="logout" color="#FF6347" size={25} />
+            <Text style={styles.menuItemText}>Đăng xuất</Text>
           </View>
         </TouchableRipple>
       </View>
     </SafeAreaView>
   );
 };
+
+function logout(navigation: any) {
+  Alert.alert(
+    'Thông báo',
+    'Bạn có muốn đăng xuất khỏi thiết bị?',
+    [
+      {
+        text: 'Yes',
+        onPress: () => {
+          AsyncStorage.removeItem('token');
+          navigation.navigate('Login');
+        }
+      },
+      {
+        text: 'No',
+      },
+    ],
+    { cancelable: false },
+  );
+}
 
 const styles = StyleSheet.create({
   container: {

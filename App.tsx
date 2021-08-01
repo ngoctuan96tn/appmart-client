@@ -18,6 +18,7 @@ import Cart from './screens/Cart';
 import ProfileScreen from './screens/ProfileScreen';
 import InfoUser from './screens/InfoUser';
 import ChangePassWord from './screens/ChangePassWord';
+import PostArticle from './screens/PostArticle';
 
 const Stack = createStackNavigator();
 
@@ -52,6 +53,7 @@ export default function App() {
           <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
           <Stack.Screen name="InfoUser" component={InfoUser} />
           <Stack.Screen name="ChangePassWord" component={ChangePassWord} />
+          <Stack.Screen name="PostArticle" component={PostArticle} />
         </Stack.Navigator>
       </NavigationContainer>
     );

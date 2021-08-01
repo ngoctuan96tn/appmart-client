@@ -1,31 +1,53 @@
-import * as React from 'react';
-import { StyleSheet } from 'react-native';
-
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
-
+import React, { useEffect, useState } from "react"
+import { Box, FlatList, Center, NativeBaseProvider } from "native-base"
+import { useAsyncStorage } from "@react-native-async-storage/async-storage";
+import ApiCommon from "../constants/ApiCommon";
+import { TouchableRipple } from "react-native-paper";
 export default function NotifyScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Thông báo</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-    </View>
-  );
-}
+  const { getItem, setItem } = useAsyncStorage('token');
+  const [retrieve, setRetrieve] = useState(true);
+  const [token, setToken] = useState<string | null>('');
+  const [isLoading, setLoading] = useState(true);
+  const [itemNotifi, setItemNotifi] = useState([]);
+  useEffect(() => {
+    const readToken = async () => {
+      const item = await getItem();
+      setToken(item);
+      setRetrieve(false);
+    };
+    if (retrieve) {
+      readToken();
+    }
+    if (retrieve === false) {
+      const headers = { 'Authorization': `Bearer ${token}` }
+      if (isLoading) {
+        fetch(ApiCommon.rootUrl + `/api/notifycations`, { headers })
+          .then((response) => response.json())
+          .then((responseJson) => {
+            if (responseJson.code == 1) {
+              setItemNotifi(responseJson.listData);
+              setLoading(false)
+            }
+          })
+      }
+    }
+  }, [retrieve]);
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-});
+  return (
+    <NativeBaseProvider>
+      <Center flex={1}>
+        <FlatList
+          data={itemNotifi}
+          renderItem={({ item }) => (
+            <TouchableRipple onPress={() => console.log()}>
+              <Box width={300} px={5} py={2} rounded="md" my={1} bg="primary.300">
+                {item.title}
+              </Box>
+            </TouchableRipple>
+          )}
+          keyExtractor={(item) => item.id}
+        />
+      </Center>
+    </NativeBaseProvider>
+  )
+}
