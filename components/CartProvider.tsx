@@ -9,6 +9,8 @@ export interface ILineItem {
 
 export interface IProduct {
     id: number;
+    name: string,
+    image: string,
     price: number;
 }
 
@@ -23,13 +25,14 @@ export async function getItemFromStorage() {
     if (item != null) {
         return JSON.parse(item);
     } else {
-        return [];
+        return null;
     }
 };
 
 export async function addToCart(product: IProduct, lineItems: ILineItem[]) {
-    let newLineItems = [];
-    if (lineItems.length > 0) {
+
+    if (lineItems) {
+        let newLineItems = lineItems;
         let check = lineItems.findIndex((_item: { product: { id: any; }; }) => {
             return product.id === _item.product.id;
         });
@@ -51,25 +54,44 @@ export async function addToCart(product: IProduct, lineItems: ILineItem[]) {
                 },
             ];
         }
-    } else {
-        const newData: ILineItem = {
-            product: product,
-            quantity: 1,
-            timestamp: Date.now(),
-        };
-        newLineItems = [...await lineItems, newData];
+        setItemFromStorage(newLineItems.sort(function (a, b) {
+            return a.timestamp - b.timestamp;
+        })
+            .reverse(),
+        );
     }
-    setItemFromStorage(newLineItems.sort(function (a, b) {
-        return a.timestamp - b.timestamp;
-    })
-        .reverse(),
-    );
+
 }
 
-export async function removeFromCart(item: IProduct) {
-    const [lineItems, setLineItems] = useState<ILineItem[]>([]);
-    const itemList = getItemFromStorage();
-    setLineItems(await itemList);
+export async function minusToCart(product: IProduct, lineItems: ILineItem[]) {
+    let newLineItems = [];
+    if (lineItems.length > 0) {
+        let check = lineItems.findIndex((_item: { product: { id: any; }; }) => {
+            return product.id === _item.product.id;
+        });
+        newLineItems = [
+            ...lineItems.filter((_i: { product: { id: any; }; }) => _i.product.id !== product.id),
+            {
+                product: lineItems[check].product,
+                quantity: (lineItems[check].quantity -= 1),
+                timestamp: lineItems[check].timestamp,
+            },
+        ];
+
+        if (lineItems[check].quantity <= 0) {
+            removeFromCart(product, lineItems);
+        } else {
+            setItemFromStorage(newLineItems.sort(function (a, b) {
+                return a.timestamp - b.timestamp;
+            })
+                .reverse(),
+            );
+        }
+        
+    }
+}
+
+export async function removeFromCart(item: IProduct, lineItems: ILineItem[]) {
     setItemFromStorage(lineItems.filter((_item: { product: { id: number; }; }) => _item.product.id !== item.id));
 };
 
@@ -79,7 +101,9 @@ export async function clearCart() {
 
 export async function cartSum(lineItems: ILineItem[]) {
     let sum = 0;
-    lineItems?.forEach((item: { quantity: number; product: { price: number; }; }) => (sum += item.quantity * item.product.price));
+    lineItems?.forEach(
+        (item: { quantity: number; product: { price: number; }; }) => 
+        (sum += item.quantity * item.product.price));
     return sum;
 };
 

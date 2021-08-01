@@ -8,6 +8,7 @@ import { Rating, AirbnbRating } from 'react-native-ratings';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import ProductSimilarSuggestList from "../components/ProductSimilarSuggestList";
+import { addToCart, getItemFromStorage, IProduct } from "../components/CartProvider";
 export function DetailProduct(route: any) {
 
     const productId = route.route.params.data.route.params.productId;
@@ -30,6 +31,14 @@ export function DetailProduct(route: any) {
                 .finally(() => setLoading(false));
         }
     }, []);
+
+    const price = productDetail.discount > 0 ? productDetail.unitPrice - (productDetail.unitPrice*productDetail.discount/100) : productDetail.unitPrice;
+    const product: IProduct = {id: productDetail.productId, name: productDetail.productName, image: productDetail.productImageBase64, price: price};
+  
+    const addCart = async () => {
+      const lineItems = await getItemFromStorage();
+      addToCart(product, lineItems); 
+    } 
 
     if (!isLoading) {
         return (
@@ -97,7 +106,7 @@ export function DetailProduct(route: any) {
                             <MaterialCommunityIcons name="message-processing-outline" color='#008000' size={22} />
                         </Button>
                         <View style={{ height: '100%', width: 1, backgroundColor: '#909090', }}></View>
-                        <Button borderColor='#f8f8ff' borderRadius={0} size="sm" variant="outline" onPress={() => console.log("hello world")} width='33%'>
+                        <Button borderColor='#f8f8ff' borderRadius={0} size="sm" variant="outline" onPress={() => addCart()} width='33%'>
                             <FontAwesome name='cart-plus' color='#0ea5e9' size={22} />
                         </Button>
                         <View style={{ height: '100%', width: 1, backgroundColor: '#909090', }}></View>

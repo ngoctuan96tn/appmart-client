@@ -2,20 +2,18 @@ import React, { useState } from "react";
 import {
   Image, Text, NativeBaseProvider, Center, Box, Stack, Heading, Button
 } from "native-base";
-import { TouchableOpacity } from "react-native";
+import { Alert, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { ILineItem, IProduct, addToCart, getItemFromStorage } from "./CartProvider";
+import { IProduct, addToCart, getItemFromStorage } from "./CartProvider";
 function ProductCard(data: any) {
   const dataProduct = data.data.data;
   const navigation = useNavigation();
-  const product: IProduct = {id: 1, price: 10000};
-  let [lineItems, setLineItems] = useState<ILineItem[]>([]);
+  const price = dataProduct.discount > 0 ? dataProduct.unitPrice - (dataProduct.unitPrice*dataProduct.discount/100) : dataProduct.unitPrice;
+  const product: IProduct = {id: dataProduct.productId, name: dataProduct.productName, image: dataProduct.productImageBase64, price: price};
 
   const addCart = async () => {
-    setLineItems(await getItemFromStorage());
+    const lineItems = await getItemFromStorage();
     addToCart(product, lineItems); 
-    setLineItems(await getItemFromStorage());
-    console.log(lineItems);
   } 
   return (
     <Box
