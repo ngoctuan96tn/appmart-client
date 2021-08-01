@@ -10,6 +10,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import ApiCommon from '../constants/ApiCommon';
 import  AsyncStorage  from '@react-native-async-storage/async-storage';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -46,9 +47,7 @@ export default function Login() {
           type={show ? "text" : "password"}
           onChangeText={passWord => setPassWord(passWord)}
           InputRightElement={
-            <Button ml={1} roundedLeft={0} roundedRight="md" onPress={handleClick}>
-              {show ? "Hide" : "Show"}
-            </Button>
+            <Icon name="eye" size={25} style={{ marginRight: 10 }} onPress={handleClick} />
           }
           placeholder="Password"
         />

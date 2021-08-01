@@ -10,17 +10,19 @@ import ApiCommon from '../constants/ApiCommon';
 import { useNavigation } from '@react-navigation/native';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { useState } from 'react';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function ChangePassword() {
     const [show, setShow] = React.useState(false)
+    const [showNewPass, setShowNewPass] = React.useState(false)
+    const [showConfirmPass, setShowConfirmPass] = React.useState(false)
     const handleClick = () => setShow(!show)
-    const [showConfirm, setShowConfirm] = React.useState(false)
-    const handleClickConfirm = () => setShowConfirm(!show)
-    const click = () => setShowConfirm(!show)
+    const handleClickNewPass = () => setShowNewPass(!showNewPass)
+    const handleClickConfirm = () => setShowConfirmPass(!showConfirmPass)
+
     const [email, setEmail] = useState('');
     const [passWord, setPassWord] = useState('');
     const [newPassWord, setNewPassWord] = useState('');
-    const [confirmPassWord, setConfirmPassWord] = useState('');
     const [token, setToken] = useState<string | null>('');
     const { getItem, setItem } = useAsyncStorage('token');
     const [retrieve, setRetrieve] = useState(true);
@@ -71,21 +73,17 @@ export default function ChangePassword() {
                     type={show ? "text" : "password"}
                     placeholder="Mật khẩu cũ"
                     InputRightElement={
-                        <Button ml={1} roundedLeft={0} roundedRight="md" onPress={click}>
-                            {show ? "Hide" : "Show"}
-                        </Button>
+                        <Icon name="eye" size={25} style={{ marginRight: 10 }} onPress={handleClick} />
                     }
                 />
                 <Input
                     size="sm"
                     marginBottom={5}
                     backgroundColor='#f0f9ff'
-                    type={show ? "text" : "password"}
+                    type={showNewPass ? "text" : "password"}
                     onChangeText={newPassWord => setNewPassWord(newPassWord)}
                     InputRightElement={
-                        <Button ml={1} roundedLeft={0} roundedRight="md" onPress={handleClick}>
-                            {show ? "Hide" : "Show"}
-                        </Button>
+                        <Icon name="eye" size={25} style={{ marginRight: 10 }} onPress={handleClickNewPass} />
                     }
                     placeholder="Mật khẩu mới"
                 />
@@ -94,12 +92,9 @@ export default function ChangePassword() {
                     backgroundColor='#f0f9ff'
                     marginBottom={10}
                     size="sm"
-                    type={show ? "text" : "password"}
-                    onChangeText={confirmPassWord => setConfirmPassWord(confirmPassWord)}
+                    type={showConfirmPass ? "text" : "password"}
                     InputRightElement={
-                        <Button ml={1} roundedLeft={0} roundedRight="md" onPress={handleClickConfirm}>
-                            {show ? "Hide" : "Show"}
-                        </Button>
+                        <Icon name="eye" size={25} style={{ marginRight: 10 }} onPress={handleClickConfirm} />
                     }
                     placeholder="Nhập lại mật khẩu mới"
                 />

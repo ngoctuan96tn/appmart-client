@@ -84,34 +84,16 @@ export default function ProfileScreen() {
       </TouchableRipple>
 
       <View style={styles.menuWrapper}>
-        <TouchableRipple onPress={() => { }}>
-          <View style={styles.menuItem}>
-            <Icon name="heart-outline" color="#FF6347" size={25} />
-            <Text style={styles.menuItemText}>Your Favorites</Text>
-          </View>
-        </TouchableRipple>
-        <TouchableRipple onPress={() => { }}>
-          <View style={styles.menuItem}>
-            <Icon name="credit-card" color="#FF6347" size={25} />
-            <Text style={styles.menuItemText}>Payment</Text>
-          </View>
-        </TouchableRipple>
-        <TouchableRipple onPress={myCustomShare}>
-          <View style={styles.menuItem}>
-            <Icon name="share-outline" color="#FF6347" size={25} />
-            <Text style={styles.menuItemText}>Tell Your Friends</Text>
-          </View>
-        </TouchableRipple>
-        <TouchableRipple onPress={() => { }}>
-          <View style={styles.menuItem}>
-            <Icon name="settings-outline" color="#FF6347" size={25} />
-            <Text style={styles.menuItemText}>Settings</Text>
-          </View>
-        </TouchableRipple>
         <TouchableRipple onPress={() => navigation.navigate('ChangePassWord')}>
           <View style={styles.menuItem}>
-            <Icon name="account-check-outline" color="#FF6347" size={25} />
+            <Icon name="onepassword" color="#FF6347" size={25} />
             <Text style={styles.menuItemText}>Thay đổi mật khẩu</Text>
+          </View>
+        </TouchableRipple>
+        <TouchableRipple onPress={() => console.log()}>
+          <View style={styles.menuItem}>
+            <Icon name="logout" color="#FF6347" size={25} />
+            <Text style={styles.menuItemText}>Đăng xuất</Text>
           </View>
         </TouchableRipple>
       </View>
