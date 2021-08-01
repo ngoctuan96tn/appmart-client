@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { Center, NativeBaseProvider, Text, Box, FlatList, ScrollView, Image, Button } from "native-base"
-import { ActivityIndicator, SafeAreaView, View } from "react-native"
+import { ActivityIndicator, SafeAreaView, ToastAndroid, View } from "react-native"
 import ApiCommon from "../constants/ApiCommon";
 import { createStackNavigator } from "@react-navigation/stack";
 import { TabOneParamList } from "../types";
@@ -9,6 +9,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import ProductSimilarSuggestList from "../components/ProductSimilarSuggestList";
 import { addToCart, getItemFromStorage, IProduct } from "../components/CartProvider";
+import NumberFormat from "react-number-format";
 export function DetailProduct(route: any) {
 
     const productId = route.route.params.data.route.params.productId;
@@ -32,13 +33,15 @@ export function DetailProduct(route: any) {
         }
     }, []);
 
-    const price = productDetail.discount > 0 ? productDetail.unitPrice - (productDetail.unitPrice*productDetail.discount/100) : productDetail.unitPrice;
-    const product: IProduct = {id: productDetail.productId, name: productDetail.productName, image: productDetail.productImageBase64, price: price};
-  
+    const price = productDetail.discount > 0 ? productDetail.unitPrice - (productDetail.unitPrice * productDetail.discount / 100) : productDetail.unitPrice;
+    const product: IProduct = { id: productDetail.productId, name: productDetail.productName, image: productDetail.productImageBase64, price: price };
+
     const addCart = async () => {
-      const lineItems = await getItemFromStorage();
-      addToCart(product, lineItems); 
-    } 
+        const lineItems = await getItemFromStorage();
+        addToCart(product, lineItems);
+        ToastAndroid.showWithGravityAndOffset('Đã thêm sản phẩm vào giỏ hàng!',
+            ToastAndroid.LONG, ToastAndroid.BOTTOM, 0, 50);
+    }
 
     if (!isLoading) {
         return (
@@ -48,8 +51,20 @@ export function DetailProduct(route: any) {
                     <Text style={{ textAlign: 'center', fontWeight: 'bold', top: 5 }}>{productDetail.productName}</Text>
                     {productDetail.discount > 0 &&
                         <View>
-                            <Text style={{ textAlign: 'center', fontWeight: 'bold', top: 5, color: 'black', textDecorationLine: 'line-through' }}>{productDetail.unitPrice} đồng</Text>
-                            <Text style={{ textAlign: 'center', fontWeight: 'bold', top: 5, color: 'red' }}>{productDetail.unitPrice - (productDetail.unitPrice * productDetail.discount / 100)} đồng    -{productDetail.discount}%</Text>
+                            <NumberFormat
+                                value={productDetail.unitPrice}
+                                displayType={'text'}
+                                thousandSeparator={true}
+                                suffix={' đồng'}
+                                renderText={formattedValue => <Text style={{ textAlign: 'center', fontWeight: 'bold', top: 5, color: 'black', textDecorationLine: 'line-through' }}>{formattedValue}</Text>} // <--- Don't forget this!
+                            />
+                            <NumberFormat
+                                value={productDetail.unitPrice - (productDetail.unitPrice * productDetail.discount / 100)}
+                                displayType={'text'}
+                                thousandSeparator={true}
+                                suffix={' đồng'}
+                                renderText={formattedValue => <Text style={{ textAlign: 'center', fontWeight: 'bold', top: 5, color: 'red' }}>{formattedValue}      -{productDetail.discount}%</Text>} // <--- Don't forget this!
+                            />
                         </View>
                     }
 

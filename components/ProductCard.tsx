@@ -5,16 +5,20 @@ import {
 import { Alert, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { IProduct, addToCart, getItemFromStorage } from "./CartProvider";
+import NumberFormat from "react-number-format";
+import { ToastAndroid } from "react-native";
 function ProductCard(data: any) {
   const dataProduct = data.data.data;
   const navigation = useNavigation();
-  const price = dataProduct.discount > 0 ? dataProduct.unitPrice - (dataProduct.unitPrice*dataProduct.discount/100) : dataProduct.unitPrice;
-  const product: IProduct = {id: dataProduct.productId, name: dataProduct.productName, image: dataProduct.productImageBase64, price: price};
+  const price = dataProduct.discount > 0 ? dataProduct.unitPrice - (dataProduct.unitPrice * dataProduct.discount / 100) : dataProduct.unitPrice;
+  const product: IProduct = { id: dataProduct.productId, name: dataProduct.productName, image: dataProduct.productImageBase64, price: price };
 
   const addCart = async () => {
     const lineItems = await getItemFromStorage();
-    addToCart(product, lineItems); 
-  } 
+    addToCart(product, lineItems);
+    ToastAndroid.showWithGravityAndOffset('Đã thêm sản phẩm vào giỏ hàng!',
+      ToastAndroid.LONG, ToastAndroid.BOTTOM,0,50);
+  }
   return (
     <Box
       bg="white"
@@ -23,7 +27,7 @@ function ProductCard(data: any) {
       width={120}
       marginLeft={2}
     >
-      <TouchableOpacity onPress={() => navigation.navigate('DetailProduct', {productId: dataProduct.productId})}>
+      <TouchableOpacity onPress={() => navigation.navigate('DetailProduct', { productId: dataProduct.productId })}>
         <Image source={{ uri: `data:image/jpeg;base64,${dataProduct.productImageBase64}` }} alt="image base" resizeMode="cover" height={150} roundedTop="md" />
 
 
@@ -51,7 +55,13 @@ function ProductCard(data: any) {
         }
 
         <Text color='black' left={1}>{dataProduct.productName}</Text>
-        <Text color='red.500'>{dataProduct.unitPrice}</Text>
+        <NumberFormat
+          value={dataProduct.unitPrice}
+          displayType={'text'}
+          thousandSeparator={true}
+          suffix={'đ'}
+          renderText={formattedValue => <Text color='red.500'>{formattedValue}</Text>} // <--- Don't forget this!
+        />
       </TouchableOpacity>
       <Button size="sm" variant='outline' borderColor='#0ea5e9' bottom={0} onPress={() => addCart()}>
         <Text>Chọn mua</Text>

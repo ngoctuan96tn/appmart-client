@@ -2,9 +2,10 @@ import React from "react";
 import {
   Image, Text, NativeBaseProvider, Center, Box, Stack, Heading, Button
 } from "native-base";
-import { TouchableOpacity } from "react-native";
+import { ToastAndroid, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { IProduct, getItemFromStorage, addToCart } from "./CartProvider";
+import NumberFormat from "react-number-format";
 function ProductSuggestCard(data: any) {
   const dataProduct = data.data.data;
   const navigation = useNavigation();
@@ -15,6 +16,8 @@ function ProductSuggestCard(data: any) {
   const addCart = async () => {
     const lineItems = await getItemFromStorage();
     addToCart(product, lineItems); 
+    ToastAndroid.showWithGravityAndOffset('Đã thêm sản phẩm vào giỏ hàng!',
+      ToastAndroid.LONG, ToastAndroid.BOTTOM,0,50);
   } 
   
   return (
@@ -50,7 +53,13 @@ function ProductSuggestCard(data: any) {
           </Center>
         }
         <Text color='black' left={1}>{dataProduct.productName}</Text>
-        <Text color='red.500'>{dataProduct.unitPrice}</Text>
+        <NumberFormat
+          value={dataProduct.unitPrice}
+          displayType={'text'}
+          thousandSeparator={true}
+          suffix={'đ'}
+          renderText={formattedValue => <Text color='red.500'>{formattedValue}</Text>} // <--- Don't forget this!
+        />
       </TouchableOpacity>
       <Button size="sm" variant='outline' borderColor='#0ea5e9' bottom={0} onPress={() => addCart()}>
         <Text>Chọn mua</Text>
