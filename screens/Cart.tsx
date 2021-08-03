@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 
 // import icons
 import Icon from 'react-native-vector-icons/Ionicons';
-import { addToCart, cartSum, getItemFromStorage, IProduct, minusToCart, removeFromCart } from '../components/CartProvider';
+import CartProvider, { IProduct } from '../components/CartProvider';
 import { TabOneParamList } from '../types';
 import NumberFormat from 'react-number-format';
 
@@ -47,14 +47,14 @@ export class Cart extends Component<{}, any> {
   }
 
   async addQuantity(product: IProduct) {
-    const inlineItems = getItemFromStorage();
-    addToCart(product, await inlineItems);
+    const inlineItems = CartProvider.getItemFromStorage();
+    CartProvider.addToCart(product, await inlineItems);
     this.componentDidMount();
   }
 
   async removeQuantity(product: IProduct) {
-    const inlineItems = getItemFromStorage();
-    minusToCart(product, await inlineItems);
+    const inlineItems = CartProvider.getItemFromStorage();
+    CartProvider.minusToCart(product, await inlineItems);
     this.componentDidMount();
   }
 
@@ -67,8 +67,8 @@ export class Cart extends Component<{}, any> {
         {
           text: "Có",
           onPress: async () => {
-            const inlineItems = getItemFromStorage();
-            removeFromCart(product, await inlineItems);
+            const inlineItems = CartProvider.getItemFromStorage();
+            CartProvider.removeFromCart(product, await inlineItems);
             this.componentDidMount();
           },
         },

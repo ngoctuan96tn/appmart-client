@@ -8,7 +8,7 @@ import { Rating, AirbnbRating } from 'react-native-ratings';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import ProductSimilarSuggestList from "../components/ProductSimilarSuggestList";
-import { addToCart, getItemFromStorage, IProduct } from "../components/CartProvider";
+import CartProvider, { IProduct } from "../components/CartProvider";
 import NumberFormat from "react-number-format";
 export function DetailProduct(route: any) {
 
@@ -37,10 +37,8 @@ export function DetailProduct(route: any) {
     const product: IProduct = { id: productDetail.productId, name: productDetail.productName, image: productDetail.productImageBase64, price: price };
 
     const addCart = async () => {
-        const lineItems = await getItemFromStorage();
-        addToCart(product, lineItems);
-        ToastAndroid.showWithGravityAndOffset('Đã thêm sản phẩm vào giỏ hàng!',
-            ToastAndroid.LONG, ToastAndroid.BOTTOM, 0, 50);
+        const lineItems = await CartProvider.getItemFromStorage();
+        CartProvider.addToCart(product, lineItems);
     }
 
     if (!isLoading) {
