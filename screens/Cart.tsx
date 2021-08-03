@@ -149,7 +149,7 @@ export class Cart extends Component<{}, any> {
                   Tiếp tục mua hàng
                 </Button>
                 <View style={{ height: '100%', width: 1, backgroundColor: '#909090', }}></View>
-                <Button borderColor='#f8f8ff' borderRadius={0} size="sm" onPress={() => console.log("hello world")} width='40%'>
+                <Button borderColor='#f8f8ff' borderRadius={0} size="sm" onPress={() => navigation.navigate('OrderPayment')} width='40%'>
                   Thanh toán
                 </Button>
               </View>

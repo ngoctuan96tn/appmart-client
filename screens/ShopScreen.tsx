@@ -1,4 +1,4 @@
-import { Button, Input, NativeBaseProvider, Radio, VStack, Text, Box, FlatList, ScrollView } from 'native-base';
+import { Button, Input, NativeBaseProvider, Radio, VStack, Text, Box, FlatList, ScrollView, Center } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Dimensions, Image, ActivityIndicator } from 'react-native';
 import Swiper from 'react-native-swiper';
@@ -11,6 +11,7 @@ import ProductSuggestList from '../components/ProductSuggestList';
 import ApiCommon from '../constants/ApiCommon';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const { width } = Dimensions.get('window')
 
 const styles = StyleSheet.create({
@@ -193,6 +194,32 @@ export default function ShopScreen() {
 
 function SearchBar() {
   let navigation = useNavigation();
+  const [isProduct, setProduct] = useState(false);
+  const [data, setData] = useState<any[]>([]);
+  const componentDidMount = () => {
+    AsyncStorage.getItem('cart').then((cart) => {
+      if (cart !== null) {
+        const cartfood = JSON.parse(cart);
+        setData(cartfood);
+        
+      } else {
+        console.log('1')
+      }
+    })
+      .catch((err) => {
+        alert(err)
+      })
+
+  };
+  useEffect(() => {
+    componentDidMount();
+    if(data.length >0 ){
+      setProduct(true);
+    } else {
+      setProduct(false);
+    }
+  });
+
   return (
     <View style={{ flexDirection: 'row' }}>
       <Input
@@ -211,7 +238,30 @@ function SearchBar() {
         onPress={() => navigation.navigate('Cart')}
       >
         <Icon name="shopping-cart" size={25} color='#ffa500' />
+
+        {isProduct === true &&
+          <Center
+            p={1}
+            rounded="full"
+            bg="red.500"
+            boxSize={1}
+            position="absolute"
+            right={0}
+            m={2}
+            bottom={2}
+            left={4}
+            _text={{
+              color: "white",
+              textAlign: "center",
+              fontWeight: "700",
+              fontSize: "xs",
+            }}
+          >
+          </Center>
+        }
+
       </Button>
+
     </View>
 
   )
