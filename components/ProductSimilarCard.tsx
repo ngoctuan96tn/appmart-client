@@ -4,22 +4,20 @@ import {
 } from "native-base";
 import { ToastAndroid, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { IProduct, getItemFromStorage, addToCart } from "./CartProvider";
+import CartProvider, { IProduct } from "./CartProvider";
 import NumberFormat from "react-number-format";
 function ProductSuggestCard(data: any) {
   const dataProduct = data.data.data;
   const navigation = useNavigation();
 
-  const price = dataProduct.discount > 0 ? dataProduct.unitPrice - (dataProduct.unitPrice*dataProduct.discount/100) : dataProduct.unitPrice;
-  const product: IProduct = {id: dataProduct.productId, name: dataProduct.productName, image: dataProduct.productImageBase64, price: price};
+  const price = dataProduct.discount > 0 ? dataProduct.unitPrice - (dataProduct.unitPrice * dataProduct.discount / 100) : dataProduct.unitPrice;
+  const product: IProduct = { id: dataProduct.productId, name: dataProduct.productName, image: dataProduct.productImageBase64, price: price };
 
   const addCart = async () => {
-    const lineItems = await getItemFromStorage();
-    addToCart(product, lineItems); 
-    ToastAndroid.showWithGravityAndOffset('Đã thêm sản phẩm vào giỏ hàng!',
-      ToastAndroid.LONG, ToastAndroid.BOTTOM,0,50);
-  } 
-  
+    const lineItems = await CartProvider.getItemFromStorage();
+    CartProvider.addToCart(product, lineItems);
+  }
+
   return (
     <Box
       bg="white"
@@ -28,7 +26,7 @@ function ProductSuggestCard(data: any) {
       width={120}
       marginLeft={2}
     >
-      <TouchableOpacity onPress={() => navigation.reset({ index: 0, routes: [{ name: 'DetailProduct', params: {productId: dataProduct.productId} }],})}>
+      <TouchableOpacity onPress={() => navigation.reset({ index: 0, routes: [{ name: 'DetailProduct', params: { productId: dataProduct.productId } }], })}>
         <Image source={{ uri: `data:image/jpeg;base64,${dataProduct.productImageBase64}` }} alt="image base" resizeMode="cover" height={150} roundedTop="md" />
         {dataProduct.discount > 0 &&
 
@@ -37,7 +35,7 @@ function ProductSuggestCard(data: any) {
             rounded="full"
             bg="red.500"
             boxSize={10}
-            position="absolute"   
+            position="absolute"
             right={0}
             m={2}
             top={0}

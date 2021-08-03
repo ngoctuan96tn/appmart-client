@@ -4,7 +4,7 @@ import {
 } from "native-base";
 import { Alert, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { IProduct, addToCart, getItemFromStorage } from "./CartProvider";
+import CartProvider, { IProduct} from "./CartProvider";
 import NumberFormat from "react-number-format";
 import { ToastAndroid } from "react-native";
 function ProductCard(data: any) {
@@ -14,10 +14,8 @@ function ProductCard(data: any) {
   const product: IProduct = { id: dataProduct.productId, name: dataProduct.productName, image: dataProduct.productImageBase64, price: price };
 
   const addCart = async () => {
-    const lineItems = await getItemFromStorage();
-    addToCart(product, lineItems);
-    ToastAndroid.showWithGravityAndOffset('Đã thêm sản phẩm vào giỏ hàng!',
-      ToastAndroid.LONG, ToastAndroid.BOTTOM,0,50);
+    const lineItems = await CartProvider.getItemFromStorage();
+    CartProvider.addToCart(product, lineItems);
   }
   return (
     <Box
