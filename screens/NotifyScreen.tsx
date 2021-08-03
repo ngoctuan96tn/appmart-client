@@ -71,7 +71,7 @@ export default function NotifyScreen() {
                   setOpen(false)
                 }}
               >
-                OK
+                Đóng
               </Button>
             </Button.Group>
           </Modal.Footer>
