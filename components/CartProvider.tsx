@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
-import { ToastAndroid } from "react-native";
+import Toast from 'react-native-root-toast';
+
 
 export interface ILineItem {
     product: IProduct;
@@ -30,15 +31,15 @@ export default class CartProvider {
             return [];
         }
     };
-    
+
     static async addToCart(product: IProduct, lineItems: ILineItem[]) {
-    
+
         if (lineItems) {
             let newLineItems = lineItems;
             let check = lineItems.findIndex((_item: { product: { id: any; }; }) => {
                 return product.id === _item.product.id;
             });
-    
+
             if (check === -1) {
                 const newData: ILineItem = {
                     product: product,
@@ -62,12 +63,20 @@ export default class CartProvider {
                 .reverse(),
             );
 
-            ToastAndroid.showWithGravityAndOffset('Đã thêm sản phẩm vào giỏ hàng!',
-            ToastAndroid.LONG, ToastAndroid.BOTTOM, 0, 50);
+            Toast.show('Đã thêm sản phẩm vào giỏ hàng!', {
+                duration: Toast.durations.LONG,
+                position: -50,
+                shadow: true,
+                animation: true,
+                hideOnPress: true,
+                backgroundColor: '#ffffff',
+                textColor: '#000000',
+
+            });
         }
-    
+
     }
-    
+
     static minusToCart(product: IProduct, lineItems: ILineItem[]) {
         let newLineItems = [];
         if (lineItems.length > 0) {
@@ -82,7 +91,7 @@ export default class CartProvider {
                     timestamp: lineItems[check].timestamp,
                 },
             ];
-    
+
             if (lineItems[check].quantity <= 0) {
                 this.removeFromCart(product, lineItems);
             } else {
@@ -92,26 +101,26 @@ export default class CartProvider {
                     .reverse(),
                 );
             }
-            
+
         }
     }
-    
+
     static removeFromCart(item: IProduct, lineItems: ILineItem[]) {
         this.setItemFromStorage(lineItems.filter((_item: { product: { id: number; }; }) => _item.product.id !== item.id));
     };
-    
+
     static clearCart() {
         this.setItemFromStorage([]);
     };
-    
+
     static cartSum(lineItems: ILineItem[]) {
         let sum = 0;
         lineItems?.forEach(
-            (item: { quantity: number; product: { price: number; }; }) => 
-            (sum += item.quantity * item.product.price));
+            (item: { quantity: number; product: { price: number; }; }) =>
+                (sum += item.quantity * item.product.price));
         return sum;
     };
-    
+
     static cartCount(lineItems: ILineItem[]) {
         let sum = 0;
         lineItems?.forEach((item: { quantity: number; }) => (sum += item.quantity));
