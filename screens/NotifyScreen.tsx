@@ -5,7 +5,9 @@ import ApiCommon from "../constants/ApiCommon";
 import { Modal, Button } from "native-base";
 import { TouchableOpacity } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 export default function NotifyScreen() {
+  const navigation = useNavigation();
   const { getItem, setItem } = useAsyncStorage('token');
   const [retrieve, setRetrieve] = useState(true);
   const [token, setToken] = useState<string | null>('');
@@ -49,7 +51,15 @@ export default function NotifyScreen() {
         <FlatList
           data={itemNotifi}
           renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => { openModal("top"), setContent(item.content) }}>
+            <TouchableOpacity onPress={() => {
+              if (item.notifyType == 1) {
+                navigation.navigate('UserBilling')
+              } else {
+                openModal("top"), setContent(item.content)
+              }
+
+
+            }}>
               <View style={{ flexDirection: "row", marginTop: '5%' }}>
                 <View style={{ width: '15%', alignContent: 'center', alignItems: 'center' }}>
                   <Image source={require('../assets/images/MiMartLogoGradientApp.png')} alt="image base" resizeMode="cover" width='80%' height={45} rounded="80" />
@@ -76,8 +86,11 @@ export default function NotifyScreen() {
                   }
                 </View>
                 <View style={{ width: '85%' }}>
-                  <Box width='100%' px={5} py={2} rounded="lg" bg="primary.300" height={45} backgroundColor='#FFCC66'>
-                    <Text>{item.title}</Text>
+                  <Box width='100%' px={5} py={2} rounded="lg" bg="primary.300" height={55} backgroundColor='#FFCC66'>
+                    <Text style={{fontWeight:'bold'}}>{item.title}</Text>
+                    {item.notifyType == 1 &&
+                    <Text style={{fontSize:12, fontStyle:'italic'}}>{item.content}</Text>
+                  }
                   </Box>
                 </View>
 
