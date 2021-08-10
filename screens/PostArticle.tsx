@@ -1,23 +1,28 @@
-import { NativeBaseProvider, Button } from 'native-base';
-import * as React from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import KeyboardSpacer from 'react-native-keyboard-spacer';
+import React, { Component } from 'react';
+import {
+  AppRegistry,
+  StyleSheet,
+  Image,
+  View,
+  TextInput
+} from 'react-native';
 
 export default function PostArticle() {
-    
-    return (
-        <SafeAreaView style={styles.container}>
-            <NativeBaseProvider>
-                <Button size="md" marginTop='10' backgroundColor='#c4b5fd' onPress={() => console.log()}>Tạo bài viết</Button>
-            </NativeBaseProvider>
-        </SafeAreaView>
-    );
+  return (
+    <View style={[{ flex: 1 }]}>
+      <Image source={{ uri: 'http://img11.deviantart.net/072b/i/2011/206/7/0/the_ocean_cherry_tree_by_tomcadogan-d41nzsz.png' }}
+        style={{ flex: 1 }} />
+      <TextInput style={{ left: 0, right: 0, height: '30%' }}
+        underlineColorAndroid="transparent"
+        placeholder="Bạn đang nghĩ gì?"
+        placeholderTextColor="grey"
+        numberOfLines={10}
+        multiline={true}
+      />
+      <KeyboardSpacer />
+    </View>
+  );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#0ea5e9'
-    },
-});
+AppRegistry.registerComponent('DemoApp', () => PostArticle);
