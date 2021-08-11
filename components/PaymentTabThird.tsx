@@ -13,6 +13,7 @@ export default function PaymentTabThird() {
     const [loading, setLoading] = React.useState(true);
     const [dataCart, setDataCart] = React.useState<any>({});
     const [totalAmount, setTotalAmount] = React.useState<any>({});
+    const [note, setNote] = React.useState<any>({});
 
     React.useEffect(() => {
         const readToken = async () => {
@@ -44,9 +45,18 @@ export default function PaymentTabThird() {
 
         }
 
+        const getNote = () => {
+            AsyncStorage.getItem('paymentNote').then((note) => {
+                if (note !== null) {
+                    setNote(note);
+                }
+            });
+        }
+
         if (retrieve) {
             readToken();
             getCart();
+            getNote();
         }
         if (retrieve === false) {
             const headers = { 'Authorization': `Bearer ${token}` }
@@ -127,7 +137,7 @@ export default function PaymentTabThird() {
                         suffix={'đ'}
                         renderText={formattedValue => <Text style={{ width: '50%', textAlign: 'right', color: '#ff0000', fontWeight: 'bold' }}>{formattedValue}</Text>} // <--- Don't forget this!
                     />
-                    <Button onPress={() => console.log("hello world")} width="100%" marginTop="5%">ĐẶT HÀNG</Button>
+                    <Button onPress={() => handlePayment(note, dataCart, userLogin)} width="100%" marginTop="5%">ĐẶT HÀNG</Button>
                 </View>
             </Box>
         );
@@ -138,4 +148,10 @@ export default function PaymentTabThird() {
             </View>
         );
     }
+}
+
+function handlePayment(note:any, dataCart: any, userLogin:any){
+    console.log(note);
+    console.log(dataCart);
+    console.log(userLogin);
 }

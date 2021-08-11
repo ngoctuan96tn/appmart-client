@@ -59,6 +59,7 @@ export default function PaymentTabFirst() {
         }
 
     }, [retrieve]);
+
     if (!loading) {
         return (
             <Box flex={1} bg="#f5f5f5">
@@ -69,7 +70,8 @@ export default function PaymentTabFirst() {
                     <Text>{userLogin.phone}</Text>
                 </View>
                 <View p={2} m={4} height={120} bg="#fff" marginTop="5%" borderRadius={5}>
-                    <TextArea h='100%' placeholder="Lưu ý (ví dụ: Địa chỉ nhận hàng khác)" />
+                    <TextArea h='100%' placeholder="Lưu ý (ví dụ: Địa chỉ nhận hàng khác)" onChangeText={(note) => {AsyncStorage.setItem('paymentNote', note)}}/>
+                    
                 </View>
                 <View style={{ flexDirection: 'row' }} p={2} m={4} height={35} bg="#fff" marginTop="5%" borderRadius={5}>
                     <Text style={{ width: '50%' }}>Phí vận chuyển</Text>
