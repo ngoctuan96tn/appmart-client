@@ -22,8 +22,6 @@ import PostArticle from './screens/PostArticle';
 import OrderPayment from './screens/OrderPayment';
 import { RootSiblingParent } from 'react-native-root-siblings';
 import UserBilling from './screens/UserBilling';
-import MainScreen from './screens/MainScreen';
-import ImageBrowserScreen from './screens/ImageBrowserScreen';
 
 const Stack = createStackNavigator();
 
@@ -62,8 +60,6 @@ export default function App() {
             <Stack.Screen name="PostArticle" component={PostArticle} />
             <Stack.Screen name="OrderPayment" component={OrderPayment} />
             <Stack.Screen name="UserBilling" component={UserBilling} />
-            <Stack.Screen name="ImageBrowserScreen" component={ImageBrowserScreen} />
-            <Stack.Screen name="MainScreen" component={MainScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </RootSiblingParent>
