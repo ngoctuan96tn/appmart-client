@@ -24,7 +24,6 @@ export default class CartProvider {
     static async getItemFromStorage() {
         const { getItem, setItem } = useAsyncStorage('cart');
         const item = await getItem();
-        console.log('item: ' + item);
         if (item != null) {
             return JSON.parse(item);
         } else {

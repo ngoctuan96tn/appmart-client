@@ -1,9 +1,12 @@
 import AsyncStorage, { useAsyncStorage } from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 import { Box, FlatList, Image, View, Text, Button } from 'native-base';
 import * as React from 'react';
 import { ActivityIndicator, ScrollView } from 'react-native';
+import Toast from 'react-native-root-toast';
 import NumberFormat from 'react-number-format';
 import ApiCommon from '../constants/ApiCommon';
+import { ILineItem } from './CartProvider';
 
 export default function PaymentTabThird() {
     const [token, setToken] = React.useState<string | null>('');
@@ -13,8 +16,9 @@ export default function PaymentTabThird() {
     const [loading, setLoading] = React.useState(true);
     const [dataCart, setDataCart] = React.useState<any>({});
     const [totalAmount, setTotalAmount] = React.useState<any>({});
-    const [note, setNote] = React.useState<any>({});
-
+    const [note, setNote] = React.useState<string | null>('');
+    
+    const navigation = useNavigation();
     React.useEffect(() => {
         const readToken = async () => {
             const item = await getItem();
@@ -48,7 +52,9 @@ export default function PaymentTabThird() {
         const getNote = () => {
             AsyncStorage.getItem('paymentNote').then((note) => {
                 if (note !== null) {
-                    setNote(note);
+                    setNote(JSON.stringify(note));
+                } else {
+                    setNote("");
                 }
             });
         }
@@ -137,7 +143,7 @@ export default function PaymentTabThird() {
                         suffix={'đ'}
                         renderText={formattedValue => <Text style={{ width: '50%', textAlign: 'right', color: '#ff0000', fontWeight: 'bold' }}>{formattedValue}</Text>} // <--- Don't forget this!
                     />
-                    <Button onPress={() => handlePayment(note, dataCart, userLogin)} width="100%" marginTop="5%">ĐẶT HÀNG</Button>
+                    <Button onPress={() => handlePayment(note, dataCart, userLogin, token, navigation)} width="100%" marginTop="5%">ĐẶT HÀNG</Button>
                 </View>
             </Box>
         );
@@ -150,8 +156,81 @@ export default function PaymentTabThird() {
     }
 }
 
-function handlePayment(note:any, dataCart: any, userLogin:any){
-    console.log(note);
-    console.log(dataCart);
-    console.log(userLogin);
+function handlePayment(note: any, dataCart: any, userLogin: any, token: any, navigation: any) {
+    const productArr: IProductBill[] = [];
+    dataCart.forEach(function (data: any) {
+        const productBill: IProductBill = {
+            productId: data.product.id,
+            quantity: data.quantity,
+            price: data.product.price,
+            amount: data.product.price * data.quantity,
+
+        };
+        productArr.push(productBill);
+    });
+
+    const bill: IBilling = {
+        userId: userLogin.id,
+        buildingId: 1,
+        note: note,
+        productList: productArr,
+    };
+    console.log(bill);
+
+    fetch(ApiCommon.rootUrl + '/api/order-payment', {
+        method: 'post',
+        body: JSON.stringify(bill),
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+    }).then((response) => response.json())
+        .then((responseJson) => {
+            console.log(responseJson);
+            if (responseJson.code == 1) {
+                AsyncStorage.removeItem('paymentNote');
+                AsyncStorage.removeItem('cart');
+
+                Toast.show('Đặt hàng thành công!', {
+                    duration: Toast.durations.LONG,
+                    position: 0,
+                    shadow: true,
+                    animation: true,
+                    hideOnPress: true,
+                    backgroundColor: '#ffffff',
+                    textColor: '#000000',
+    
+                });
+                navigation.navigate('Main');
+            } else {
+                Toast.show('Đặt hàng thất bại. Vui lòng thử lại!', {
+                    duration: Toast.durations.LONG,
+                    position: 0,
+                    shadow: true,
+                    animation: true,
+                    hideOnPress: true,
+                    backgroundColor: '#ffffff',
+                    textColor: '#ff0000',
+    
+                });
+            }
+        })
+        .catch((error) => {
+            console.log(error)
+        });
+}
+
+
+export interface IBilling {
+    userId: number;
+    buildingId: number;
+    note: string;
+    productList: IProductBill[]
+}
+
+export interface IProductBill {
+    productId: number;
+    quantity: number,
+    price: number,
+    amount: number;
 }
