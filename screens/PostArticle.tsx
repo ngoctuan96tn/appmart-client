@@ -1,28 +1,33 @@
-import KeyboardSpacer from 'react-native-keyboard-spacer';
-import React, { Component } from 'react';
+import React, { useState } from 'react';
+import { SafeAreaView, StyleSheet, View, TextInput } from 'react-native';
 import {
-  AppRegistry,
-  StyleSheet,
-  Image,
-  View,
-  TextInput
-} from 'react-native';
+  NativeBaseProvider,
+} from "native-base"
 
 export default function PostArticle() {
+
+  const [text, setText] = useState('');
   return (
-    <View style={[{ flex: 1 }]}>
-      <Image source={{ uri: 'http://img11.deviantart.net/072b/i/2011/206/7/0/the_ocean_cherry_tree_by_tomcadogan-d41nzsz.png' }}
-        style={{ flex: 1 }} />
-      <TextInput style={{ left: 0, right: 0, height: '30%' }}
-        underlineColorAndroid="transparent"
-        placeholder="Bạn đang nghĩ gì?"
-        placeholderTextColor="grey"
-        numberOfLines={10}
-        multiline={true}
-      />
-      <KeyboardSpacer />
-    </View>
+    <SafeAreaView style={styles.container}>
+      <NativeBaseProvider >
+        <View style={{ padding: 10 }}>
+          <TextInput
+            multiline={true}
+            style={{ height: '100%', backgroundColor: '#FFC0CB', fontSize: 15, padding: 10 }}
+            placeholder="Bạn đang nghĩ gì?"
+            onChangeText={text => setText(text)}
+          />
+        </View>
+      </NativeBaseProvider>
+    </SafeAreaView>
   );
 }
 
-AppRegistry.registerComponent('DemoApp', () => PostArticle);
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    // backgroundColor: '#FFB6C1'
+  },
+});
+

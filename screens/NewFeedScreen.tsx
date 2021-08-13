@@ -8,7 +8,7 @@ export default function NewFeedScreen() {
     return (
         <SafeAreaView style={styles.container}>
             <NativeBaseProvider>
-                <Button size="md" marginTop='10' backgroundColor='#c4b5fd' onPress={() => navigation.navigate('PostArticle')}>Tạo bài viết</Button>
+                <Button size="md" marginTop='10' backgroundColor='#c4b5fd' onPress={() => navigation.navigate('ImageBrowserScreen')}>Tạo bài viết</Button>
             </NativeBaseProvider>
         </SafeAreaView>
     );
