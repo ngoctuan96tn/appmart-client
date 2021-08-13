@@ -6,7 +6,7 @@ import { ActivityIndicator, ScrollView } from 'react-native';
 import Toast from 'react-native-root-toast';
 import NumberFormat from 'react-number-format';
 import ApiCommon from '../constants/ApiCommon';
-import { ILineItem } from './CartProvider';
+import CartProvider, { ILineItem } from './CartProvider';
 
 export default function PaymentTabThird() {
     const [token, setToken] = React.useState<string | null>('');
@@ -189,7 +189,7 @@ function handlePayment(note: any, dataCart: any, userLogin: any, token: any, nav
             console.log(responseJson);
             if (responseJson.code == 1) {
                 AsyncStorage.removeItem('paymentNote');
-                AsyncStorage.removeItem('cart');
+                CartProvider.clearCart();
 
                 Toast.show('Đặt hàng thành công!', {
                     duration: Toast.durations.LONG,
