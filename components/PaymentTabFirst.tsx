@@ -14,6 +14,7 @@ export default function PaymentTabFirst() {
     const [loading, setLoading] = useState(true);
     const [dataCart, setDataCart] = useState<any>({});
     const [totalAmount, setTotalAmount] = useState<any>({});
+    const [note, setNote] = React.useState<any>({});
 
     React.useEffect(() => {
         const readToken = async () => {
@@ -44,10 +45,18 @@ export default function PaymentTabFirst() {
               })
         
           }
+          const getNote = () => {
+            AsyncStorage.getItem('paymentNote').then((note) => {
+                if (note !== null) {
+                    setNote(note);
+                }
+            });
+        }
 
         if (retrieve) {
             readToken();
             getCart();
+            getNote();
         }
         if (retrieve === false) {
             const headers = { 'Authorization': `Bearer ${token}` }
@@ -59,6 +68,7 @@ export default function PaymentTabFirst() {
         }
 
     }, [retrieve]);
+
     if (!loading) {
         return (
             <Box flex={1} bg="#f5f5f5">
@@ -69,7 +79,8 @@ export default function PaymentTabFirst() {
                     <Text>{userLogin.phone}</Text>
                 </View>
                 <View p={2} m={4} height={120} bg="#fff" marginTop="5%" borderRadius={5}>
-                    <TextArea h='100%' placeholder="Lưu ý (ví dụ: Địa chỉ nhận hàng khác)" />
+                    <TextArea h='100%' placeholder="Lưu ý (ví dụ: Địa chỉ nhận hàng khác)" value={note} onChangeText={(note) => {AsyncStorage.setItem('paymentNote', note);}}/>
+                    
                 </View>
                 <View style={{ flexDirection: 'row' }} p={2} m={4} height={35} bg="#fff" marginTop="5%" borderRadius={5}>
                     <Text style={{ width: '50%' }}>Phí vận chuyển</Text>
