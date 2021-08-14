@@ -22,6 +22,7 @@ import PostArticle from './screens/PostArticle';
 import OrderPayment from './screens/OrderPayment';
 import { RootSiblingParent } from 'react-native-root-siblings';
 import UserBilling from './screens/UserBilling';
+import OrderPaymentSuccess from './screens/OrderPaymentSuccess';
 
 const Stack = createStackNavigator();
 
@@ -59,6 +60,7 @@ export default function App() {
             <Stack.Screen name="ChangePassWord" component={ChangePassWord} />
             <Stack.Screen name="PostArticle" component={PostArticle} />
             <Stack.Screen name="OrderPayment" component={OrderPayment} />
+            <Stack.Screen name="OrderPaymentSuccess" component={OrderPaymentSuccess} options={{ title: null, headerLeft: null, gestureEnabled: false }}/>
             <Stack.Screen name="UserBilling" component={UserBilling} />
           </Stack.Navigator>
         </NavigationContainer>

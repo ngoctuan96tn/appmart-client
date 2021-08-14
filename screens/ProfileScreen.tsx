@@ -85,6 +85,12 @@ export default function ProfileScreen() {
       </TouchableRipple>
 
       <View style={styles.menuWrapper}>
+        <TouchableRipple onPress={() => navigation.navigate('UserBilling')}>
+          <View style={styles.menuItem}>
+            <Icon name="clipboard-list-outline" color="#FF6347" size={25} />
+            <Text style={styles.menuItemText}>Đơn hàng của tôi</Text>
+          </View>
+        </TouchableRipple>
         <TouchableRipple onPress={() => navigation.navigate('ChangePassWord')}>
           <View style={styles.menuItem}>
             <Icon name="onepassword" color="#FF6347" size={25} />
