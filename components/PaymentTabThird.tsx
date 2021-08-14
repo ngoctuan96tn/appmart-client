@@ -186,7 +186,9 @@ function handlePayment(note: any, dataCart: any, userLogin: any, token: any, nav
         },
     }).then((response) => response.json())
         .then((responseJson) => {
-            console.log(responseJson);
+            
+            const orderCode = responseJson.listData[0].orderCode;
+            console.log(orderCode);
             if (responseJson.code == 1) {
                 AsyncStorage.removeItem('paymentNote');
                 CartProvider.clearCart();
@@ -201,7 +203,7 @@ function handlePayment(note: any, dataCart: any, userLogin: any, token: any, nav
                     textColor: '#000000',
     
                 });
-                navigation.navigate('Main');
+                navigation.navigate('OrderPaymentSuccess', {orderCode : orderCode});
             } else {
                 Toast.show('Đặt hàng thất bại. Vui lòng thử lại!', {
                     duration: Toast.durations.LONG,
