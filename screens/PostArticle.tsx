@@ -13,7 +13,7 @@ export default function PostArticle() {
         <View style={{ padding: 10 }}>
           <TextInput
             multiline={true}
-            style={{ height: '100%', backgroundColor: '#FFC0CB', fontSize: 15, padding: 10 }}
+            style={{ height: '100%', fontSize: 15, padding: 10 }}
             placeholder="Bạn đang nghĩ gì?"
             onChangeText={text => setText(text)}
           />
@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    // backgroundColor: '#FFB6C1'
   },
 });
 
