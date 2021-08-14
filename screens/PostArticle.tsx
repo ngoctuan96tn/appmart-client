@@ -3,6 +3,7 @@ import { SafeAreaView, StyleSheet, View, TextInput } from 'react-native';
 import {
   NativeBaseProvider,
 } from "native-base"
+import ImagePickerStatus from './ImagePickerStatus';
 
 export default function PostArticle() {
 
@@ -13,11 +14,12 @@ export default function PostArticle() {
         <View style={{ padding: 10 }}>
           <TextInput
             multiline={true}
-            style={{ height: '100%', fontSize: 15, padding: 10 }}
+            style={{ height: '20%', fontSize: 15, padding: 10 }}
             placeholder="Bạn đang nghĩ gì?"
             onChangeText={text => setText(text)}
           />
         </View>
+        <ImagePickerStatus/>
       </NativeBaseProvider>
     </SafeAreaView>
   );
