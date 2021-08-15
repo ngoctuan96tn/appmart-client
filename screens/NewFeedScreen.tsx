@@ -8,7 +8,9 @@ export default function PostArticle() {
     return (
 
         <View style={styles.container}>
-            <TouchableOpacity style={styles.text} onPress={() => navigation.navigate('PostArticle')}>
+            <TouchableOpacity style={styles.text} onPress={() => navigation.navigate('PostArticle', {
+                data: null, flag: false
+            })}>
                 <Text>Bạn đang nghĩ gì?</Text>
             </TouchableOpacity>
             <View style={styles.profileContainer}>

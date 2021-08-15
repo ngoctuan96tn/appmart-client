@@ -304,7 +304,6 @@ function onSave(photo: any, email: any, userName: any, phone: any, password: any
         },
     }).then((response) => response.json())
         .then((responseJson) => {
-            console.log(responseJson);
             if (responseJson.code == 1) {
                 console.log(responseJson.message)
                 navigation.navigate('Login');
