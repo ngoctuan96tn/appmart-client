@@ -3,7 +3,7 @@ import { Image, View, Platform } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
 import { Button, NativeBaseProvider } from 'native-base';
-import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons"
+import { MaterialCommunityIcons } from "@expo/vector-icons"
 
 export default function ImagePickerExample() {
   const [image, setImage] = useState(null);
