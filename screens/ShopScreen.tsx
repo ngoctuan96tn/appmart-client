@@ -203,7 +203,6 @@ function SearchBar() {
         setData(cartfood);
         
       } else {
-        console.log('1')
       }
     })
       .catch((err) => {

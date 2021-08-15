@@ -45,7 +45,6 @@ export default function RegisterApartment(route: any) {
                 .then((response) => response.json())
                 .then((responseJson) => {
                     if (responseJson.code == 1) {
-                        console.log(responseJson.listData)
                         setData(responseJson.listData)
                         setLoading(false)
                     }

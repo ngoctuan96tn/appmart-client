@@ -1,50 +1,60 @@
-import React from 'react'
-import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { View, StyleSheet, Image, Text, TouchableOpacity, ScrollView, } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
-export default function PostArticle() {
+import ApiCommon from '../constants/ApiCommon';
+export default function NewFeedScreen() {
+    const [isLoading, setLoading] = useState(true);
+    const [data, setData] = useState([]);
     const navigation = useNavigation();
     const imageUrl = 'https://tbsila.cdn.turner.com/toonla/images/cnapac/content/2015/link/ben-10-up-to-speed/au/b10_uptospeed---266x266.jpg'
-    const feedImageUrl = 'https://space-facts.com/wp-content/uploads/magellanic-clouds.png'
+
+    useEffect(() => {
+        if (isLoading) {
+            fetch(ApiCommon.rootUrl + '/api/posts')
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    if (responseJson.code == 1) {
+                        setData(responseJson.listData);
+                        setLoading(false)
+                    }
+                })
+        }
+    });
+
     return (
-
         <View style={styles.container}>
-            <TouchableOpacity style={styles.text} onPress={() => navigation.navigate('PostArticle', {
-                data: null, flag: false
-            })}>
-                <Text>Bạn đang nghĩ gì?</Text>
-            </TouchableOpacity>
-            <View style={styles.profileContainer}>
-                <Image style={styles.image} source={{ uri: imageUrl }} />
+            <ScrollView>
+                <TouchableOpacity style={styles.text} onPress={() => navigation.navigate('PostArticle', {
+                    data: null, flag: false
+                })}>
+                    <Text>Bạn đang nghĩ gì?</Text>
+                </TouchableOpacity>
+                <View style={styles.profileContainer}>
+                    <Image style={styles.image} source={{ uri: imageUrl }} />
 
-                <View style={styles.nameContainer}>
-                    <Text style={styles.nameText}>Nguyễn Văn Lương</Text>
-                    <Text style={styles.timeText}>Just now</Text>
+                    <View style={styles.nameContainer}>
+                        <Text style={styles.nameText}>Nguyễn Văn Lương</Text>
+                        <Text style={styles.timeText}>Just now</Text>
+                    </View>
                 </View>
-            </View>
 
-            <Text style={styles.captionText}>This is my status</Text>
-
-
-            <Image style={styles.feedImage} source={{ uri: feedImageUrl }} />
-
-            <View style={styles.line} />
-            <View style={styles.buttonGroupContainer}>
-                <TouchableOpacity style={styles.buttonContainer}>
-                    <Text style={styles.buttonText}>Like</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonContainer}>
-                    <Text style={styles.buttonText}>Comment</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonContainer}>
-                    <Text style={styles.buttonText}>Share</Text>
-                </TouchableOpacity>
-            </View>
+                {data.map((item: any) => (
+                    <><Text style={styles.captionText}>{item.content}</Text>{item.mediaList.map((image: any) => (<Image style={styles.feedImage} source={{ uri: `data:image/jpeg;base64,${image.attachBase64}` }} />))}<View style={styles.line} /><View style={styles.buttonGroupContainer}>
+                        <TouchableOpacity style={styles.buttonContainer}>
+                            <Text style={styles.buttonText}>Thích</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.buttonContainer}>
+                            <Text style={styles.buttonText}>Bình luận</Text>
+                        </TouchableOpacity>
+                    </View></>
+                ))}
+            </ScrollView>
         </View>
     )
 }
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'white',
+        backgroundColor: '#fff',
         marginTop: 10,
         paddingTop: 10,
         paddingLeft: 10,
