@@ -48,7 +48,6 @@ export function OrderPayment() {
                 alignItems='center'
               >
                 <TouchableOpacity onPress={() => {
-                  console.log(i);
                   setIndex(i);
                 }}>
                   <View alignItems='center'>

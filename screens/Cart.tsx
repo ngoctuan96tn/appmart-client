@@ -37,7 +37,6 @@ export class Cart extends Component<{}, any> {
             (sum += item.quantity * item.product.price));
         this.setState({ totalAmount: sum })
       } else {
-        console.log('1')
       }
     })
       .catch((err) => {
