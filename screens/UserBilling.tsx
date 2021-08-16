@@ -1,6 +1,5 @@
-
 import * as React from 'react';
-import { Dimensions, StatusBar, TouchableOpacity, Animated, Pressable } from 'react-native';
+import { Dimensions, StatusBar, TouchableOpacity, Animated, Pressable, } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import { NativeBaseProvider, Box, View, } from 'native-base';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -24,43 +23,40 @@ export function UserBilling() {
   const [routes] = React.useState([
     { key: 'first', title: 'Chờ xác nhận' },
     { key: 'second', title: 'Đang giao' },
-    { key: 'third', title: 'Đã giao'},
+    { key: 'third', title: 'Đã giao' },
     { key: 'four', title: 'Đã hủy' },
   ]);
 
   const renderTabBar = (props: any) => {
     const inputRange = props.navigationState.routes.map((x: any, i: number) => i);
     return (
-      <View>
-        <Box flexDirection="row">
-          {props.navigationState.routes.map((route: any, i: number) => {
-            const opacity = props.position.interpolate({
-              inputRange,
-              outputRange: inputRange.map((inputIndex: any) =>
-                inputIndex === i ? 1 : 0.2
-              ),
-            });
+      <Box flexDirection="row">
+        {props.navigationState.routes.map((route: any, i: number) => {
+          const opacity = props.position.interpolate({
+            inputRange,
+            outputRange: inputRange.map((inputIndex: any) =>
+              inputIndex === i ? 1 : 0.5
+            ),
+          });
 
-            return (
-              <Box
-                flex={1}
-                alignItems='center'
-              >
-                <TouchableOpacity onPress={() => {
+          return (
+            <Box
+              flex={1}
+              alignItems='center'
+            >
+              <TouchableOpacity
+
+                onPress={() => {
+                  console.log(i);
                   setIndex(i);
                 }}>
-                  <View alignItems='center'>
-                    <Pressable>
-                      <Animated.Text style={{ opacity, fontWeight: 'bold' }}>{route.title}</Animated.Text>
-                    </Pressable>
-                  </View>
-                </TouchableOpacity>
-              </Box>
+                <Animated.Text style={{ opacity, fontWeight: 'bold'  }}>{route.title}</Animated.Text>
+              </TouchableOpacity>
+            </Box>
 
-            );
-          })}
-        </Box>
-      </View>
+          );
+        })}
+      </Box>
     );
   };
 
@@ -95,7 +91,7 @@ function TabOneNavigator() {
       <TabOneStack.Screen
         name="TabOneScreen"
         component={UserBilling}
-        options={{ headerTitle: "ĐƠN HÀNG CỦA TÔI", headerTitleAlign:'center' }}
+        options={{ headerTitle: "ĐƠN HÀNG CỦA TÔI", headerTitleAlign: 'center' }}
       />
     </TabOneStack.Navigator>
   );
