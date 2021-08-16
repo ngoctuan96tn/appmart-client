@@ -1,12 +1,13 @@
 import AsyncStorage, { useAsyncStorage } from '@react-native-async-storage/async-storage';
-import { Box, TextArea, View } from 'native-base';
+import { useNavigation } from '@react-navigation/native';
+import { Box, Button, TextArea, View } from 'native-base';
 import * as React from 'react';
 import { useState } from 'react';
 import { ActivityIndicator, Text } from 'react-native';
 import NumberFormat from 'react-number-format';
 import ApiCommon from '../constants/ApiCommon';
 
-export default function PaymentTabFirst() {
+export default function PaymentTabFirst(data :any) {
     const [token, setToken] = useState<string | null>('');
     const [userLogin, setUserLogin] = useState<any>({});
     const { getItem, setItem } = useAsyncStorage('token');
@@ -14,7 +15,8 @@ export default function PaymentTabFirst() {
     const [loading, setLoading] = useState(true);
     const [dataCart, setDataCart] = useState<any>({});
     const [totalAmount, setTotalAmount] = useState<any>({});
-    const [note, setNote] = React.useState<any>({});
+    const [note, setNote] = React.useState('');
+    const navigation = useNavigation();
 
     React.useEffect(() => {
         const readToken = async () => {
@@ -45,18 +47,10 @@ export default function PaymentTabFirst() {
               })
         
           }
-          const getNote = () => {
-            AsyncStorage.getItem('paymentNote').then((note) => {
-                if (note !== null) {
-                    setNote(note);
-                }
-            });
-        }
 
         if (retrieve) {
             readToken();
             getCart();
-            getNote();
         }
         if (retrieve === false) {
             const headers = { 'Authorization': `Bearer ${token}` }
@@ -79,7 +73,7 @@ export default function PaymentTabFirst() {
                     <Text>{userLogin.phone}</Text>
                 </View>
                 <View p={2} m={4} height={120} bg="#fff" marginTop="5%" borderRadius={5}>
-                    <TextArea h='100%' placeholder="Lưu ý (ví dụ: Địa chỉ nhận hàng khác)" value={note} onChangeText={(note) => {AsyncStorage.setItem('paymentNote', note);}}/>
+                    <TextArea h='100%' placeholder="Lưu ý (ví dụ: Địa chỉ nhận hàng khác)" value={note} onChangeText={(note) => {setNote(note)}}/>
                     
                 </View>
                 <View style={{ flexDirection: 'row' }} p={2} m={4} height={35} bg="#fff" marginTop="5%" borderRadius={5}>
@@ -87,7 +81,7 @@ export default function PaymentTabFirst() {
                     <Text style={{ width: '50%', textAlign: 'right', color: '#00bfff', fontWeight: 'bold' }}>Theo nhà cung cấp</Text>
                 </View>
 
-                <View paddingLeft={4} paddingRight={4} paddingTop={2} style={{ position: 'absolute', bottom: 1, backgroundColor: '#f8f8ff', flexDirection: "row", flexWrap: "wrap", width: '100%', height: 50 }}>
+                <View paddingLeft={4} paddingRight={4} paddingTop={2} style={{ position: 'absolute', bottom: 1, backgroundColor: '#f8f8ff', flexDirection: "row", flexWrap: "wrap", width: '100%', height: 100 }}>
                     <Text style={{ width: '50%' }}>Tổng tiền thanh toán</Text>
                     <NumberFormat
                         value={totalAmount}
@@ -96,6 +90,7 @@ export default function PaymentTabFirst() {
                         suffix={'đ'}
                         renderText={formattedValue => <Text style={{ width: '50%', textAlign: 'right', color: '#ff0000', fontWeight: 'bold' }}>{formattedValue}</Text>} // <--- Don't forget this!
                     />
+                    <Button onPress={() => navigation.reset({ index: 0, routes: [{ name: 'OrderPayment', params: { index: 1, note: note } }], })} width="100%" marginTop="5%">Xác nhận</Button>
                 </View>
             </Box>
         );

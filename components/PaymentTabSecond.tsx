@@ -1,17 +1,19 @@
 import { Entypo, FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import AsyncStorage, { useAsyncStorage } from '@react-native-async-storage/async-storage';
-import { Box, Radio, TextArea, View } from 'native-base';
+import { useNavigation } from '@react-navigation/native';
+import { Box, Button, Radio, TextArea, View } from 'native-base';
 import * as React from 'react';
 import { useState } from 'react';
 import { ActivityIndicator, Text } from 'react-native';
 import NumberFormat from 'react-number-format';
 import ApiCommon from '../constants/ApiCommon';
 
-export default function PaymentTabSecond() {
+export default function PaymentTabSecond(data: any) {
     const [retrieve, setRetrieve] = useState(true);
     const [loading, setLoading] = useState(true);
     const [dataCart, setDataCart] = useState<any>({});
     const [totalAmount, setTotalAmount] = useState<any>({});
+    const navigation = useNavigation();
 
     React.useEffect(() => {
         const getCart = () => {
@@ -75,7 +77,7 @@ export default function PaymentTabSecond() {
                         </Radio>
                     </Radio.Group>
                 </View>
-                <View paddingLeft={4} paddingRight={4} paddingTop={2} style={{ position: 'absolute', bottom: 1, backgroundColor: '#f8f8ff', flexDirection: "row", flexWrap: "wrap", width: '100%', height: 50 }}>
+                <View paddingLeft={4} paddingRight={4} paddingTop={2} style={{ position: 'absolute', bottom: 1, backgroundColor: '#f8f8ff', flexDirection: "row", flexWrap: "wrap", width: '100%', height: 100 }}>
                     <Text style={{ width: '50%' }}>Tổng tiền thanh toán</Text>
                     <NumberFormat
                         value={totalAmount}
@@ -84,6 +86,7 @@ export default function PaymentTabSecond() {
                         suffix={'đ'}
                         renderText={formattedValue => <Text style={{ width: '50%', textAlign: 'right', color: '#ff0000', fontWeight: 'bold' }}>{formattedValue}</Text>} // <--- Don't forget this!
                     />
+                    <Button onPress={() => navigation.reset({ index: 0, routes: [{ name: 'OrderPayment', params: { index: 2, note: data.data.note } }], })} width="100%" marginTop="5%">Xác nhận</Button>
                 </View>
             </Box>
         );

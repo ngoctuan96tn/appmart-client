@@ -8,7 +8,7 @@ import NumberFormat from 'react-number-format';
 import ApiCommon from '../constants/ApiCommon';
 import CartProvider, { ILineItem } from './CartProvider';
 
-export default function PaymentTabThird() {
+export default function PaymentTabThird(data: any) {
     const [token, setToken] = React.useState<string | null>('');
     const [userLogin, setUserLogin] = React.useState<any>({});
     const { getItem, setItem } = useAsyncStorage('token');
@@ -16,7 +16,6 @@ export default function PaymentTabThird() {
     const [loading, setLoading] = React.useState(true);
     const [dataCart, setDataCart] = React.useState<any>({});
     const [totalAmount, setTotalAmount] = React.useState<any>({});
-    const [note, setNote] = React.useState<string | null>('');
     
     const navigation = useNavigation();
     React.useEffect(() => {
@@ -49,20 +48,9 @@ export default function PaymentTabThird() {
 
         }
 
-        const getNote = () => {
-            AsyncStorage.getItem('paymentNote').then((note) => {
-                if (note !== null) {
-                    setNote(JSON.stringify(note));
-                } else {
-                    setNote("");
-                }
-            });
-        }
-
         if (retrieve) {
             readToken();
             getCart();
-            getNote();
         }
         if (retrieve === false) {
             const headers = { 'Authorization': `Bearer ${token}` }
@@ -143,7 +131,7 @@ export default function PaymentTabThird() {
                         suffix={'đ'}
                         renderText={formattedValue => <Text style={{ width: '50%', textAlign: 'right', color: '#ff0000', fontWeight: 'bold' }}>{formattedValue}</Text>} // <--- Don't forget this!
                     />
-                    <Button onPress={() => handlePayment(note, dataCart, userLogin, token, navigation)} width="100%" marginTop="5%">ĐẶT HÀNG</Button>
+                    <Button onPress={() => handlePayment(data.data.note, dataCart, userLogin, token, navigation)} width="100%" marginTop="5%">ĐẶT HÀNG</Button>
                 </View>
             </Box>
         );
