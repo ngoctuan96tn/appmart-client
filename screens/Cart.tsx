@@ -149,7 +149,7 @@ export class Cart extends Component<{}, any> {
                   Tiếp tục mua hàng
                 </Button>
                 <View style={{ height: '100%', width: 1, backgroundColor: '#909090', }}></View>
-                <Button borderColor='#f8f8ff' borderRadius={0} size="sm" onPress={() => navigation.navigate('OrderPayment')} width='40%'>
+                <Button borderColor='#f8f8ff' borderRadius={0} size="sm" onPress={() => navigation.reset({ index: 0, routes: [{ name: 'OrderPayment', params: { index: 0} }], })} width='40%'>
                   Thanh toán
                 </Button>
               </View>
@@ -193,7 +193,7 @@ function TabOneNavigator() {
       <TabOneStack.Screen
         name="TabOneScreen"
         component={Cart}
-        options={{ headerTitle: "DANH SÁCH GIỎ HÀNG" }}
+        options={{ headerTitle: "DANH SÁCH GIỎ HÀNG", headerLeft: null, gestureEnabled: false }}
       />
     </TabOneStack.Navigator>
   );

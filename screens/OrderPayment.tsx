@@ -14,20 +14,20 @@ import PaymentTabThird from '../components/PaymentTabThird';
 
 const initialLayout = { width: Dimensions.get('window').width };
 
-const renderScene = SceneMap({
-  first: PaymentTabFirst,
-  second: PaymentTabSecond,
-  third: PaymentTabThird,
-});
-
-export function OrderPayment() {
+export function OrderPayment(data:any) {
+  const params = data.route.params.data.route.params;
   const navigation = useNavigation();
-  const [index, setIndex] = React.useState(0);
+  const [index, setIndex] = React.useState(params.index);
   const [routes] = React.useState([
     { key: 'first', title: 'Địa chỉ', icon: 'location' },
     { key: 'second', title: 'Thanh toán', icon: 'credit' },
     { key: 'third', title: 'Đặt hàng', icon: 'check' },
   ]);
+  const renderScene = SceneMap({
+    first: () => <PaymentTabFirst data={params} />,
+    second: () => <PaymentTabSecond data={params} />,
+    third: () => <PaymentTabThird data={params} />,
+  });
 
   const renderTabBar = (props: any) => {
     const inputRange = props.navigationState.routes.map((x: any, i: number) => i);
@@ -47,17 +47,12 @@ export function OrderPayment() {
                 flex={1}
                 alignItems='center'
               >
-                <TouchableOpacity onPress={() => {
-                  console.log(i);
-                  setIndex(i);
-                }}>
                   <View alignItems='center'>
                     <Entypo name={route.icon} size={20} style={{ borderWidth: 1, borderRadius: 50, width: 50, height: 50, textAlign: 'center', paddingTop: 15 }} />
                     <Pressable>
                       <Animated.Text style={{ opacity, fontWeight: 'bold' }}>{route.title}</Animated.Text>
                     </Pressable>
                   </View>
-                </TouchableOpacity>
               </Box>
 
             );
@@ -90,29 +85,31 @@ export function OrderPayment() {
         onIndexChange={setIndex}
         initialLayout={initialLayout}
         style={{ marginTop: StatusBar.currentHeight }}
+        swipeEnabled={false}
       />
     </NativeBaseProvider>
   );
 }
 
 
-export default () => {
+export default (data: any) => {
   return (
     <NativeBaseProvider>
-      <TabOneNavigator />
+      <TabOneNavigator data={data}/>
     </NativeBaseProvider>
   )
 }
 
 const TabOneStack = createStackNavigator<TabOneParamList>();
 
-function TabOneNavigator() {
+function TabOneNavigator(data: any) {
   return (
     <TabOneStack.Navigator>
       <TabOneStack.Screen
         name="TabOneScreen"
         component={OrderPayment}
-        options={{ headerTitle: "ĐẶT HÀNG" }}
+        options={{ headerTitle: "ĐẶT HÀNG", headerTitleAlign:'center', headerLeft: null, gestureEnabled: false }}
+        initialParams={data}
       />
     </TabOneStack.Navigator>
   );
