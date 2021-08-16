@@ -7,7 +7,6 @@ import ImagePickerStatus from './ImagePickerStatus';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import ApiCommon from '../constants/ApiCommon';
 import { useNavigation } from '@react-navigation/native';
-import { getRandomString } from 'native-base/lib/typescript/theme/tools';
 
 export default function PostArticle(route: any) {
   const avatarImg = route.route.params.data;
@@ -25,7 +24,6 @@ export default function PostArticle(route: any) {
     saveStatus(photo, token, text);
   }
   useEffect(() => {
-    console.log(flag)
     const readToken = async () => {
       const item = await getItem();
       setToken(item);

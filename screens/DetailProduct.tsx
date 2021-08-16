@@ -13,7 +13,6 @@ import NumberFormat from "react-number-format";
 export function DetailProduct(route: any) {
 
     const productId = route.route.params.data.route.params.productId;
-    console.log(productId);
     const [dataProduct, setDataproduct] = useState([]);
     const [productDetail, setProductDetail] = useState<any>({});
     const [isLoading, setLoading] = useState(true);
