@@ -24,6 +24,7 @@ import { RootSiblingParent } from 'react-native-root-siblings';
 import UserBilling from './screens/UserBilling';
 import OrderPaymentSuccess from './screens/OrderPaymentSuccess';
 import NewFeedScreen from './screens/NewFeedScreen';
+import SearchProduct from './screens/SearchProduct';
 
 const Stack = createStackNavigator();
 
@@ -64,6 +65,7 @@ export default function App() {
             <Stack.Screen name="OrderPaymentSuccess" component={OrderPaymentSuccess} options={{ title: null, headerLeft: null, gestureEnabled: false }}/>
             <Stack.Screen name="UserBilling" component={UserBilling} />
             <Stack.Screen name="NewFeedScreen" component={NewFeedScreen} />
+            <Stack.Screen name="SearchProduct" component={SearchProduct} />
           </Stack.Navigator>
         </NavigationContainer>
       </RootSiblingParent>

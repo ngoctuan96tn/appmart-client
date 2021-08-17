@@ -228,6 +228,7 @@ function SearchBar() {
         py={1}
         px={2}
         width="85%"
+        onTouchEnd={() => {navigation.navigate('SearchProduct')}}
       />
 
       <Button
