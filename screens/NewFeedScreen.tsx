@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, Image, Text, TouchableOpacity, ScrollView, } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import ApiCommon from '../constants/ApiCommon';
+import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 export default function NewFeedScreen() {
     const [isLoading, setLoading] = useState(true);
     const [data, setData] = useState([]);
     const navigation = useNavigation();
-    const imageUrl = 'https://tbsila.cdn.turner.com/toonla/images/cnapac/content/2015/link/ben-10-up-to-speed/au/b10_uptospeed---266x266.jpg'
-
+    const [retrieve, setRetrieve] = useState(true);
+    const [token, setToken] = useState<string | null>('');
+    const { getItem, setItem } = useAsyncStorage('token');
+    const [avatarHashCode, setAvatarHashCode] = useState([]);
     useEffect(() => {
         if (isLoading) {
             fetch(ApiCommon.rootUrl + '/api/posts')
@@ -19,34 +22,60 @@ export default function NewFeedScreen() {
                     }
                 })
         }
-    });
+
+        const readToken = async () => {
+            const item = await getItem();
+            setToken(item);
+            setRetrieve(false);
+        };
+
+        if (retrieve) {
+            readToken();
+        }
+        if (retrieve === false) {
+            const headers = { 'Authorization': `Bearer ${token}` }
+            fetch(ApiCommon.rootUrl + '/api/user/login', { headers })
+                .then((response) => response.json())
+                .then((responseJson) => setAvatarHashCode(responseJson.avatarHashCode))
+        }
+    }, [retrieve]);
 
     return (
         <View style={styles.container}>
             <ScrollView>
-                <TouchableOpacity style={styles.text} onPress={() => navigation.navigate('PostArticle', {
-                    data: null, flag: false
-                })}>
-                    <Text>Bạn đang nghĩ gì?</Text>
+                <TouchableOpacity style={styles.text}>
+                    <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen')}>
+                        <Image style={styles.imageStatus} source={{ uri: `data:image/jpeg;base64,${avatarHashCode}` }} />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('PostArticle', {
+                        data: null, flag: false
+                    })}>
+                        <Text style={styles.postStatus}>Bạn đang nghĩ gì?</Text>
+                    </TouchableOpacity>
                 </TouchableOpacity>
-                <View style={styles.profileContainer}>
-                    <Image style={styles.image} source={{ uri: imageUrl }} />
-
-                    <View style={styles.nameContainer}>
-                        <Text style={styles.nameText}>Nguyễn Văn Lương</Text>
-                        <Text style={styles.timeText}>Just now</Text>
-                    </View>
-                </View>
+                <View style={styles.lineImg} />
 
                 {data.map((item: any) => (
-                    <><Text style={styles.captionText}>{item.content}</Text>{item.mediaList.map((image: any) => (<Image style={styles.feedImage} source={{ uri: `data:image/jpeg;base64,${image.attachBase64}` }} />))}<View style={styles.line} /><View style={styles.buttonGroupContainer}>
-                        <TouchableOpacity style={styles.buttonContainer}>
-                            <Text style={styles.buttonText}>Thích</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.buttonContainer}>
-                            <Text style={styles.buttonText}>Bình luận</Text>
-                        </TouchableOpacity>
-                    </View></>
+                    <>
+                        <View style={styles.profileUserStatus}>
+                            <Image style={styles.image} source={{ uri: `data:image/jpeg;base64,${item.user.avatarHashCode}` }} />
+
+                            <View style={styles.nameContainer}>
+                                <Text style={styles.nameText}>{item.user.userName}</Text>
+                                <Text style={styles.timeText}>{item.createDate}</Text>
+                            </View>
+                        </View>
+                        <Text style={styles.captionText}>{item.content}</Text>{item.mediaList.map((image: any) => (<Image style={styles.feedImage} source={{ uri: `data:image/jpeg;base64,${image.attachBase64}` }} />))}<View style={styles.line} /><View style={styles.buttonGroupContainer}>
+                            <TouchableOpacity style={styles.buttonContainer}>
+                                <Text style={styles.buttonText}>Thích</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.buttonContainer}>
+                                <Text style={styles.buttonText}>Bình luận</Text>
+                            </TouchableOpacity>
+                            <View style={styles.lineImg} />
+                        </View>
+                        <View style={styles.lineImg} />
+                    </>
                 ))}
             </ScrollView>
         </View>
@@ -60,7 +89,15 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         paddingRight: 10,
     },
+    postStatus: {
+        marginLeft: 10
+    },
     profileContainer: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    profileUserStatus: {
+        marginTop: 20,
         flexDirection: 'row',
         alignItems: 'center'
     },
@@ -69,7 +106,14 @@ const styles = StyleSheet.create({
         width: 50,
         borderRadius: 25,
         borderWidth: 2,
-        borderColor: '#BDBDBD'
+        borderColor: '#BDBDBD',
+    },
+    imageStatus: {
+        height: 50,
+        width: 50,
+        borderRadius: 25,
+        borderWidth: 2,
+        borderColor: '#BDBDBD',
     },
     nameContainer: {
         marginLeft: 10,
@@ -93,7 +137,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     buttonText: {
-        fontSize: 14
+        fontSize: 15,
+        fontWeight: 'bold'
     },
     line: {
         height: 0.5,
@@ -106,7 +151,13 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 16,
-        marginLeft: 10,
-        marginBottom: 20
-    }
+        marginBottom: 20,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    lineImg: {
+        height: 6,
+        backgroundColor: '#AFBCBE',
+        marginTop: 10
+    },
 })
