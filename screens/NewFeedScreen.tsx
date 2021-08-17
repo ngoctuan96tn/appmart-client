@@ -27,26 +27,32 @@ export default function NewFeedScreen() {
                 <TouchableOpacity style={styles.text} onPress={() => navigation.navigate('PostArticle', {
                     data: null, flag: false
                 })}>
-                    <Text>Bạn đang nghĩ gì?</Text>
+                    <Image style={styles.imageStatus} source={{ uri: imageUrl }} />
+                    <Text style={styles.postStatus}>Bạn đang nghĩ gì?</Text>
                 </TouchableOpacity>
-                <View style={styles.profileContainer}>
-                    <Image style={styles.image} source={{ uri: imageUrl }} />
-
-                    <View style={styles.nameContainer}>
-                        <Text style={styles.nameText}>Nguyễn Văn Lương</Text>
-                        <Text style={styles.timeText}>Just now</Text>
-                    </View>
-                </View>
+                <View style={styles.lineImg} />
 
                 {data.map((item: any) => (
-                    <><Text style={styles.captionText}>{item.content}</Text>{item.mediaList.map((image: any) => (<Image style={styles.feedImage} source={{ uri: `data:image/jpeg;base64,${image.attachBase64}` }} />))}<View style={styles.line} /><View style={styles.buttonGroupContainer}>
-                        <TouchableOpacity style={styles.buttonContainer}>
-                            <Text style={styles.buttonText}>Thích</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.buttonContainer}>
-                            <Text style={styles.buttonText}>Bình luận</Text>
-                        </TouchableOpacity>
-                    </View></>
+                    <>
+                        <View style={styles.profileUserStatus}>
+                            <Image style={styles.image} source={{ uri: imageUrl }} />
+
+                            <View style={styles.nameContainer}>
+                                <Text style={styles.nameText}>Nguyễn Văn Lương</Text>
+                                <Text style={styles.timeText}>Just now</Text>
+                            </View>
+                        </View>
+                        <Text style={styles.captionText}>{item.content}</Text>{item.mediaList.map((image: any) => (<Image style={styles.feedImage} source={{ uri: `data:image/jpeg;base64,${image.attachBase64}` }} />))}<View style={styles.line} /><View style={styles.buttonGroupContainer}>
+                            <TouchableOpacity style={styles.buttonContainer}>
+                                <Text style={styles.buttonText}>Thích</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.buttonContainer}>
+                                <Text style={styles.buttonText}>Bình luận</Text>
+                            </TouchableOpacity>
+                            <View style={styles.lineImg} />
+                        </View>
+                        <View style={styles.lineImg} />
+                    </>
                 ))}
             </ScrollView>
         </View>
@@ -60,7 +66,15 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         paddingRight: 10,
     },
+    postStatus: {
+        marginLeft: 10
+    },
     profileContainer: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    profileUserStatus: {
+        marginTop: 20,
         flexDirection: 'row',
         alignItems: 'center'
     },
@@ -69,7 +83,14 @@ const styles = StyleSheet.create({
         width: 50,
         borderRadius: 25,
         borderWidth: 2,
-        borderColor: '#BDBDBD'
+        borderColor: '#BDBDBD',
+    },
+    imageStatus: {
+        height: 50,
+        width: 50,
+        borderRadius: 25,
+        borderWidth: 2,
+        borderColor: '#BDBDBD',
     },
     nameContainer: {
         marginLeft: 10,
@@ -106,7 +127,13 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 16,
-        marginLeft: 10,
-        marginBottom: 20
-    }
+        marginBottom: 20,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    lineImg: {
+        height: 6,
+        backgroundColor: '#AFBCBE',
+        marginTop: 10
+    },
 })
