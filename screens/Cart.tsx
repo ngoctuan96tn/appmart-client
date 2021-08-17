@@ -1,9 +1,9 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Button, NativeBaseProvider } from 'native-base';
+import { Button, FlatList, NativeBaseProvider, View, Text } from 'native-base';
 import React, { Component } from 'react';
-import { Text, View, ScrollView, TextInput, Image, TouchableOpacity, StyleSheet, Dimensions, SafeAreaView, Alert } from 'react-native';
+import { Image, ScrollView, TextInput, TouchableOpacity, StyleSheet, Dimensions, SafeAreaView, Alert } from 'react-native';
 var { width } = Dimensions.get("window")
 import { useNavigation } from '@react-navigation/native';
 
@@ -88,10 +88,10 @@ export class Cart extends Component<{}, any> {
         <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <View style={{ flex: 1 }}>
             <ScrollView>
-              {
-                this.state.dataCart.map((item: any, i: number) => {
-                  return (
-                    <View style={{ width: width - 20, margin: 10, backgroundColor: 'transparent', flexDirection: 'row', borderBottomWidth: 2, borderColor: "#cccccc", paddingBottom: 10 }}>
+            <FlatList
+                    data={this.state.dataCart}
+                    renderItem={({ item }) => (
+                      <View style={{ width: width - 20, margin: 10, backgroundColor: 'transparent', flexDirection: 'row', borderBottomWidth: 2, borderColor: "#cccccc", paddingBottom: 10 }}>
                       <Image resizeMode={"contain"} style={{ width: width / 3, height: width / 3 }} source={{ uri: `data:image/jpeg;base64,${item.product.image}` }} />
                       <View style={{ flex: 1, backgroundColor: 'trangraysparent', padding: 10, justifyContent: "space-between" }}>
                         <View>
@@ -121,9 +121,9 @@ export class Cart extends Component<{}, any> {
                         <MaterialCommunityIcons name="delete" size={25} onPress={() => this.removeProduct(item.product)} />
                       </View>
                     </View>
-                  )
-                })
-              }
+                    )}
+                    keyExtractor={(item) => item.product.id.toString()}
+                />
 
               <View style={{ height: 20 }} />
 
@@ -148,7 +148,7 @@ export class Cart extends Component<{}, any> {
                   Tiếp tục mua hàng
                 </Button>
                 <View style={{ height: '100%', width: 1, backgroundColor: '#909090', }}></View>
-                <Button borderColor='#f8f8ff' borderRadius={0} size="sm" onPress={() => navigation.reset({ index: 0, routes: [{ name: 'OrderPayment', params: { index: 0} }], })} width='40%'>
+                <Button borderColor='#f8f8ff' borderRadius={0} size="sm" onPress={() => navigation.push('OrderPayment',{ index: 0})} width='40%'>
                   Thanh toán
                 </Button>
               </View>

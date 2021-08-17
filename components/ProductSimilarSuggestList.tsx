@@ -19,7 +19,7 @@ export function ProductSuggestList(data: any) {
           renderItem={({ item }) => (
             <ProductSimilarCard data={item} />
           )}
-          keyExtractor={(item) => item.id} />
+          keyExtractor={(item) => item.productId.toString()} />
       </SafeAreaView>
     </>
   )

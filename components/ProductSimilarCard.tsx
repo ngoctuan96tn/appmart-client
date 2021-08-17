@@ -26,7 +26,7 @@ function ProductSuggestCard(data: any) {
       width={120}
       marginLeft={2}
     >
-      <TouchableOpacity onPress={() => navigation.reset({ index: 0, routes: [{ name: 'DetailProduct', params: { productId: dataProduct.productId } }], })}>
+      <TouchableOpacity onPress={() => navigation.push('DetailProduct', { productId: dataProduct.productId })}>
         <Image source={{ uri: `data:image/jpeg;base64,${dataProduct.productImageBase64}` }} alt="image base" resizeMode="cover" height={150} roundedTop="md" />
         {dataProduct.discount > 0 &&
 
