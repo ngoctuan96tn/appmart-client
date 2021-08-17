@@ -90,7 +90,7 @@ export default function PaymentTabFirst(data :any) {
                         suffix={'đ'}
                         renderText={formattedValue => <Text style={{ width: '50%', textAlign: 'right', color: '#ff0000', fontWeight: 'bold' }}>{formattedValue}</Text>} // <--- Don't forget this!
                     />
-                    <Button onPress={() => navigation.reset({ index: 0, routes: [{ name: 'OrderPayment', params: { index: 1, note: note } }], })} width="100%" marginTop="5%">Xác nhận</Button>
+                    <Button onPress={() => navigation.push('OrderPayment',{ index: 1, note: note })} width="100%" marginTop="5%">Xác nhận</Button>
                 </View>
             </Box>
         );
