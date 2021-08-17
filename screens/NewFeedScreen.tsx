@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, Image, Text, TouchableOpacity, ScrollView, } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import ApiCommon from '../constants/ApiCommon';
+import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 export default function NewFeedScreen() {
     const [isLoading, setLoading] = useState(true);
     const [data, setData] = useState([]);
     const navigation = useNavigation();
-    const imageUrl = 'https://tbsila.cdn.turner.com/toonla/images/cnapac/content/2015/link/ben-10-up-to-speed/au/b10_uptospeed---266x266.jpg'
-
+    const [retrieve, setRetrieve] = useState(true);
+    const [token, setToken] = useState<string | null>('');
+    const { getItem, setItem } = useAsyncStorage('token');
+    const [avatarHashCode, setAvatarHashCode] = useState([]);
     useEffect(() => {
         if (isLoading) {
             fetch(ApiCommon.rootUrl + '/api/posts')
@@ -19,27 +22,47 @@ export default function NewFeedScreen() {
                     }
                 })
         }
-    });
+
+        const readToken = async () => {
+            const item = await getItem();
+            setToken(item);
+            setRetrieve(false);
+        };
+
+        if (retrieve) {
+            readToken();
+        }
+        if (retrieve === false) {
+            const headers = { 'Authorization': `Bearer ${token}` }
+            fetch(ApiCommon.rootUrl + '/api/user/login', { headers })
+                .then((response) => response.json())
+                .then((responseJson) => setAvatarHashCode(responseJson.avatarHashCode))
+        }
+    }, [retrieve]);
 
     return (
         <View style={styles.container}>
             <ScrollView>
-                <TouchableOpacity style={styles.text} onPress={() => navigation.navigate('PostArticle', {
-                    data: null, flag: false
-                })}>
-                    <Image style={styles.imageStatus} source={{ uri: imageUrl }} />
-                    <Text style={styles.postStatus}>Bạn đang nghĩ gì?</Text>
+                <TouchableOpacity style={styles.text}>
+                    <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen')}>
+                        <Image style={styles.imageStatus} source={{ uri: `data:image/jpeg;base64,${avatarHashCode}` }} />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('PostArticle', {
+                        data: null, flag: false
+                    })}>
+                        <Text style={styles.postStatus}>Bạn đang nghĩ gì?</Text>
+                    </TouchableOpacity>
                 </TouchableOpacity>
                 <View style={styles.lineImg} />
 
                 {data.map((item: any) => (
                     <>
                         <View style={styles.profileUserStatus}>
-                            <Image style={styles.image} source={{ uri: imageUrl }} />
+                            <Image style={styles.image} source={{ uri: `data:image/jpeg;base64,${item.user.avatarHashCode}` }} />
 
                             <View style={styles.nameContainer}>
-                                <Text style={styles.nameText}>Nguyễn Văn Lương</Text>
-                                <Text style={styles.timeText}>Just now</Text>
+                                <Text style={styles.nameText}>{item.user.userName}</Text>
+                                <Text style={styles.timeText}>{item.createDate}</Text>
                             </View>
                         </View>
                         <Text style={styles.captionText}>{item.content}</Text>{item.mediaList.map((image: any) => (<Image style={styles.feedImage} source={{ uri: `data:image/jpeg;base64,${image.attachBase64}` }} />))}<View style={styles.line} /><View style={styles.buttonGroupContainer}>
@@ -114,7 +137,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     buttonText: {
-        fontSize: 14
+        fontSize: 15,
+        fontWeight: 'bold'
     },
     line: {
         height: 0.5,
