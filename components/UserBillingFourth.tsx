@@ -1,15 +1,14 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import AsyncStorage, { useAsyncStorage } from '@react-native-async-storage/async-storage';
+import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-import { Box, FlatList, Image, View, Text, Button } from 'native-base';
+import { View, Text, Box, FlatList, Image } from 'native-base';
 import * as React from 'react';
-import { ActivityIndicator, SafeAreaView, ScrollView } from 'react-native';
-import Toast from 'react-native-root-toast';
+import { ActivityIndicator, SafeAreaView } from 'react-native';
 import NumberFormat from 'react-number-format';
 import ApiCommon from '../constants/ApiCommon';
-import CartProvider, { ILineItem } from './CartProvider';
 
-export default function UserBillingFirst() {
+
+export default function UserBillingFourth() {
     const [token, setToken] = React.useState<string | null>('');
     const [userLogin, setUserLogin] = React.useState<any>({});
     const { getItem, setItem } = useAsyncStorage('token');
@@ -36,7 +35,7 @@ export default function UserBillingFirst() {
                 .then((json) => setUserLogin(json))
                 .catch((error) => console.error(error))
 
-            fetch(ApiCommon.rootUrl + `/api/new-order/${userLogin.id}`, { headers })
+            fetch(ApiCommon.rootUrl + `/api/cancel-order/${userLogin.id}`, { headers })
                 .then((response) => response.json())
                 .then((json) => setDataproduct(json))
                 .catch((error) => console.error(error))
@@ -109,21 +108,6 @@ export default function UserBillingFirst() {
                                     )}
                                     keyExtractor={(item) => item.productId}
                                 />
-                            </View>
-
-                            <View style={{ width: '99%', alignItems:'flex-end' }}>
-                                <Button
-                                    size="sm"
-                                    colorScheme="danger"
-                                    bottom={1}
-                                    w="30%"
-                                    _text={{
-                                        color: "white",
-                                      }}
-                                    onPress={() => console.log("hello world")}
-                                >
-                                    Hủy đơn
-                                </Button>
                             </View>
                         </View>
                     )}

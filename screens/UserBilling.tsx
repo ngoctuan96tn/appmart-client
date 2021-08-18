@@ -7,14 +7,16 @@ import { TabOneParamList } from '../types';
 import { useNavigation } from '@react-navigation/native';
 import UserBillingFirst from '../components/UserBillingFirst';
 import UserBillingSecond from '../components/UserBillingSecond';
+import UserBillingThird from '../components/UserBillingThird';
+import UserBillingFourth from '../components/UserBillingFourth';
 
 const initialLayout = { width: Dimensions.get('window').width };
 
 const renderScene = SceneMap({
   first: UserBillingFirst,
   second: UserBillingSecond,
-  third: UserBillingSecond,
-  four: UserBillingSecond,
+  third: UserBillingThird,
+  four: UserBillingFourth,
 });
 
 export function UserBilling() {
