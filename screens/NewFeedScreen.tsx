@@ -65,8 +65,18 @@ export default function NewFeedScreen() {
                                 <Text style={styles.timeText}>{item.createDate}</Text>
                             </View>
                         </View>
-                        <Text style={styles.captionText}>{item.content}</Text>{item.mediaList.map((image: any) => (<Image style={styles.feedImage} source={{ uri: `data:image/jpeg;base64,${image.attachBase64}` }} />))}<View style={styles.line} /><View style={styles.buttonGroupContainer}>
+                        <Text style={styles.captionText}>{item.content}</Text>{item.mediaList.map((image: any) => (<Image style={styles.feedImage} source={{ uri: `data:image/jpeg;base64,${image.attachBase64}` }} />))}
+                        <View style={styles.line} />
+                        <View style={styles.buttonGroupContainer}>
                             <TouchableOpacity style={styles.buttonContainer}>
+                                <Text style={{fontSize: 12}}>{item.totalLike ? 'Thích ' + item.totalLike : null} </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.buttonContainer}>
+                                <Text style={{fontSize: 12}}>{item.totalComment ? item.totalComment + 'bình luận' : null} </Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.line} /><View style={styles.buttonGroupContainer}>
+                            <TouchableOpacity style={styles.buttonContainer} onPress={() => addReactionLike(item.postId, token)}>
                                 <Text style={styles.buttonText}>Thích</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.buttonContainer}>
@@ -134,7 +144,7 @@ const styles = StyleSheet.create({
     buttonContainer: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     buttonText: {
         fontSize: 15,
@@ -161,3 +171,8 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
 })
+
+export function addReactionLike(id: number, token: any) {
+    const headers = { 'Authorization': `Bearer ${token}` }
+    fetch(ApiCommon.rootUrl + `/api/posts/like/${id}`, { headers })
+}
