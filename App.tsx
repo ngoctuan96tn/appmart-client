@@ -25,6 +25,7 @@ import UserBilling from './screens/UserBilling';
 import OrderPaymentSuccess from './screens/OrderPaymentSuccess';
 import NewFeedScreen from './screens/NewFeedScreen';
 import SearchProduct from './screens/SearchProduct';
+import ListComments from './screens/ListComments';
 
 const Stack = createStackNavigator();
 
@@ -66,6 +67,7 @@ export default function App() {
             <Stack.Screen name="UserBilling" component={UserBilling} />
             <Stack.Screen name="NewFeedScreen" component={NewFeedScreen} />
             <Stack.Screen name="SearchProduct" component={SearchProduct} />
+            <Stack.Screen name="ListComments" component={ListComments} />
           </Stack.Navigator>
         </NavigationContainer>
       </RootSiblingParent>
