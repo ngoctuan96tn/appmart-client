@@ -10,8 +10,9 @@ import { FontAwesome } from "@expo/vector-icons";
 import ProductSimilarSuggestList from "../components/ProductSimilarSuggestList";
 import CartProvider, { IProduct } from "../components/CartProvider";
 import NumberFormat from "react-number-format";
+import { useNavigation } from "@react-navigation/native";
 export function DetailProduct(route: any) {
-
+    const navigation = useNavigation();
     const productId = route.route.params.data.route.params.productId;
     const [dataProduct, setDataproduct] = useState([]);
     const [productDetail, setProductDetail] = useState<any>({});
@@ -38,6 +39,11 @@ export function DetailProduct(route: any) {
     const addCart = async () => {
         const lineItems = await CartProvider.getItemFromStorage();
         CartProvider.addToCart(product, lineItems);
+    }
+
+    const payment = async () => {
+        await addCart();
+        navigation.navigate('Cart');
     }
 
     if (!isLoading) {
@@ -122,7 +128,7 @@ export function DetailProduct(route: any) {
                             <FontAwesome name='cart-plus' color='#0ea5e9' size={22} />
                         </Button>
                         <View style={{ height: '100%', width: 1, backgroundColor: '#909090', }}></View>
-                        <Button borderColor='#f8f8ff' borderRadius={0} size="sm" onPress={() => console.log("hello world")} width='33%'>
+                        <Button borderColor='#f8f8ff' borderRadius={0} size="sm" onPress={() => {payment()}} width='33%'>
                             Thanh toán
                         </Button>
                     </View>
