@@ -11,17 +11,8 @@ export default function NewFeedScreen() {
     const [token, setToken] = useState<string | null>('');
     const { getItem, setItem } = useAsyncStorage('token');
     const [avatarHashCode, setAvatarHashCode] = useState([]);
+    const [isLike, setIsLike] = useState(false);
     useEffect(() => {
-        if (isLoading) {
-            fetch(ApiCommon.rootUrl + '/api/posts')
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    if (responseJson.code == 1) {
-                        setData(responseJson.listData);
-                        setLoading(false)
-                    }
-                })
-        }
 
         const readToken = async () => {
             const item = await getItem();
@@ -37,6 +28,17 @@ export default function NewFeedScreen() {
             fetch(ApiCommon.rootUrl + '/api/user/login', { headers })
                 .then((response) => response.json())
                 .then((responseJson) => setAvatarHashCode(responseJson.avatarHashCode))
+
+            if (isLoading) {
+                fetch(ApiCommon.rootUrl + '/api/posts', { headers })
+                    .then((response) => response.json())
+                    .then((responseJson) => {
+                        if (responseJson.code == 1) {
+                            setData(responseJson.listData);
+                            setLoading(false)
+                        }
+                    })
+            }
         }
     }, [retrieve]);
 
@@ -65,11 +67,21 @@ export default function NewFeedScreen() {
                                 <Text style={styles.timeText}>{item.createDate}</Text>
                             </View>
                         </View>
-                        <Text style={styles.captionText}>{item.content}</Text>{item.mediaList.map((image: any) => (<Image style={styles.feedImage} source={{ uri: `data:image/jpeg;base64,${image.attachBase64}` }} />))}<View style={styles.line} /><View style={styles.buttonGroupContainer}>
+                        <Text style={styles.captionText}>{item.content}</Text>{item.mediaList.map((image: any) => (<Image style={styles.feedImage} source={{ uri: `data:image/jpeg;base64,${image.attachBase64}` }} />))}
+                        <View style={styles.line} />
+                        <View style={styles.buttonGroupContainer}>
                             <TouchableOpacity style={styles.buttonContainer}>
-                                <Text style={styles.buttonText}>Thích</Text>
+                                <Text style={{ fontSize: 12 }}>{item.totalLike ? 'Thích ' + item.totalLike : null} </Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.buttonContainer}>
+                                <Text style={{ fontSize: 12 }}>{item.totalComment ? item.totalComment + 'bình luận' : null} </Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.line} /><View style={styles.buttonGroupContainer}>
+                            <TouchableOpacity style={styles.buttonContainer} onPress={() => { addReactionLike(item.postId, token), setIsLike(!isLike) }}>
+                                {(item.isLike != isLike) ? (<Text style={styles.buttonTextIsLike}>Thích</Text>) : (<Text style={styles.buttonText}>Thích</Text>)}
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('ListComments')}>
                                 <Text style={styles.buttonText}>Bình luận</Text>
                             </TouchableOpacity>
                             <View style={styles.lineImg} />
@@ -134,11 +146,16 @@ const styles = StyleSheet.create({
     buttonContainer: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     buttonText: {
         fontSize: 15,
         fontWeight: 'bold'
+    },
+    buttonTextIsLike: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: '#00BBF7',
     },
     line: {
         height: 0.5,
@@ -161,3 +178,8 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
 })
+
+export function addReactionLike(id: number, token: any) {
+    const headers = { 'Authorization': `Bearer ${token}` }
+    fetch(ApiCommon.rootUrl + `/api/posts/like/${id}`, { headers })
+}
