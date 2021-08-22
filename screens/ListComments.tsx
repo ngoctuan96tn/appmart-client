@@ -1,4 +1,6 @@
-import { NativeBaseProvider } from 'native-base';
+import {
+  NativeBaseProvider,
+} from 'native-base';
 import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
@@ -61,7 +63,6 @@ export default function ListComments(route: any) {
       }}
       renderItem={(item) => {
         const commentData = item.item;
-        console.log(commentData);
         return (
           <SafeAreaView style={styles.container}>
             <NativeBaseProvider>
@@ -76,6 +77,11 @@ export default function ListComments(route: any) {
                         {commentData.createAt}
                       </Text>
                     </View>
+                    <TouchableOpacity style={styles.optionComment}>
+                      <MaterialCommunityIcons name="dots-vertical" color={'#fff'} size={25} onPress={() => {
+                        console.log()
+                      }} />
+                    </TouchableOpacity>
                   </View>
                   <Text>{commentData.content}</Text>
                 </View>
@@ -115,6 +121,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
     flexDirection: 'row',
     alignItems: 'center'
+  },
+  optionComment: {
+    position: 'relative',
+    left: 60
   },
   input: {
     flex: 1,
