@@ -139,7 +139,7 @@ export default function NewFeedScreen() {
                                         )
                                         }
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('ListComments')}>
+                                    <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('ListComments', {data: item})}>
                                         <View style={{flex:1, flexDirection:'row',  alignItems: 'center',}}>
                                             <EvilIcons name='comment' size={25} color='#000000'/>
                                             <Text style={styles.buttonText}>Bình luận</Text>

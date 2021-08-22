@@ -1,3 +1,5 @@
+import { createStackNavigator } from '@react-navigation/stack';
+import { NativeBaseProvider } from 'native-base';
 import React, { Component } from 'react';
 import {
   StyleSheet,
@@ -8,9 +10,10 @@ import {
   ScrollView,
   FlatList
 } from 'react-native';
+import { TabOneParamList } from '../types';
 
-export default function ListComments() {
-
+export function ListComments(route: any) {
+  console.log(route);
   const data = [
     { id: 1, image: "https://bootdey.com/img/Content/avatar/avatar1.png", name: "Frank Odalthh", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
     { id: 2, image: "https://bootdey.com/img/Content/avatar/avatar6.png", name: "John DoeLink", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
@@ -96,3 +99,27 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
+
+
+export default (data: any) => {
+  return (
+    <NativeBaseProvider>
+      <TabOneNavigator data={data}/>
+    </NativeBaseProvider>
+  )
+}
+
+const TabOneStack = createStackNavigator<TabOneParamList>();
+
+function TabOneNavigator(data: any) {
+  return (
+    <TabOneStack.Navigator>
+      <TabOneStack.Screen
+        name="TabOneScreen"
+        component={ListComments}
+        options={{ headerTitle: "BÀI VIẾT", headerTitleAlign:'center' }}
+        initialParams={data}
+      />
+    </TabOneStack.Navigator>
+  );
+}
