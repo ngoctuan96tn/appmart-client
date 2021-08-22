@@ -3,15 +3,15 @@ import { View, StyleSheet, Image, Text, TouchableOpacity, ScrollView, } from 're
 import { useNavigation } from '@react-navigation/native';
 import ApiCommon from '../constants/ApiCommon';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
+import { FlatList, NativeBaseProvider } from 'native-base';
+import { SafeAreaView } from 'react-native-safe-area-context';
 export default function NewFeedScreen() {
-    const [isLoading, setLoading] = useState(true);
     const [data, setData] = useState([]);
     const navigation = useNavigation();
     const [retrieve, setRetrieve] = useState(true);
     const [token, setToken] = useState<string | null>('');
     const { getItem, setItem } = useAsyncStorage('token');
     const [avatarHashCode, setAvatarHashCode] = useState([]);
-    const [isLike, setIsLike] = useState(false);
     useEffect(() => {
 
         const readToken = async () => {
@@ -29,68 +29,83 @@ export default function NewFeedScreen() {
                 .then((response) => response.json())
                 .then((responseJson) => setAvatarHashCode(responseJson.avatarHashCode))
 
-            if (isLoading) {
-                fetch(ApiCommon.rootUrl + '/api/posts', { headers })
-                    .then((response) => response.json())
-                    .then((responseJson) => {
-                        if (responseJson.code == 1) {
-                            setData(responseJson.listData);
-                            setLoading(false)
-                        }
-                    })
-            }
+
+            fetch(ApiCommon.rootUrl + '/api/posts', { headers })
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    if (responseJson.code == 1) {
+                        setData(responseJson.listData);
+
+                    }
+                })
+
         }
     }, [retrieve]);
 
     return (
-        <View style={styles.container}>
-            <ScrollView>
-                <TouchableOpacity style={styles.text}>
-                    <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen')}>
-                        <Image style={styles.imageStatus} source={{ uri: `data:image/jpeg;base64,${avatarHashCode}` }} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('PostArticle', {
-                        data: null, flag: false
-                    })}>
-                        <Text style={styles.postStatus}>Bạn đang nghĩ gì?</Text>
-                    </TouchableOpacity>
-                </TouchableOpacity>
-                <View style={styles.lineImg} />
+        <NativeBaseProvider>
+            <View style={styles.container}>
 
-                {data.map((item: any) => (
-                    <>
-                        <View style={styles.profileUserStatus}>
-                            <Image style={styles.image} source={{ uri: `data:image/jpeg;base64,${item.user.avatarHashCode}` }} />
+                <ScrollView>
+                    <TouchableOpacity style={styles.text}>
+                        <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen')}>
+                            <Image style={styles.imageStatus} source={{ uri: `data:image/jpeg;base64,${avatarHashCode}` }} />
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('PostArticle', {
+                            data: null, flag: false
+                        })}>
+                            <Text style={styles.postStatus}>Bạn đang nghĩ gì?</Text>
+                        </TouchableOpacity>
+                    </TouchableOpacity>
+                    <View style={styles.lineImg} />
 
-                            <View style={styles.nameContainer}>
-                                <Text style={styles.nameText}>{item.user.userName}</Text>
-                                <Text style={styles.timeText}>{item.createDate}</Text>
-                            </View>
-                        </View>
-                        <Text style={styles.captionText}>{item.content}</Text>{item.mediaList.map((image: any) => (<Image style={styles.feedImage} source={{ uri: `data:image/jpeg;base64,${image.attachBase64}` }} />))}
-                        <View style={styles.line} />
-                        <View style={styles.buttonGroupContainer}>
-                            <TouchableOpacity style={styles.buttonContainer}>
-                                <Text style={{ fontSize: 12 }}>{item.totalLike ? 'Thích ' + item.totalLike : null} </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.buttonContainer}>
-                                <Text style={{ fontSize: 12 }}>{item.totalComment ? item.totalComment + 'bình luận' : null} </Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.line} /><View style={styles.buttonGroupContainer}>
-                            <TouchableOpacity style={styles.buttonContainer} onPress={() => { addReactionLike(item.postId, token), setIsLike(!isLike) }}>
-                                {(item.isLike != isLike) ? (<Text style={styles.buttonTextIsLike}>Thích</Text>) : (<Text style={styles.buttonText}>Thích</Text>)}
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('ListComments')}>
-                                <Text style={styles.buttonText}>Bình luận</Text>
-                            </TouchableOpacity>
-                            <View style={styles.lineImg} />
-                        </View>
-                        <View style={styles.lineImg} />
-                    </>
-                ))}
-            </ScrollView>
-        </View>
+                    <FlatList
+                        data={data}
+                        renderItem={({ item }) => (
+                            <SafeAreaView>
+                                <View style={styles.profileUserStatus}>
+                                    <Image style={styles.image} source={{ uri: `data:image/jpeg;base64,${item.user.avatarHashCode}` }} />
+
+                                    <View style={styles.nameContainer}>
+                                        <Text style={styles.nameText}>{item.user.userName}</Text>
+                                        <Text style={styles.timeText}>{item.createDate}</Text>
+                                    </View>
+                                </View>
+                                <Text style={styles.captionText}>{item.content}</Text>
+                                <FlatList
+                                    data={item.mediaList}
+                                    renderItem={({ item }) => (
+                                        <Image style={styles.feedImage} source={{ uri: `data:image/jpeg;base64,${item.attachBase64}` }} />
+                                    )}
+                                    keyExtractor={(item) => item.attachId.toString()}
+                                />
+                                <View style={styles.line} />
+                                <View style={styles.buttonGroupContainer}>
+                                    <TouchableOpacity style={styles.buttonContainer}>
+                                        <Text style={{ fontSize: 12 }}>{item.totalLike ? 'Thích ' + item.totalLike : null} </Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.buttonContainer}>
+                                        <Text style={{ fontSize: 12 }}>{item.totalComment ? item.totalComment + 'bình luận' : null} </Text>
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={styles.line} /><View style={styles.buttonGroupContainer}>
+                                    <TouchableOpacity style={styles.buttonContainer} onPress={() => { addReactionLike(item.postId, token), setRetrieve(true) }}>
+                                        {(item.isLike) ? (<Text style={styles.buttonTextIsLike}>Thích</Text>) : (<Text style={styles.buttonText}>Thích</Text>)}
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('ListComments')}>
+                                        <Text style={styles.buttonText}>Bình luận</Text>
+                                    </TouchableOpacity>
+                                    <View style={styles.lineImg} />
+                                </View>
+                                <View style={styles.lineImg} />
+                            </SafeAreaView>
+                        )}
+                        keyExtractor={(item) => item.postId.toString()}
+                    />
+                </ScrollView>
+
+            </View>
+        </NativeBaseProvider>
     )
 }
 const styles = StyleSheet.create({
@@ -150,7 +165,8 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         fontSize: 15,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        color: '#000000'
     },
     buttonTextIsLike: {
         fontSize: 15,
