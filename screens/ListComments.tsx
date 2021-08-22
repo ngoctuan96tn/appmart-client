@@ -1,79 +1,165 @@
-import { createStackNavigator } from '@react-navigation/stack';
 import { NativeBaseProvider } from 'native-base';
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
   View,
+  FlatList,
   TouchableOpacity,
-  Image,
   ScrollView,
-  FlatList
+  SafeAreaView, TextInput, Image
 } from 'react-native';
-import { TabOneParamList } from '../types';
+import ApiCommon from '../constants/ApiCommon';
+import { useAsyncStorage } from '@react-native-async-storage/async-storage';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-export function ListComments(route: any) {
-  console.log(route);
-  const data = [
-    { id: 1, image: "https://bootdey.com/img/Content/avatar/avatar1.png", name: "Frank Odalthh", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
-    { id: 2, image: "https://bootdey.com/img/Content/avatar/avatar6.png", name: "John DoeLink", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
-    { id: 3, image: "https://bootdey.com/img/Content/avatar/avatar7.png", name: "March SoulLaComa", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
-    { id: 4, image: "https://bootdey.com/img/Content/avatar/avatar2.png", name: "Finn DoRemiFaso", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
-    { id: 5, image: "https://bootdey.com/img/Content/avatar/avatar3.png", name: "Maria More More", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
-    { id: 6, image: "https://bootdey.com/img/Content/avatar/avatar4.png", name: "Clark June Boom!", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
-    { id: 7, image: "https://bootdey.com/img/Content/avatar/avatar5.png", name: "The googler", comment: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor." },
-  ]
+export default function ListComments(route: any) {
+  const postId = route.route.params.postId;
+  const [listComments, setListComments] = useState([]);
+  const [isLoading, setLoading] = useState(true);
+  const [comment, setComment] = useState('');
+  const [retrieve, setRetrieve] = useState(true);
+  const [token, setToken] = useState<string | null>('');
+  const { getItem, setItem } = useAsyncStorage('token');
+  useEffect(() => {
+
+    const readToken = async () => {
+      const item = await getItem();
+      setToken(item);
+      setRetrieve(false);
+    };
+
+    if (retrieve) {
+      readToken();
+    }
+
+    if (isLoading) {
+      fetch(ApiCommon.rootUrl + `/api/post/${postId}/comments`)
+        .then((response) => response.json())
+        .then((responseJson) => {
+          if (responseJson.code == 1) {
+            setListComments(responseJson.listData);
+            setLoading(false)
+          }
+        })
+    }
+
+  }, [retrieve]);
 
   return (
-    <FlatList
+    <><FlatList
       style={styles.root}
-      data={data}
-      extraData={data}
+      data={listComments}
+      extraData={listComments}
       ItemSeparatorComponent={() => {
         return (
           <View style={styles.separator} />
-        )
+        );
       }}
       keyExtractor={(item: any) => {
         return item.id;
       }}
       renderItem={(item) => {
-        const Notification = item.item;
+        const commentData = item.item;
+        console.log(commentData);
         return (
-          <View style={styles.container}>
-            <TouchableOpacity onPress={() => { }}>
-              <Image style={styles.image} source={{ uri: Notification.image }} />
-            </TouchableOpacity>
-            <View style={styles.content}>
-              <View style={styles.contentHeader}>
-                <Text style={styles.name}>{Notification.name}</Text>
-                <Text style={styles.time}>
-                  9:58 am
-                </Text>
-              </View>
-              <Text>{Notification.comment}</Text>
-            </View>
-          </View>
+          <SafeAreaView style={styles.container}>
+            <NativeBaseProvider>
+              <ScrollView>
+                <View style={styles.content}>
+                  <View style={styles.profileUserStatus}>
+                    <Image style={styles.image} source={{ uri: `data:image/jpeg;base64,${commentData.userImageBase64}` }} />
+
+                    <View style={styles.nameContainer}>
+                      <Text style={styles.name}>{commentData.userName}</Text>
+                      <Text style={styles.time}>
+                        {commentData.createAt}
+                      </Text>
+                    </View>
+                  </View>
+                  <Text>{commentData.content}</Text>
+                </View>
+                <View style={styles.buttonGroupContainer}>
+                  <TouchableOpacity style={styles.buttonContainer}>
+                    <Text style={{ fontSize: 12 }}>Thích</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.buttonContainer} onPress={() => setComment('Đang trả lời @' + commentData.userName)}>
+                    <Text style={{ fontSize: 12 }}>Trả lời </Text>
+                  </TouchableOpacity>
+                </View>
+              </ScrollView>
+            </NativeBaseProvider>
+          </SafeAreaView>
         );
       }} />
+      <View style={styles.searchSection}>
+        <TextInput
+          multiline={true}
+          style={styles.input}
+          placeholder="Viết bình luận công khai..."
+          onChangeText={comment => setComment(comment)}
+          value={comment}
+        />
+        <TouchableOpacity>
+          <MaterialCommunityIcons name="comment-arrow-right" style={{ paddingTop: 10 }} color={'#CCDEE4'} size={70} onPress={() => {
+            saveComment(comment, token, postId)
+          }} />
+        </TouchableOpacity>
+      </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
+  profileUserStatus: {
+    marginTop: 20,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  input: {
+    flex: 1,
+    paddingTop: 10,
+    paddingRight: 10,
+    paddingBottom: 10,
+    paddingLeft: 0,
+    backgroundColor: '#CCDEE4',
+    color: '#424242',
+    borderRadius: 10,
+    height: 70,
+  },
+  searchSection: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    position: 'absolute',
+    bottom: 0
+  },
   root: {
     backgroundColor: "#ffffff",
     marginTop: 10,
   },
+  buttonGroupContainer: {
+    height: 30,
+    flexDirection: 'row'
+  },
   container: {
-    paddingLeft: 19,
-    paddingRight: 16,
-    paddingVertical: 12,
+    marginLeft: 10,
+    marginRight: 10,
+    paddingVertical: 10,
     flexDirection: 'row',
     alignItems: 'flex-start'
   },
-  content: {
-    marginLeft: 16,
+  buttonContainer: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  content: {
+    flex: 1,
+    borderRadius: 10,
+    backgroundColor: '#CCDEE4'
   },
   contentHeader: {
     flexDirection: 'row',
@@ -84,12 +170,6 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: "#CCCCCC"
   },
-  image: {
-    width: 45,
-    height: 45,
-    borderRadius: 20,
-    marginLeft: 20
-  },
   time: {
     fontSize: 11,
     color: "#808080",
@@ -98,28 +178,38 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
+  image: {
+    height: 50,
+    width: 50,
+    borderRadius: 25,
+    borderWidth: 2,
+    borderColor: '#BDBDBD',
+  },
+  nameContainer: {
+    marginLeft: 10,
+  },
 });
 
+export function saveComment(comment: any, token: any, postId: any) {
+  const body = {
+    content: comment,
+    postId: postId,
+  }
 
-export default (data: any) => {
-  return (
-    <NativeBaseProvider>
-      <TabOneNavigator data={data}/>
-    </NativeBaseProvider>
-  )
-}
-
-const TabOneStack = createStackNavigator<TabOneParamList>();
-
-function TabOneNavigator(data: any) {
-  return (
-    <TabOneStack.Navigator>
-      <TabOneStack.Screen
-        name="TabOneScreen"
-        component={ListComments}
-        options={{ headerTitle: "BÀI VIẾT", headerTitleAlign:'center' }}
-        initialParams={data}
-      />
-    </TabOneStack.Navigator>
-  );
+  fetch(ApiCommon.rootUrl + '/api/post/comment', {
+    method: 'post',
+    body: JSON.stringify(body),
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+  }).then((response) => response.json())
+    .then((responseJson) => {
+      if (responseJson.code == 1) {
+      }
+    })
+    .catch((error) => {
+      console.log(error)
+    });
 }
