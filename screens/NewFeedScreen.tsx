@@ -73,7 +73,9 @@ export default function NewFeedScreen() {
                             <TouchableOpacity style={styles.buttonContainer}>
                                 <Text style={{ fontSize: 12 }}>{item.totalLike ? 'Thích ' + item.totalLike : null} </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.buttonContainer}>
+                            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('ListComments', {
+                                postId: item.postId
+                            })}>
                                 <Text style={{ fontSize: 12 }}>{item.totalComment ? item.totalComment + 'bình luận' : null} </Text>
                             </TouchableOpacity>
                         </View>
@@ -81,7 +83,9 @@ export default function NewFeedScreen() {
                             <TouchableOpacity style={styles.buttonContainer} onPress={() => { addReactionLike(item.postId, token), setIsLike(!isLike) }}>
                                 {(item.isLike != isLike) ? (<Text style={styles.buttonTextIsLike}>Thích</Text>) : (<Text style={styles.buttonText}>Thích</Text>)}
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('ListComments')}>
+                            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('ListComments', {
+                                postId: item.postId
+                            })}>
                                 <Text style={styles.buttonText}>Bình luận</Text>
                             </TouchableOpacity>
                             <View style={styles.lineImg} />
