@@ -12,6 +12,8 @@ export default function NewFeedScreen() {
     const [token, setToken] = useState<string | null>('');
     const { getItem, setItem } = useAsyncStorage('token');
     const [avatarHashCode, setAvatarHashCode] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [loadData, setLoadData] = useState(true);
     useEffect(() => {
 
         const readToken = async () => {
@@ -23,7 +25,7 @@ export default function NewFeedScreen() {
         if (retrieve) {
             readToken();
         }
-        if (retrieve === false) {
+        if (retrieve === false && loadData === true) {
             const headers = { 'Authorization': `Bearer ${token}` }
             fetch(ApiCommon.rootUrl + '/api/user/login', { headers })
                 .then((response) => response.json())
@@ -35,13 +37,27 @@ export default function NewFeedScreen() {
                 .then((responseJson) => {
                     if (responseJson.code == 1) {
                         setData(responseJson.listData);
-
+                        setLoadData(false);
                     }
                 })
 
         }
-    }, [retrieve]);
 
+        if (loading) {
+            setData(data);
+            setLoading(false);
+        }
+
+    }, [retrieve, loading]);
+    const handleAfterLike = (item: any) => {
+        item.isLike = !item.isLike;
+        if (item.isLike) {
+            item.totalLike = item.totalLike + 1;
+        } else {
+            item.totalLike = (item.totalLike - 1) >= 0 ? item.totalLike - 1 : 0;
+        }
+        setLoading(true);
+    }
     return (
         <NativeBaseProvider>
             <View style={styles.container}>
@@ -89,7 +105,7 @@ export default function NewFeedScreen() {
                                     </TouchableOpacity>
                                 </View>
                                 <View style={styles.line} /><View style={styles.buttonGroupContainer}>
-                                    <TouchableOpacity style={styles.buttonContainer} onPress={() => { addReactionLike(item.postId, token), setRetrieve(true) }}>
+                                    <TouchableOpacity style={styles.buttonContainer} onPress={() => { addReactionLike(item.postId, token), handleAfterLike(item) }}>
                                         {(item.isLike) ? (<Text style={styles.buttonTextIsLike}>Thích</Text>) : (<Text style={styles.buttonText}>Thích</Text>)}
                                     </TouchableOpacity>
                                     <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('ListComments')}>
