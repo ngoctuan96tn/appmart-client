@@ -61,6 +61,7 @@ export default function ListComments(route: any) {
       }}
       renderItem={(item) => {
         const commentData = item.item;
+        console.log(commentData);
         return (
           <SafeAreaView style={styles.container}>
             <NativeBaseProvider>
@@ -82,7 +83,7 @@ export default function ListComments(route: any) {
                   <TouchableOpacity style={styles.buttonContainer}>
                     <Text style={{ fontSize: 12 }}>Thích</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={styles.buttonContainer} onPress={() => console.log(1)}>
+                  <TouchableOpacity style={styles.buttonContainer} onPress={() => setComment('Đang trả lời @' + commentData.userName)}>
                     <Text style={{ fontSize: 12 }}>Trả lời </Text>
                   </TouchableOpacity>
                 </View>
@@ -97,6 +98,7 @@ export default function ListComments(route: any) {
           style={styles.input}
           placeholder="Viết bình luận công khai..."
           onChangeText={comment => setComment(comment)}
+          value={comment}
         />
         <TouchableOpacity>
           <MaterialCommunityIcons name="comment-arrow-right" style={{ paddingTop: 10 }} color={'#CCDEE4'} size={70} onPress={() => {
