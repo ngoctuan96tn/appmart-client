@@ -92,7 +92,9 @@ export default function NewFeedScreen() {
                                     <TouchableOpacity style={styles.buttonContainer} onPress={() => { addReactionLike(item.postId, token), setRetrieve(true) }}>
                                         {(item.isLike) ? (<Text style={styles.buttonTextIsLike}>Thích</Text>) : (<Text style={styles.buttonText}>Thích</Text>)}
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('ListComments')}>
+                                    <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('ListComments', {
+                                        postId: item.postId
+                                    })}>
                                         <Text style={styles.buttonText}>Bình luận</Text>
                                     </TouchableOpacity>
                                     <View style={styles.lineImg} />
