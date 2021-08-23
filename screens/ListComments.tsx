@@ -14,6 +14,7 @@ import {
 import ApiCommon from '../constants/ApiCommon';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Menu, MenuProvider, MenuOptions, MenuOption, MenuTrigger } from "react-native-popup-menu";
 
 export default function ListComments(route: any) {
   const postId = route.route.params.postId;
@@ -77,11 +78,24 @@ export default function ListComments(route: any) {
                         {commentData.createAt}
                       </Text>
                     </View>
-                    <TouchableOpacity style={styles.optionComment}>
-                      <MaterialCommunityIcons name="dots-vertical" color={'#fff'} size={25} onPress={() => {
-                        console.log()
-                      }} />
-                    </TouchableOpacity>
+                    <MenuProvider style={{ flexDirection: "column", padding: 30 }}>
+                      <Menu>
+
+                        <MenuTrigger >
+                          <MaterialCommunityIcons name="dots-vertical" color={'#fff'} size={25} />
+                        </MenuTrigger  >
+
+                        <MenuOptions>
+                          <MenuOption value={"Cập nhật"}>
+                            <Text style={styles.menuContent} onPress={() => setComment(commentData.content)}>Cập nhật</Text>
+                          </MenuOption>
+                          <MenuOption value={"Xóa"}>
+                            <Text style={styles.menuContent} onPress={() => deleteComment(commentData.id, commentData.userId, token)}>Xóa</Text>
+                          </MenuOption>
+                        </MenuOptions>
+
+                      </Menu>
+                    </MenuProvider>
                   </View>
                   <Text>{commentData.content}</Text>
                 </View>
@@ -117,14 +131,16 @@ export default function ListComments(route: any) {
 }
 
 const styles = StyleSheet.create({
+  menuContent: {
+    color: "#fff",
+    padding: 1,
+    fontSize: 15,
+    backgroundColor: '#CCDEE4'
+  },
   profileUserStatus: {
     marginTop: 20,
     flexDirection: 'row',
     alignItems: 'center'
-  },
-  optionComment: {
-    position: 'relative',
-    left: 60
   },
   input: {
     flex: 1,
@@ -217,6 +233,49 @@ export function saveComment(comment: any, token: any, postId: any) {
   }).then((response) => response.json())
     .then((responseJson) => {
       if (responseJson.code == 1) {
+      }
+    })
+    .catch((error) => {
+      console.log(error)
+    });
+}
+
+export function updateComment(commentId: any, userId: any, content: string, token: any) {
+  fetch(ApiCommon.rootUrl + `/api/post/comment`, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({
+      content: content,
+      id: commentId,
+    }),
+  })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      if (responseJson.code == 1) {
+        //reload screen
+      }
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+}
+
+export function deleteComment(commentId: any, userId: any, token: any) {
+  fetch(ApiCommon.rootUrl + `/api/post/comment/${commentId}`, {
+    method: 'DELETE',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+  }).then((response) => response.json())
+    .then((responseJson) => {
+      if (responseJson.code == 1) {
+        //reload screen
       }
     })
     .catch((error) => {
