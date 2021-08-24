@@ -1,5 +1,5 @@
 import {
-  NativeBaseProvider,
+  NativeBaseProvider, Modal, Button
 } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import {
@@ -9,7 +9,7 @@ import {
   FlatList,
   TouchableOpacity,
   ScrollView,
-  SafeAreaView, TextInput, Image
+  TextInput, Image
 } from 'react-native';
 import ApiCommon from '../constants/ApiCommon';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
@@ -24,6 +24,10 @@ export default function ListComments(route: any) {
   const [retrieve, setRetrieve] = useState(true);
   const [token, setToken] = useState<string | null>('');
   const { getItem, setItem } = useAsyncStorage('token');
+  const [open, setOpen] = useState(false);
+  const [placement, setPlacement] = useState(undefined);
+  const [updateComment, setUpdateComment] = useState('');
+  const [commentId, setcommentId] = useState(Number);
   useEffect(() => {
 
     const readToken = async () => {
@@ -49,69 +53,92 @@ export default function ListComments(route: any) {
 
   }, [retrieve]);
 
+  const openModal = (placement: any) => {
+    setOpen(true)
+    setPlacement(placement)
+  }
+
   return (
-    <><FlatList
-      style={styles.root}
-      data={listComments}
-      extraData={listComments}
-      ItemSeparatorComponent={() => {
-        return (
-          <View style={styles.separator} />
-        );
-      }}
-      keyExtractor={(item: any) => {
-        return item.id;
-      }}
-      renderItem={(item) => {
-        const commentData = item.item;
-        return (
-          <SafeAreaView style={styles.container}>
-            <NativeBaseProvider>
-              <ScrollView>
-                <View style={styles.content}>
-                  <View style={styles.profileUserStatus}>
-                    <Image style={styles.image} source={{ uri: `data:image/jpeg;base64,${commentData.userImageBase64}` }} />
+    <NativeBaseProvider>
+      <FlatList
+        style={styles.root}
+        data={listComments}
+        renderItem={({ item }) => (
+          <View style={styles.container}>
+            <ScrollView>
+              <View style={styles.content}>
+                <View style={styles.profileUserStatus}>
+                  <Image style={styles.image} source={{ uri: `data:image/jpeg;base64,${item.userImageBase64}` }} />
 
-                    <View style={styles.nameContainer}>
-                      <Text style={styles.name}>{commentData.userName}</Text>
-                      <Text style={styles.time}>
-                        {commentData.createAt}
-                      </Text>
-                    </View>
-                    <MenuProvider style={{ flexDirection: "column", padding: 30 }}>
-                      <Menu>
-
-                        <MenuTrigger >
-                          <MaterialCommunityIcons name="dots-vertical" color={'#fff'} size={25} />
-                        </MenuTrigger  >
-
-                        <MenuOptions>
-                          <MenuOption value={"Cập nhật"}>
-                            <Text style={styles.menuContent} onPress={() => setComment(commentData.content)}>Cập nhật</Text>
-                          </MenuOption>
-                          <MenuOption value={"Xóa"}>
-                            <Text style={styles.menuContent} onPress={() => deleteComment(commentData.id, commentData.userId, token)}>Xóa</Text>
-                          </MenuOption>
-                        </MenuOptions>
-
-                      </Menu>
-                    </MenuProvider>
+                  <View style={styles.nameContainer}>
+                    <Text style={styles.name}>{item.userName}</Text>
+                    <Text style={styles.time}>
+                      {item.createAt}
+                    </Text>
                   </View>
-                  <Text>{commentData.content}</Text>
+                  <MenuProvider style={{ flexDirection: "column", padding: 30 }}>
+                    <Menu>
+
+                      <MenuTrigger >
+                        <MaterialCommunityIcons name="dots-vertical" color={'#fff'} size={25} />
+                      </MenuTrigger  >
+
+                      <MenuOptions>
+                        <MenuOption value={"Cập nhật"}>
+                          <Text style={styles.menuContent} onPress={() => { openModal("top"), setUpdateComment(item.content), setcommentId(item.id) }}>Cập nhật</Text>
+                        </MenuOption>
+                        <MenuOption value={"Xóa"}>
+                          <Text style={styles.menuContent} onPress={() => deleteComment(item.id, item.userId, token)}>Xóa</Text>
+                        </MenuOption>
+                      </MenuOptions>
+
+                    </Menu>
+                  </MenuProvider>
                 </View>
-                <View style={styles.buttonGroupContainer}>
-                  <TouchableOpacity style={styles.buttonContainer}>
-                    <Text style={{ fontSize: 12 }}>Thích</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.buttonContainer} onPress={() => setComment('Đang trả lời @' + commentData.userName)}>
-                    <Text style={{ fontSize: 12 }}>Trả lời </Text>
-                  </TouchableOpacity>
-                </View>
-              </ScrollView>
-            </NativeBaseProvider>
-          </SafeAreaView>
-        );
-      }} />
+                <Text>{item.content}</Text>
+              </View>
+              <View style={styles.buttonGroupContainer}>
+                <TouchableOpacity style={styles.buttonContainer}>
+                  <Text style={{ fontSize: 12 }}>Thích</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonContainer} onPress={() => setComment('Đang trả lời @' + item.userName)}>
+                  <Text style={{ fontSize: 12 }}>Trả lời </Text>
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
+          </View>
+        )}
+        keyExtractor={(item: any) => {
+          return item.id;
+        }}
+      />
+
+      <Modal isOpen={open} onClose={() => setOpen(false)} mt={12}>
+        <Modal.Content maxWidth="400px" style={styles.top}>
+          <Modal.CloseButton />
+          <Modal.Body>
+            <TextInput
+              multiline={true}
+              style={styles.input}
+              placeholder="Viết bình luận công khai..."
+              onChangeText={updateComment => setUpdateComment(updateComment)}
+              value={updateComment}
+            />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button.Group variant="ghost" space={2}>
+              <Button onPress={() => {
+                setOpen(false), updateComments(updateComment, commentId, token)
+              }}>Cập nhật</Button>
+              <Button onPress={() => {
+                setOpen(false)
+              }}>
+                Đóng
+              </Button>
+            </Button.Group>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
       <View style={styles.searchSection}>
         <TextInput
           multiline={true}
@@ -126,11 +153,15 @@ export default function ListComments(route: any) {
           }} />
         </TouchableOpacity>
       </View>
-    </>
+    </NativeBaseProvider>
   );
 }
 
 const styles = StyleSheet.create({
+  top: {
+    marginBottom: "auto",
+    marginTop: 0,
+  },
   menuContent: {
     color: "#fff",
     padding: 1,
@@ -240,7 +271,7 @@ export function saveComment(comment: any, token: any, postId: any) {
     });
 }
 
-export function updateComment(commentId: any, userId: any, content: string, token: any) {
+export function updateComments(content: string, commentId: Number, token: any) {
   fetch(ApiCommon.rootUrl + `/api/post/comment`, {
     method: 'PUT',
     headers: {

@@ -85,7 +85,7 @@ export default function NewFeedScreen() {
                                         <Text style={{ fontSize: 12 }}>{item.totalLike ? 'Thích ' + item.totalLike : null} </Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity style={styles.buttonContainer}>
-                                        <Text style={{ fontSize: 12 }}>{item.totalComment ? item.totalComment + 'bình luận' : null} </Text>
+                                        <Text style={{ fontSize: 12 }}>{item.totalComment ? item.totalComment + ' bình luận' : null} </Text>
                                     </TouchableOpacity>
                                 </View>
                                 <View style={styles.line} /><View style={styles.buttonGroupContainer}>
