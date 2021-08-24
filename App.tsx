@@ -26,6 +26,7 @@ import OrderPaymentSuccess from './screens/OrderPaymentSuccess';
 import NewFeedScreen from './screens/NewFeedScreen';
 import SearchProduct from './screens/SearchProduct';
 import ListComments from './screens/ListComments';
+import ProductRatting from './screens/ProductRatting';
 
 const Stack = createStackNavigator();
 
@@ -68,6 +69,7 @@ export default function App() {
             <Stack.Screen name="NewFeedScreen" component={NewFeedScreen} />
             <Stack.Screen name="SearchProduct" component={SearchProduct} />
             <Stack.Screen name="ListComments" component={ListComments} />
+            <Stack.Screen name="ProductRatting" component={ProductRatting} />
           </Stack.Navigator>
         </NavigationContainer>
       </RootSiblingParent>
