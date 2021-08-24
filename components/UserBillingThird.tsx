@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, Box, FlatList, Image } from 'native-base';
+import { View, Text, Box, FlatList, Image, Button } from 'native-base';
 import * as React from 'react';
 import { ActivityIndicator, SafeAreaView } from 'react-native';
 import NumberFormat from 'react-number-format';
@@ -89,7 +89,7 @@ export default function UserBillingThird() {
                                             <View width="30%" height="100%">
                                                 <Image source={{ uri: `data:image/jpeg;base64,${item.productImageBase64}` }} alt="image base" resizeMode="cover" height='100%' />
                                             </View>
-                                            <View width="55%" left="10%" height="100%">
+                                            <View width="40%" left="10%" height="100%">
                                                 <Text>{item.productName}</Text>
                                                 <Text>Số lượng: {item.quantity}</Text>
                                                 <Text><NumberFormat
@@ -103,6 +103,17 @@ export default function UserBillingThird() {
                                                     <Image source={require('../assets/images/MiMartLogoGradientApp.png')} alt="image base" resizeMode="cover" width={6} height={6} />
                                                     <Text style={{ marginLeft: '3%', marginTop: '3%' }} width='45%'>MiMart</Text>
                                                 </View>
+                                            </View>
+
+                                            <View width="30%" height="100%" marginTop='10'>
+                                                <Button
+                                                    size="sm"
+                                                    variant='outline'
+                                                    colorScheme="secondary"
+                                                    onPress={() => navigation.navigate('ProductRatting', {item: item})}
+                                                >
+                                                    Đánh giá
+                                                </Button>
                                             </View>
                                         </View>
                                     )}
