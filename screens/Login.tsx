@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, SafeAreaView, Alert } from 'react-native';
 import {
   Input,
   Heading,
   NativeBaseProvider,
   Button,
-  Link
+  Link,
+  FormControl
 } from "native-base"
 import { useNavigation } from '@react-navigation/native';
 import ApiCommon from '../constants/ApiCommon';
-import  AsyncStorage  from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function Login() {
@@ -74,25 +75,37 @@ const styles = StyleSheet.create({
 });
 
 function onLogin(email: any, passWord: any, navigation: any) {
-  fetch(ApiCommon.rootUrl + '/authenticate', {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      email: email,
-      password: passWord,
-    }),
-  }).then((response) => response.json())
-    .then((responseJson) => {
-      if (responseJson.code == 1) {
-        AsyncStorage.setItem('token', responseJson.listData[0].token)
-        navigation.navigate('Main');
-      }
-    })
-    .catch((error) => {
-      console.log(error)
-    });
+  if (!email) {
+    Alert.alert(
+      '',
+      'Email không được để trống!',
+    );
+  } else if (!passWord) {
+    Alert.alert(
+      '',
+      'Mật khẩu không được để trống!',
+    );
+  } else {
+    fetch(ApiCommon.rootUrl + '/authenticate', {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email,
+        password: passWord,
+      }),
+    }).then((response) => response.json())
+      .then((responseJson) => {
+        if (responseJson.code == 1) {
+          AsyncStorage.setItem('token', responseJson.listData[0].token)
+          navigation.navigate('Main');
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+  }
 }
