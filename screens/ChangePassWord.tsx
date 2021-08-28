@@ -23,6 +23,7 @@ export default function ChangePassword() {
     const [email, setEmail] = useState('');
     const [passWord, setPassWord] = useState('');
     const [newPassWord, setNewPassWord] = useState('');
+    const [confirmPassWord, setConfirmPassWord] = useState('');
     const [token, setToken] = useState<string | null>('');
     const { getItem, setItem } = useAsyncStorage('token');
     const [retrieve, setRetrieve] = useState(true);
@@ -93,58 +94,68 @@ export default function ChangePassword() {
                     marginBottom={10}
                     size="sm"
                     type={showConfirmPass ? "text" : "password"}
+                    onChangeText={confirmPassWord => setConfirmPassWord(confirmPassWord)}
                     InputRightElement={
                         <Icon name="eye" size={25} style={{ marginRight: 10 }} onPress={handleClickConfirm} />
                     }
                     placeholder="Nhập lại mật khẩu mới"
                 />
-                <Button size="md" backgroundColor='#6CDDED' onPress={() => changePassWord(navigation, email, passWord, newPassWord, token)}>Cập nhật mật khẩu</Button>
+                <Button size="md" backgroundColor='#6CDDED' onPress={() => changePassWord(navigation, email, passWord, newPassWord, token, confirmPassWord)}>Cập nhật mật khẩu</Button>
             </NativeBaseProvider>
         </SafeAreaView>
     );
 }
 
-function changePassWord(navigation: any, email: any, passWord: any, newPassWord: any, token: any) {
-    fetch(ApiCommon.rootUrl + '/api/user/change', {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-            email: email,
-            password: passWord,
-            newPassword: newPassWord
-        }),
-    }).then((response) => response.json())
-        .then((responseJson) => {
-            if (responseJson.code == 1) {
-                Alert.alert(
-                    'Thông báo',
-                    'Thay đổi mật khẩu thành công. Bạn có muốn quay trở lại màn hình đăng nhập?',
-                    [
-                        {
-                            text: 'Yes',
-                            onPress: () => navigation.navigate('Login')
-                        },
-                        {
-                            text: 'No',
-                        },
-                    ],
-                    { cancelable: false },
-                );
-            } else {
-                Alert.alert(
-                    'Thông báo',
-                    responseJson.message,
-                );
-            }
-        })
-        .catch((error) => {
-            console.log(error)
-        });
+function changePassWord(navigation: any, email: any, passWord: any, newPassWord: any, token: any, confirmPassWord: any) {
+    if (newPassWord != confirmPassWord) {
+        Alert.alert(
+            '',
+            'Mật khẩu xác nhận không trùng khớp!',
+        );
+        //reload screen
+    } else {
+        fetch(ApiCommon.rootUrl + '/api/user/change', {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                email: email,
+                password: passWord,
+                newPassword: newPassWord
+            }),
+        }).then((response) => response.json())
+            .then((responseJson) => {
+                if (responseJson.code == 1) {
+                    Alert.alert(
+                        '',
+                        'Thay đổi mật khẩu thành công. Bạn có muốn quay trở lại màn hình đăng nhập?',
+                        [
+                            {
+                                text: 'Yes',
+                                onPress: () => navigation.navigate('Login')
+                            },
+                            {
+                                text: 'No',
+                            },
+                        ],
+                        { cancelable: false },
+                    );
+                } else {
+                    Alert.alert(
+                        '',
+                        responseJson.message,
+                    );
+                }
+            })
+            .catch((error) => {
+                console.log(error)
+            });
+    }
+
 }
 
 const styles = StyleSheet.create({

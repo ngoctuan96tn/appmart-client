@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, View, Platform } from 'react-native';
+import { SafeAreaView, StyleSheet, View, Platform, Alert } from 'react-native';
 import {
     Input,
     Heading,
@@ -10,7 +10,6 @@ import {
 } from "native-base"
 import ApiCommon from '../constants/ApiCommon';
 import RNPickerSelect from 'react-native-picker-select';
-import { border, color } from 'styled-system';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
@@ -20,7 +19,8 @@ export default function RegisterApartment(route: any) {
     const email = route.route.params.email;
     const phone = route.route.params.phone;
     const password = route.route.params.password;
-    const avatarImg = route.route.params.avatarImg
+    const avatarImg = route.route.params.avatarImg;
+    const confirmPassWord = route.route.params.confirmPassword;
     const photo = {
         uri: avatarImg,
         type: 'image/jpeg',
@@ -240,7 +240,7 @@ export default function RegisterApartment(route: any) {
                     }}
                 />
 
-                <Button size="md" marginTop={30} backgroundColor='#6CDDED' onPress={() => onSave(photo, email, userName, phone, password, idBuilding, idFloor, idRoom, navigation)}>Cập nhật</Button>
+                <Button size="md" marginTop={30} backgroundColor='#6CDDED' onPress={() => onSave(photo, email, userName, phone, password, idBuilding, idFloor, idRoom, navigation, confirmPassWord)}>Cập nhật</Button>
             </NativeBaseProvider>
         </SafeAreaView>
     );
@@ -280,37 +280,43 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#0ea5e9'
+        backgroundColor: '#0ea5e9',
     },
 });
 
-function onSave(photo: any, email: any, userName: any, phone: any, password: any, idBuilding: any, idFloor: any, idRoom: any, navigation: any) {
-    const data = new FormData();
-    data.append('avatarImg', photo);
-    data.append('email', email);
-    data.append('userName', userName);
-    data.append('phone', phone);
-    data.append('password', password);
-    data.append('roomId', idBuilding);
-    data.append('floorId', idFloor);
-    data.append('buildingId', idRoom);
+function onSave(photo: any, email: any, userName: any, phone: any, password: any, idBuilding: any, idFloor: any, idRoom: any, navigation: any, confirmPassWord: any) {
+    if (password != confirmPassWord) {
+        Alert.alert(
+            '',
+            'Mật khẩu xác nhận không trùng khớp!',
+        );
+    } else {
+        const data = new FormData();
+        data.append('avatarImg', photo);
+        data.append('email', email);
+        data.append('userName', userName);
+        data.append('phone', phone);
+        data.append('password', password);
+        data.append('roomId', idBuilding);
+        data.append('floorId', idFloor);
+        data.append('buildingId', idRoom);
 
-    fetch(ApiCommon.rootUrl + '/api/register', {
-        method: 'post',
-        body: data,
-        headers: {
-            'Content-Type': 'multipart/form-data; ',
-        },
-    }).then((response) => response.json())
-        .then((responseJson) => {
-            if (responseJson.code == 1) {
-                console.log(responseJson.message)
-                navigation.navigate('Login');
-            } else {
-                console.log('đăng ký thất bại')
-            }
-        })
-        .catch((error) => {
-            console.log(error)
-        });
+        fetch(ApiCommon.rootUrl + '/api/register', {
+            method: 'post',
+            body: data,
+            headers: {
+                'Content-Type': 'multipart/form-data; ',
+            },
+        }).then((response) => response.json())
+            .then((responseJson) => {
+                if (responseJson.code == 1) {
+                    navigation.navigate('Login');
+                } else {
+                    console.log('đăng ký thất bại')
+                }
+            })
+            .catch((error) => {
+                console.log(error)
+            });
+    }
 }

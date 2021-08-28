@@ -21,6 +21,7 @@ export default function Register(route: any) {
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [passWord, setPassWord] = useState('');
+  const [confirmPassWord, setConfirmPassWord] = useState('');
 
   return (
     <SafeAreaView style={styles.container}>
@@ -84,6 +85,7 @@ export default function Register(route: any) {
           marginBottom={10}
           size="sm"
           type={showConfirm ? "text" : "password"}
+          onChangeText={confirmPassWord => setConfirmPassWord(confirmPassWord)}
           InputRightElement={
             <Icon name="eye" size={25} style={{ marginRight: 10 }} onPress={handleClickConfirm} />
           }
@@ -94,7 +96,8 @@ export default function Register(route: any) {
           email: email,
           phone: phoneNumber,
           password: passWord,
-          avatarImg: avatarImg
+          avatarImg: avatarImg,
+          confirmPassword: confirmPassWord,
         })}>Tiếp theo</Button>
       </NativeBaseProvider>
     </SafeAreaView>
