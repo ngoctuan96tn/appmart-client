@@ -285,31 +285,43 @@ const styles = StyleSheet.create({
 });
 
 function onSave(photo: any, email: any, userName: any, phone: any, password: any, idBuilding: any, idFloor: any, idRoom: any, navigation: any, confirmPassWord: any) {
+    const vnf_regex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
     if (password != confirmPassWord) {
         Alert.alert(
             '',
             'Mật khẩu xác nhận không trùng khớp!',
         );
+        return
     } else if (!email) {
         Alert.alert(
             '',
             'Email không được để trống!',
         );
+        return
     } else if (!userName) {
         Alert.alert(
             '',
             'Họ tên không được để trống!',
         );
+        return
+    } else if (!vnf_regex.test(phone)) {
+        Alert.alert(
+            '',
+            'Số điện thoại không đúng định dạng!',
+        );
+        return
     } else if (!phone) {
         Alert.alert(
             '',
             'Số điện thoại không được để trống!',
         );
+        return
     } else if (!password) {
         Alert.alert(
             '',
             'Mật khẩu không được để trống!',
         );
+        return
     } else {
         const data = new FormData();
         data.append('avatarImg', photo);

@@ -80,11 +80,13 @@ function onLogin(email: any, passWord: any, navigation: any) {
       '',
       'Email không được để trống!',
     );
+    return
   } else if (!passWord) {
     Alert.alert(
       '',
       'Mật khẩu không được để trống!',
     );
+    return
   } else {
     fetch(ApiCommon.rootUrl + '/authenticate', {
       method: 'POST',
