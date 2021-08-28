@@ -290,6 +290,26 @@ function onSave(photo: any, email: any, userName: any, phone: any, password: any
             '',
             'Mật khẩu xác nhận không trùng khớp!',
         );
+    } else if (!email) {
+        Alert.alert(
+            '',
+            'Email không được để trống!',
+        );
+    } else if (!userName) {
+        Alert.alert(
+            '',
+            'Họ tên không được để trống!',
+        );
+    } else if (!phone) {
+        Alert.alert(
+            '',
+            'Số điện thoại không được để trống!',
+        );
+    } else if (!password) {
+        Alert.alert(
+            '',
+            'Mật khẩu không được để trống!',
+        );
     } else {
         const data = new FormData();
         data.append('avatarImg', photo);
