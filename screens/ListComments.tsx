@@ -11,6 +11,7 @@ import {
   ScrollView,
   TextInput, Image, SafeAreaView
 } from 'react-native';
+import moment from "moment";
 import ApiCommon from '../constants/ApiCommon';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -75,6 +76,14 @@ export default function ListComments(route: any) {
           data={postArticles}
           renderItem={({ item }) => (
             <SafeAreaView>
+              <View style={styles.profileUserStatus}>
+                <Image style={styles.image} source={{ uri: `data:image/jpeg;base64,${item.user.avatarHashCode}` }} />
+
+                <View style={styles.nameContainer}>
+                  <Text style={styles.nameText}>{item.user.userName}</Text>
+                  <Text style={styles.timeText}>{moment(item.createDate).format("hh:mm DD-MM-YY")}</Text>
+                </View>
+              </View>
               <Text style={styles.captionText}>{item.content}</Text>
               <FlatList
                 data={item.mediaList}
@@ -89,7 +98,7 @@ export default function ListComments(route: any) {
           style={styles.root}
           data={listComments}
           renderItem={({ item }) => (
-            <View style={styles.container}>
+            <View style={styles.containerComment}>
               <ScrollView>
                 <View style={styles.content}>
                   <View style={styles.profileUserStatus}>
@@ -98,7 +107,7 @@ export default function ListComments(route: any) {
                     <View style={styles.nameContainer}>
                       <Text style={styles.name}>{item.userName}</Text>
                       <Text style={styles.time}>
-                        {item.createAt}
+                        {moment(item.createAt).format("hh:mm DD-MM-YY")}
                       </Text>
                     </View>
                     <MenuProvider style={{ flexDirection: "column", padding: 30 }}>
@@ -198,7 +207,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#CCDEE4'
   },
   profileUserStatus: {
-    marginTop: 20,
     flexDirection: 'row',
     alignItems: 'center'
   },
@@ -214,9 +222,10 @@ const styles = StyleSheet.create({
     height: 70,
   },
   captionText: {
-    height: '8%',
+    marginTop: 10,
     backgroundColor: '#CCDEE4',
     fontSize: 15,
+    padding: 5
   },
   searchSection: {
     flex: 1,
@@ -228,19 +237,20 @@ const styles = StyleSheet.create({
     bottom: 0
   },
   root: {
-    backgroundColor: "#ffffff",
+    backgroundColor: "#fff",
     marginTop: 10,
-  },
-  buttonGroupContainer: {
-    height: 30,
-    flexDirection: 'row'
+    height: '100%'
   },
   container: {
     marginLeft: 10,
     marginRight: 10,
     paddingVertical: 10,
     flexDirection: 'row',
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
+    height: '100%'
+  },
+  containerComment: {
+    paddingVertical: 2,
   },
   buttonContainer: {
     flex: 1,
@@ -278,6 +288,11 @@ const styles = StyleSheet.create({
   },
   nameContainer: {
     marginLeft: 10,
+    marginRight: '35%'
+  },
+  buttonGroupContainer: {
+    height: 35,
+    flexDirection: 'row'
   },
 });
 
