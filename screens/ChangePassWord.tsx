@@ -107,12 +107,25 @@ export default function ChangePassword() {
 }
 
 function changePassWord(navigation: any, email: any, passWord: any, newPassWord: any, token: any, confirmPassWord: any) {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (newPassWord != confirmPassWord) {
         Alert.alert(
             '',
             'Mật khẩu xác nhận không trùng khớp!',
         );
         //reload screen
+    } else if (!re.test(String(email).toLowerCase())) {
+        Alert.alert(
+            '',
+            'Email không đúng định dạng!',
+        );
+        return
+    } else if (!email || !passWord || !newPassWord) {
+        Alert.alert(
+            '',
+            'Vui lòng nhập đủ thông tin!',
+        );
+        return
     } else {
         fetch(ApiCommon.rootUrl + '/api/user/change', {
             method: 'POST',

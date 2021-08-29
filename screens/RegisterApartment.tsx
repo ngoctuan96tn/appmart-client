@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, View, Platform, Alert } from 'react-native';
+import { SafeAreaView, StyleSheet, View, Platform } from 'react-native';
 import {
     Input,
     Heading,
@@ -285,70 +285,31 @@ const styles = StyleSheet.create({
 });
 
 function onSave(photo: any, email: any, userName: any, phone: any, password: any, idBuilding: any, idFloor: any, idRoom: any, navigation: any, confirmPassWord: any) {
-    const vnf_regex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
-    if (password != confirmPassWord) {
-        Alert.alert(
-            '',
-            'Mật khẩu xác nhận không trùng khớp!',
-        );
-        return
-    } else if (!email) {
-        Alert.alert(
-            '',
-            'Email không được để trống!',
-        );
-        return
-    } else if (!userName) {
-        Alert.alert(
-            '',
-            'Họ tên không được để trống!',
-        );
-        return
-    } else if (!vnf_regex.test(phone)) {
-        Alert.alert(
-            '',
-            'Số điện thoại không đúng định dạng!',
-        );
-        return
-    } else if (!phone) {
-        Alert.alert(
-            '',
-            'Số điện thoại không được để trống!',
-        );
-        return
-    } else if (!password) {
-        Alert.alert(
-            '',
-            'Mật khẩu không được để trống!',
-        );
-        return
-    } else {
-        const data = new FormData();
-        data.append('avatarImg', photo);
-        data.append('email', email);
-        data.append('userName', userName);
-        data.append('phone', phone);
-        data.append('password', password);
-        data.append('roomId', idBuilding);
-        data.append('floorId', idFloor);
-        data.append('buildingId', idRoom);
+    const data = new FormData();
+    data.append('avatarImg', photo);
+    data.append('email', email);
+    data.append('userName', userName);
+    data.append('phone', phone);
+    data.append('password', password);
+    data.append('roomId', idBuilding);
+    data.append('floorId', idFloor);
+    data.append('buildingId', idRoom);
 
-        fetch(ApiCommon.rootUrl + '/api/register', {
-            method: 'post',
-            body: data,
-            headers: {
-                'Content-Type': 'multipart/form-data; ',
-            },
-        }).then((response) => response.json())
-            .then((responseJson) => {
-                if (responseJson.code == 1) {
-                    navigation.navigate('Login');
-                } else {
-                    console.log('đăng ký thất bại')
-                }
-            })
-            .catch((error) => {
-                console.log(error)
-            });
-    }
+    fetch(ApiCommon.rootUrl + '/api/register', {
+        method: 'post',
+        body: data,
+        headers: {
+            'Content-Type': 'multipart/form-data; ',
+        },
+    }).then((response) => response.json())
+        .then((responseJson) => {
+            if (responseJson.code == 1) {
+                navigation.navigate('Login');
+            } else {
+                console.log('đăng ký thất bại')
+            }
+        })
+        .catch((error) => {
+            console.log(error)
+        });
 }
