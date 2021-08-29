@@ -11,7 +11,6 @@ import ProductSimilarSuggestList from "../components/ProductSimilarSuggestList";
 import CartProvider, { IProduct } from "../components/CartProvider";
 import NumberFormat from "react-number-format";
 import { useNavigation } from "@react-navigation/native";
-import { Item } from "react-native-paper/lib/typescript/components/List/List";
 export function DetailProduct(route: any) {
     const navigation = useNavigation();
     const productId = route.route.params.data.route.params.productId;
