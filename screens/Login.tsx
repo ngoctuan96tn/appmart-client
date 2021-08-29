@@ -75,16 +75,17 @@ const styles = StyleSheet.create({
 });
 
 function onLogin(email: any, passWord: any, navigation: any) {
-  if (!email) {
+  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  if (!email || !passWord) {
     Alert.alert(
       '',
-      'Email không được để trống!',
+      'Vui lòng nhập đủ thông tin!',
     );
     return
-  } else if (!passWord) {
+  } else if (!re.test(String(email).toLowerCase())) {
     Alert.alert(
       '',
-      'Mật khẩu không được để trống!',
+      'Email không đúng định dạng!',
     );
     return
   } else {
