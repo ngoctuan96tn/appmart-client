@@ -126,6 +126,12 @@ function changePassWord(navigation: any, email: any, passWord: any, newPassWord:
             'Vui lòng nhập đủ thông tin!',
         );
         return
+    } else if (passWord == newPassWord) {
+        Alert.alert(
+            '',
+            'Mật khẩu trùng với mật khẩu cũ!',
+        );
+        return
     } else {
         fetch(ApiCommon.rootUrl + '/api/user/change', {
             method: 'POST',
