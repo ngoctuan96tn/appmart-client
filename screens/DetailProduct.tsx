@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
-import { Center, NativeBaseProvider, Text, Box, FlatList, ScrollView, Image, Button } from "native-base"
-import { ActivityIndicator, SafeAreaView, ToastAndroid, View } from "react-native"
+import { Center, NativeBaseProvider, Text, Box, FlatList, ScrollView, Image, Button, View } from "native-base"
+import { ActivityIndicator, SafeAreaView, ToastAndroid, } from "react-native"
 import ApiCommon from "../constants/ApiCommon";
 import { createStackNavigator } from "@react-navigation/stack";
 import { TabOneParamList } from "../types";
@@ -10,11 +10,13 @@ import { FontAwesome } from "@expo/vector-icons";
 import ProductSimilarSuggestList from "../components/ProductSimilarSuggestList";
 import CartProvider, { IProduct } from "../components/CartProvider";
 import NumberFormat from "react-number-format";
+import { useNavigation } from "@react-navigation/native";
 export function DetailProduct(route: any) {
-
+    const navigation = useNavigation();
     const productId = route.route.params.data.route.params.productId;
     const [dataProduct, setDataproduct] = useState([]);
     const [productDetail, setProductDetail] = useState<any>({});
+    const [dataComment, setDataComment] = useState<any>({});
     const [isLoading, setLoading] = useState(true);
     useEffect(() => {
         if (isLoading) {
@@ -29,6 +31,12 @@ export function DetailProduct(route: any) {
                 .then((json) => setProductDetail(json))
                 .catch((error) => console.error(error))
                 .finally(() => setLoading(false));
+
+            fetch(ApiCommon.rootUrl + `/api/product/${productId}/rattings`)
+                .then((response) => response.json())
+                .then((json) => { setDataComment(json); })
+                .catch((error) => console.error(error))
+                .finally(() => setLoading(false));
         }
     }, []);
 
@@ -38,6 +46,11 @@ export function DetailProduct(route: any) {
     const addCart = async () => {
         const lineItems = await CartProvider.getItemFromStorage();
         CartProvider.addToCart(product, lineItems);
+    }
+
+    const payment = async () => {
+        await addCart();
+        navigation.navigate('Cart');
     }
 
     if (!isLoading) {
@@ -102,8 +115,40 @@ export function DetailProduct(route: any) {
                                 type='star'
                                 ratingCount={5}
                                 imageSize={16}
-                                startingValue={0}
-                            /> 0.0/5 (0 đánh giá)</Text>
+                                startingValue={productDetail.rating ? productDetail.rating : 0}
+                            /> {productDetail.rating ? productDetail.rating : 0}/5 ({productDetail.countRate ? productDetail.countRate : 0} đánh giá)</Text>
+                        <FlatList
+                            data={dataComment.listData}
+                            renderItem={({ item }) => (
+                                <View style={{
+                                    flexDirection: "row", height: 80, marginTop: '2%', shadowColor: "#000",
+                                    shadowOffset: {
+                                        width: 0,
+                                        height: 2,
+                                    },
+                                    shadowOpacity: 0.25,
+                                    shadowRadius: 3.84,
+                                }}>
+                                    <View width="20%" height="100%">
+                                        <Image source={{ uri: `data:image/jpeg;base64,${item.user.avatarHashCode}` }} alt="image base" resizeMode="cover" height='100%' />
+                                    </View>
+                                    <View width="60%" left="10%" height="100%">
+                                        <Text style={{fontWeight:'bold'}}>{item.user.userName}</Text>
+                                        <Text>
+                                            <Rating
+                                                type='star'
+                                                ratingCount={5}
+                                                imageSize={16}
+                                                startingValue={item.ratting ? item.ratting : 0}
+                                            />
+                                        </Text>
+                                        <Text>{item.content}</Text>
+                                        <Text>{item.createDate}</Text>
+                                    </View>
+                                </View>
+                            )}
+                            keyExtractor={item => item.id.toString()}
+                        />
                     </View>
 
                     <View style={{ marginTop: '5%', backgroundColor: '#fff' }}>
@@ -122,7 +167,7 @@ export function DetailProduct(route: any) {
                             <FontAwesome name='cart-plus' color='#0ea5e9' size={22} />
                         </Button>
                         <View style={{ height: '100%', width: 1, backgroundColor: '#909090', }}></View>
-                        <Button borderColor='#f8f8ff' borderRadius={0} size="sm" onPress={() => console.log("hello world")} width='33%'>
+                        <Button borderColor='#f8f8ff' borderRadius={0} size="sm" onPress={() => { payment() }} width='33%'>
                             Thanh toán
                         </Button>
                     </View>

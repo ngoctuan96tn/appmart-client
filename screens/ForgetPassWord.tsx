@@ -39,32 +39,39 @@ export default function ForgetPassword() {
 }
 
 function getPassWord(phone: string, navigation: any) {
-  fetch(ApiCommon.rootUrl + '/api/user/reset', {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      phone: phone,
-    }),
-  }).then((response) => response.json())
-    .then((responseJson) => {
-      if (responseJson.code == 1) {
-        navigation.navigate('Login');
-        Alert.alert(
-          responseJson.message,
-        );
-      } else {
-        Alert.alert(
-          responseJson.message,
-        );
-      }
-    })
-    .catch((error) => {
-      console.log(error)
-    });
+  if (!phone) {
+    Alert.alert(
+      '',
+      'Số điện thoại không được để trống!',
+    );
+  } else {
+    fetch(ApiCommon.rootUrl + '/api/user/reset', {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        phone: phone,
+      }),
+    }).then((response) => response.json())
+      .then((responseJson) => {
+        if (responseJson.code == 1) {
+          navigation.navigate('Login');
+          Alert.alert(
+            responseJson.message,
+          );
+        } else {
+          Alert.alert(
+            responseJson.message,
+          );
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+  }
 }
 
 const styles = StyleSheet.create({

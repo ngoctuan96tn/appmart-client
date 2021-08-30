@@ -92,7 +92,7 @@ function TabOneNavigator() {
       <TabOneStack.Screen
         name="TabOneScreen"
         component={ShopScreen}
-        options={{ headerTitle: 'Mua sắm', headerLeft: null, gestureEnabled: false }}
+        options={{ headerTitle: 'Mua sắm', headerTitleAlign:'center', headerLeft: null, gestureEnabled: false }}
       />
     </TabOneStack.Navigator>
   );
@@ -106,7 +106,7 @@ function TabTwoNavigator() {
       <TabTwoStack.Screen
         name="TabTwoScreen"
         component={NotifyScreen}
-        options={{ headerTitle: 'Thông báo', headerLeft: null, gestureEnabled: false }}
+        options={{ headerTitle: 'Thông báo', headerTitleAlign:'center', headerLeft: null, gestureEnabled: false }}
       />
     </TabTwoStack.Navigator>
   );
@@ -120,7 +120,7 @@ function TabThreeNavigator() {
       <TabThreeStack.Screen
         name="TabThreeScreen"
         component={NewFeedScreen}
-        options={{ headerTitle: 'Bảng tin', headerLeft: null, gestureEnabled: false }}
+        options={{ headerTitle: 'Bảng tin', headerTitleAlign:'center', headerLeft: null, gestureEnabled: false }}
       />
     </TabThreeStack.Navigator>
   );
@@ -134,7 +134,7 @@ function TabFiveNavigator() {
       <TabFiveStack.Screen
         name="TabFiveScreen"
         component={MessageScreen}
-        options={{ headerTitle: 'Tin nhắn', headerLeft: null, gestureEnabled: false }}
+        options={{ headerTitle: 'Tin nhắn', headerTitleAlign:'center', headerLeft: null, gestureEnabled: false }}
       />
     </TabFiveStack.Navigator>
   );
@@ -148,7 +148,7 @@ function TabSixNavigator() {
       <TabSixStack.Screen
         name="TabSixScreen"
         component={ProfileScreen}
-        options={{ headerTitle: 'Cá nhân', headerLeft: null, gestureEnabled: false }}
+        options={{ headerTitle: 'Cá nhân', headerTitleAlign:'center',  headerLeft: null, gestureEnabled: false }}
       />
     </TabSixStack.Navigator>
   );

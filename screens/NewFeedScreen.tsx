@@ -3,25 +3,20 @@ import { View, StyleSheet, Image, Text, TouchableOpacity, ScrollView, } from 're
 import { useNavigation } from '@react-navigation/native';
 import ApiCommon from '../constants/ApiCommon';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
+import { FlatList, NativeBaseProvider } from 'native-base';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import moment from "moment";
+import { EvilIcons } from '@expo/vector-icons';
 export default function NewFeedScreen() {
-    const [isLoading, setLoading] = useState(true);
     const [data, setData] = useState([]);
     const navigation = useNavigation();
     const [retrieve, setRetrieve] = useState(true);
     const [token, setToken] = useState<string | null>('');
     const { getItem, setItem } = useAsyncStorage('token');
     const [avatarHashCode, setAvatarHashCode] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [loadData, setLoadData] = useState(true);
     useEffect(() => {
-        if (isLoading) {
-            fetch(ApiCommon.rootUrl + '/api/posts')
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    if (responseJson.code == 1) {
-                        setData(responseJson.listData);
-                        setLoading(false)
-                    }
-                })
-        }
 
         const readToken = async () => {
             const item = await getItem();
@@ -32,53 +27,139 @@ export default function NewFeedScreen() {
         if (retrieve) {
             readToken();
         }
-        if (retrieve === false) {
+        if (retrieve === false && loadData === true) {
             const headers = { 'Authorization': `Bearer ${token}` }
             fetch(ApiCommon.rootUrl + '/api/user/login', { headers })
                 .then((response) => response.json())
                 .then((responseJson) => setAvatarHashCode(responseJson.avatarHashCode))
+
+
+            fetch(ApiCommon.rootUrl + '/api/posts', { headers })
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    if (responseJson.code == 1) {
+                        setData(responseJson.listData);
+                        setLoadData(false);
+                    }
+                })
+
         }
-    }, [retrieve]);
 
+        if (loading) {
+            setData(data);
+            setLoading(false);
+        }
+
+    }, [retrieve, loading]);
+    const handleAfterLike = (item: any) => {
+        item.isLike = !item.isLike;
+        if (item.isLike) {
+            item.totalLike = item.totalLike + 1;
+        } else {
+            item.totalLike = (item.totalLike - 1) >= 0 ? item.totalLike - 1 : 0;
+        }
+        setLoading(true);
+    }
     return (
-        <View style={styles.container}>
-            <ScrollView>
-                <TouchableOpacity style={styles.text}>
-                    <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen')}>
-                        <Image style={styles.imageStatus} source={{ uri: `data:image/jpeg;base64,${avatarHashCode}` }} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('PostArticle', {
-                        data: null, flag: false
-                    })}>
-                        <Text style={styles.postStatus}>Bạn đang nghĩ gì?</Text>
-                    </TouchableOpacity>
-                </TouchableOpacity>
-                <View style={styles.lineImg} />
+        <NativeBaseProvider>
+            <View style={styles.container}>
 
-                {data.map((item: any) => (
-                    <>
-                        <View style={styles.profileUserStatus}>
-                            <Image style={styles.image} source={{ uri: `data:image/jpeg;base64,${item.user.avatarHashCode}` }} />
+                <ScrollView>
+                    <TouchableOpacity style={styles.text}>
+                        <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen')}>
+                            <Image style={styles.imageStatus} source={{ uri: `data:image/jpeg;base64,${avatarHashCode}` }} />
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('PostArticle', {
+                            data: null, flag: false
+                        })}>
+                            <Text style={styles.postStatus}>Bạn đang nghĩ gì?</Text>
+                        </TouchableOpacity>
+                    </TouchableOpacity>
+                    <View style={styles.lineImg} />
 
-                            <View style={styles.nameContainer}>
-                                <Text style={styles.nameText}>{item.user.userName}</Text>
-                                <Text style={styles.timeText}>{item.createDate}</Text>
-                            </View>
-                        </View>
-                        <Text style={styles.captionText}>{item.content}</Text>{item.mediaList.map((image: any) => (<Image style={styles.feedImage} source={{ uri: `data:image/jpeg;base64,${image.attachBase64}` }} />))}<View style={styles.line} /><View style={styles.buttonGroupContainer}>
-                            <TouchableOpacity style={styles.buttonContainer}>
-                                <Text style={styles.buttonText}>Thích</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.buttonContainer}>
-                                <Text style={styles.buttonText}>Bình luận</Text>
-                            </TouchableOpacity>
-                            <View style={styles.lineImg} />
-                        </View>
-                        <View style={styles.lineImg} />
-                    </>
-                ))}
-            </ScrollView>
-        </View>
+                    <FlatList
+                        data={data}
+                        renderItem={({ item }) => (
+                            <SafeAreaView>
+                                <View style={styles.profileUserStatus}>
+                                    <Image style={styles.image} source={{ uri: `data:image/jpeg;base64,${item.user.avatarHashCode}` }} />
+
+                                    <View style={styles.nameContainer}>
+                                        <Text style={styles.nameText}>{item.user.userName}</Text>
+                                        <Text style={styles.timeText}>{moment(item.createDate).format("hh:mm DD-MM-YY")}</Text>
+                                    </View>
+                                </View>
+                                <Text style={styles.captionText}>{item.content}</Text>
+                                <FlatList
+                                    data={item.mediaList}
+                                    renderItem={({ item }) => (
+                                        <Image style={styles.feedImage} source={{ uri: `data:image/jpeg;base64,${item.attachBase64}` }} />
+                                    )}
+                                    keyExtractor={(item) => item.attachId.toString()}
+                                />
+                                <View style={styles.line} />
+                                <View style={styles.buttonGroupContainer}>
+                                    <TouchableOpacity style={styles.buttonContainer}>
+                                        {item.totalLike ? 
+                                            <View style={{flex:1, flexDirection:'row',  alignItems: 'center',}}>
+                                                <EvilIcons name='like' size={16} /><Text style={{ fontSize: 12 }}> {item.totalLike} </Text>
+                                            </View>
+                                        : 
+                                            <View style={{flex:1, flexDirection:'row',  alignItems: 'center',}}>
+                                                <EvilIcons name='like' size={16} /><Text style={{ fontSize: 12 }}> 0 </Text>
+                                            </View>
+                                        }
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.buttonContainer}>
+                                    {item.totalComment ?
+                                        <View style={{flex:1, flexDirection:'row',  alignItems: 'center',}}>
+                                            <EvilIcons name='comment' size={16} /><Text style={{ fontSize: 12 }}> {item.totalComment} </Text>
+                                        </View>
+                                        :
+                                        <View style={{flex:1, flexDirection:'row',  alignItems: 'center',}}>
+                                            <EvilIcons name='comment' size={16} /><Text style={{ fontSize: 12 }}> 0 </Text>
+                                        </View>
+                                    }
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={styles.line} /><View style={styles.buttonGroupContainer}>
+                                    <TouchableOpacity style={styles.buttonContainer} onPress={() => { addReactionLike(item.postId, token), handleAfterLike(item) }}>
+                                        {(item.isLike) ? 
+                                        (
+                                            <View style={{flex:1, flexDirection:'row',  alignItems: 'center',}}>
+                                                <EvilIcons name='like' size={25} color='#00BBF7'/>
+                                                <Text style={styles.buttonTextIsLike}>Thích</Text>
+                                            </View>
+                                        ) : 
+                                        (
+                                            <View style={{flex:1, flexDirection:'row',  alignItems: 'center',}}>
+                                                <EvilIcons name='like' size={25} color='#000000'/>
+                                                <Text style={styles.buttonText}>Thích</Text>
+                                            </View>
+                                        
+                                        )
+                                        }
+                                    </TouchableOpacity>
+
+                                    <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('ListComments', {
+                                        postId: item.postId
+                                    })}>
+                                        <View style={{flex:1, flexDirection:'row',  alignItems: 'center',}}>
+                                            <EvilIcons name='comment' size={25} color='#000000'/>
+                                            <Text style={styles.buttonText}>Bình luận</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    <View style={styles.lineImg} />
+                                </View>
+                                <View style={styles.lineImg} />
+                            </SafeAreaView>
+                        )}
+                        keyExtractor={(item) => item.postId.toString()}
+                    />
+                </ScrollView>
+
+            </View>
+        </NativeBaseProvider>
     )
 }
 const styles = StyleSheet.create({
@@ -134,11 +215,17 @@ const styles = StyleSheet.create({
     buttonContainer: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     buttonText: {
         fontSize: 15,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        color: '#000000'
+    },
+    buttonTextIsLike: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: '#00BBF7',
     },
     line: {
         height: 0.5,
@@ -161,3 +248,8 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
 })
+
+export function addReactionLike(id: number, token: any) {
+    const headers = { 'Authorization': `Bearer ${token}` }
+    fetch(ApiCommon.rootUrl + `/api/posts/like/${id}`, { headers })
+}

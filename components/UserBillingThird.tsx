@@ -1,15 +1,14 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import AsyncStorage, { useAsyncStorage } from '@react-native-async-storage/async-storage';
+import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-import { Box, FlatList, Image, View, Text, Button } from 'native-base';
+import { View, Text, Box, FlatList, Image, Button } from 'native-base';
 import * as React from 'react';
-import { ActivityIndicator, Alert, SafeAreaView, ScrollView } from 'react-native';
-import Toast from 'react-native-root-toast';
+import { ActivityIndicator, SafeAreaView } from 'react-native';
 import NumberFormat from 'react-number-format';
 import ApiCommon from '../constants/ApiCommon';
-import CartProvider, { ILineItem } from './CartProvider';
 
-export default function UserBillingFirst() {
+
+export default function UserBillingThird() {
     const [token, setToken] = React.useState<string | null>('');
     const [userLogin, setUserLogin] = React.useState<any>({});
     const { getItem, setItem } = useAsyncStorage('token');
@@ -36,7 +35,7 @@ export default function UserBillingFirst() {
                 .then((json) => setUserLogin(json))
                 .catch((error) => console.error(error))
 
-            fetch(ApiCommon.rootUrl + `/api/new-order/${userLogin.id}`, { headers })
+            fetch(ApiCommon.rootUrl + `/api/done-order/${userLogin.id}`, { headers })
                 .then((response) => response.json())
                 .then((json) => setDataproduct(json))
                 .catch((error) => console.error(error))
@@ -90,7 +89,7 @@ export default function UserBillingFirst() {
                                             <View width="30%" height="100%">
                                                 <Image source={{ uri: `data:image/jpeg;base64,${item.productImageBase64}` }} alt="image base" resizeMode="cover" height='100%' />
                                             </View>
-                                            <View width="55%" left="10%" height="100%">
+                                            <View width="40%" left="10%" height="100%">
                                                 <Text>{item.productName}</Text>
                                                 <Text>Số lượng: {item.quantity}</Text>
                                                 <Text><NumberFormat
@@ -105,25 +104,21 @@ export default function UserBillingFirst() {
                                                     <Text style={{ marginLeft: '3%', marginTop: '3%' }} width='45%'>MiMart</Text>
                                                 </View>
                                             </View>
+
+                                            <View width="30%" height="100%" marginTop='10'>
+                                                <Button
+                                                    size="sm"
+                                                    variant='outline'
+                                                    colorScheme="secondary"
+                                                    onPress={() => navigation.navigate('ProductRatting', {item: item})}
+                                                >
+                                                    Đánh giá
+                                                </Button>
+                                            </View>
                                         </View>
                                     )}
                                     keyExtractor={(item) => item.productId}
                                 />
-                            </View>
-
-                            <View style={{ width: '99%', alignItems:'flex-end' }}>
-                                <Button
-                                    size="sm"
-                                    colorScheme="danger"
-                                    bottom={1}
-                                    w="30%"
-                                    _text={{
-                                        color: "white",
-                                      }}
-                                    onPress={() => handleCancel(item.billId, userLogin.id, item.orderCode)}
-                                >
-                                    Hủy đơn
-                                </Button>
                             </View>
                         </View>
                     )}
@@ -138,59 +133,4 @@ export default function UserBillingFirst() {
             </View>
         );
     }
-}
-
-function handleCancel(billId: any, userId: any, orderCode: any) {
-    Alert.alert(
-        "Hủy đơn hàng",
-        `Bạn có chắc chắn muốn hủy đơn hàng ${orderCode} ?`,
-        [
-          // The "Yes" button
-          {
-            text: "Có",
-            onPress: async () => {
-             
-                // gọi api hủy đơn
-                fetch(ApiCommon.rootUrl + '/api/cancel-order', {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        billId: billId,
-                        userId: userId,
-                    }),
-                }).then((response) => response.json())
-                    .then((responseJson) => {
-                        if (responseJson.code == 1) {
-                            Toast.show('Bạn đã hủy đơn hàng thành công!', {
-                                duration: Toast.durations.LONG,
-                                position: 0,
-                                shadow: true,
-                                animation: true,
-                                hideOnPress: true,
-                                backgroundColor: '#ffffff',
-                                textColor: '#ff0000',
-                
-                            });
-                        }
-                    })
-                    .catch((error) => {
-                        console.log(error)
-                    });
-                    //END gọi api hủy đơn
-
-            },
-          },
-          // The "No" button
-          // Does nothing but dismiss the dialog when tapped
-          {
-            text: "Không",
-          },
-        ]
-      );
-
-    
 }

@@ -10,7 +10,6 @@ import {
 } from "native-base"
 import ApiCommon from '../constants/ApiCommon';
 import RNPickerSelect from 'react-native-picker-select';
-import { border, color } from 'styled-system';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
@@ -20,7 +19,8 @@ export default function RegisterApartment(route: any) {
     const email = route.route.params.email;
     const phone = route.route.params.phone;
     const password = route.route.params.password;
-    const avatarImg = route.route.params.avatarImg
+    const avatarImg = route.route.params.avatarImg;
+    const confirmPassWord = route.route.params.confirmPassword;
     const photo = {
         uri: avatarImg,
         type: 'image/jpeg',
@@ -240,7 +240,7 @@ export default function RegisterApartment(route: any) {
                     }}
                 />
 
-                <Button size="md" marginTop={30} backgroundColor='#6CDDED' onPress={() => onSave(photo, email, userName, phone, password, idBuilding, idFloor, idRoom, navigation)}>Cập nhật</Button>
+                <Button size="md" marginTop={30} backgroundColor='#6CDDED' onPress={() => onSave(photo, email, userName, phone, password, idBuilding, idFloor, idRoom, navigation, confirmPassWord)}>Cập nhật</Button>
             </NativeBaseProvider>
         </SafeAreaView>
     );
@@ -280,11 +280,11 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#0ea5e9'
+        backgroundColor: '#0ea5e9',
     },
 });
 
-function onSave(photo: any, email: any, userName: any, phone: any, password: any, idBuilding: any, idFloor: any, idRoom: any, navigation: any) {
+function onSave(photo: any, email: any, userName: any, phone: any, password: any, idBuilding: any, idFloor: any, idRoom: any, navigation: any, confirmPassWord: any) {
     const data = new FormData();
     data.append('avatarImg', photo);
     data.append('email', email);
@@ -304,7 +304,6 @@ function onSave(photo: any, email: any, userName: any, phone: any, password: any
     }).then((response) => response.json())
         .then((responseJson) => {
             if (responseJson.code == 1) {
-                console.log(responseJson.message)
                 navigation.navigate('Login');
             } else {
                 console.log('đăng ký thất bại')
