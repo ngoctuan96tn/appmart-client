@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, SafeAreaView, Alert } from 'react-native';
 import {
   Input,
   Heading,
   NativeBaseProvider,
   Button,
-  Link
+  Link,
+  FormControl
 } from "native-base"
 import { useNavigation } from '@react-navigation/native';
 import ApiCommon from '../constants/ApiCommon';
-import  AsyncStorage  from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function Login() {
@@ -74,25 +75,40 @@ const styles = StyleSheet.create({
 });
 
 function onLogin(email: any, passWord: any, navigation: any) {
-  fetch(ApiCommon.rootUrl + '/authenticate', {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      email: email,
-      password: passWord,
-    }),
-  }).then((response) => response.json())
-    .then((responseJson) => {
-      if (responseJson.code == 1) {
-        AsyncStorage.setItem('token', responseJson.listData[0].token)
-        navigation.navigate('Main');
-      }
-    })
-    .catch((error) => {
-      console.log(error)
-    });
+  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  if (!email || !passWord) {
+    Alert.alert(
+      '',
+      'Vui lòng nhập đủ thông tin!',
+    );
+    return
+  } else if (!re.test(String(email).toLowerCase())) {
+    Alert.alert(
+      '',
+      'Email không đúng định dạng!',
+    );
+    return
+  } else {
+    fetch(ApiCommon.rootUrl + '/authenticate', {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email,
+        password: passWord,
+      }),
+    }).then((response) => response.json())
+      .then((responseJson) => {
+        if (responseJson.code == 1) {
+          AsyncStorage.setItem('token', responseJson.listData[0].token)
+          navigation.navigate('Main');
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+  }
 }

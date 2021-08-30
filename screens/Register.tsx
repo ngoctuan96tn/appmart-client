@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet, Alert } from 'react-native';
 import {
   Input,
   Heading,
@@ -21,6 +21,7 @@ export default function Register(route: any) {
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [passWord, setPassWord] = useState('');
+  const [confirmPassWord, setConfirmPassWord] = useState('');
 
   return (
     <SafeAreaView style={styles.container}>
@@ -84,21 +85,63 @@ export default function Register(route: any) {
           marginBottom={10}
           size="sm"
           type={showConfirm ? "text" : "password"}
+          onChangeText={confirmPassWord => setConfirmPassWord(confirmPassWord)}
           InputRightElement={
             <Icon name="eye" size={25} style={{ marginRight: 10 }} onPress={handleClickConfirm} />
           }
           placeholder="Nhập lại mật khẩu"
         />
-        <Button size="md" backgroundColor='#6CDDED' onPress={() => navigation.navigate('RegisterApartment', {
-          userName: userName,
-          email: email,
-          phone: phoneNumber,
-          password: passWord,
-          avatarImg: avatarImg
-        })}>Tiếp theo</Button>
+        <Button size="md" backgroundColor='#6CDDED' onPress={() => validateRegister(navigation,
+          userName,
+          email,
+          phoneNumber,
+          passWord,
+          avatarImg,
+          confirmPassWord,
+        )}>Tiếp theo</Button>
       </NativeBaseProvider>
     </SafeAreaView>
   );
+}
+
+export function validateRegister(navigation: any, userName: any, email: any, phoneNumber: any, passWord: any, avatarImg: any, confirmPassWord: any) {
+  const vnf_regex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
+  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  if (passWord != confirmPassWord) {
+    Alert.alert(
+      '',
+      'Mật khẩu xác nhận không trùng khớp!',
+    );
+    return
+  } else if (!userName || !email || !phoneNumber || !passWord) {
+    Alert.alert(
+      '',
+      'Vui lòng nhập đủ thông tin!',
+    );
+    return
+  } else if (!vnf_regex.test(phoneNumber)) {
+    Alert.alert(
+      '',
+      'Số điện thoại không đúng định dạng!',
+    );
+    return
+  } else if (!re.test(String(email).toLowerCase())) {
+    Alert.alert(
+      '',
+      'Email không đúng định dạng!',
+    );
+    return
+  } else {
+    navigation.navigate('RegisterApartment', {
+      userName: userName,
+      email: email,
+      phone: phoneNumber,
+      password: passWord,
+      avatarImg: avatarImg,
+      confirmPassword: confirmPassWord,
+    }
+    )
+  }
 }
 
 const styles = StyleSheet.create({

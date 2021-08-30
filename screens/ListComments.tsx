@@ -9,8 +9,9 @@ import {
   FlatList,
   TouchableOpacity,
   ScrollView,
-  TextInput, Image
+  TextInput, Image, SafeAreaView
 } from 'react-native';
+import moment from "moment";
 import ApiCommon from '../constants/ApiCommon';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -28,6 +29,7 @@ export default function ListComments(route: any) {
   const [placement, setPlacement] = useState(undefined);
   const [updateComment, setUpdateComment] = useState('');
   const [commentId, setcommentId] = useState(Number);
+  const [postArticles, setPostArticles] = useState([])
   useEffect(() => {
 
     const readToken = async () => {
@@ -46,6 +48,15 @@ export default function ListComments(route: any) {
         .then((responseJson) => {
           if (responseJson.code == 1) {
             setListComments(responseJson.listData);
+          }
+        })
+
+      const headers = { 'Authorization': `Bearer ${token}` }
+      fetch(ApiCommon.rootUrl + `/api/post/${postId}`, { headers })
+        .then((response) => response.json())
+        .then((responseJson) => {
+          if (responseJson.code == 1) {
+            setPostArticles(responseJson.listData);
             setLoading(false)
           }
         })
@@ -59,101 +70,125 @@ export default function ListComments(route: any) {
   }
 
   return (
-    <NativeBaseProvider>
-      <FlatList
-        style={styles.root}
-        data={listComments}
-        renderItem={({ item }) => (
-          <View style={styles.container}>
-            <ScrollView>
-              <View style={styles.content}>
-                <View style={styles.profileUserStatus}>
-                  <Image style={styles.image} source={{ uri: `data:image/jpeg;base64,${item.userImageBase64}` }} />
+    <View style={styles.container}>
+      <NativeBaseProvider>
+        <FlatList
+          data={postArticles}
+          renderItem={({ item }) => (
+            <SafeAreaView>
+              <View style={styles.profileUserStatus}>
+                <Image style={styles.image} source={{ uri: `data:image/jpeg;base64,${item.user.avatarHashCode}` }} />
 
-                  <View style={styles.nameContainer}>
-                    <Text style={styles.name}>{item.userName}</Text>
-                    <Text style={styles.time}>
-                      {item.createAt}
-                    </Text>
-                  </View>
-                  <MenuProvider style={{ flexDirection: "column", padding: 30 }}>
-                    <Menu>
-
-                      <MenuTrigger >
-                        <MaterialCommunityIcons name="dots-vertical" color={'#fff'} size={25} />
-                      </MenuTrigger  >
-
-                      <MenuOptions>
-                        <MenuOption value={"Cập nhật"}>
-                          <Text style={styles.menuContent} onPress={() => { openModal("top"), setUpdateComment(item.content), setcommentId(item.id) }}>Cập nhật</Text>
-                        </MenuOption>
-                        <MenuOption value={"Xóa"}>
-                          <Text style={styles.menuContent} onPress={() => deleteComment(item.id, item.userId, token)}>Xóa</Text>
-                        </MenuOption>
-                      </MenuOptions>
-
-                    </Menu>
-                  </MenuProvider>
+                <View style={styles.nameContainer}>
+                  <Text style={styles.nameText}>{item.user.userName}</Text>
+                  <Text style={styles.timeText}>{moment(item.createDate).format("hh:mm DD-MM-YY")}</Text>
                 </View>
-                <Text>{item.content}</Text>
               </View>
-              <View style={styles.buttonGroupContainer}>
-                <TouchableOpacity style={styles.buttonContainer}>
-                  <Text style={{ fontSize: 12 }}>Thích</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonContainer} onPress={() => setComment('Đang trả lời @' + item.userName)}>
-                  <Text style={{ fontSize: 12 }}>Trả lời </Text>
-                </TouchableOpacity>
-              </View>
-            </ScrollView>
-          </View>
-        )}
-        keyExtractor={(item: any) => {
-          return item.id;
-        }}
-      />
-
-      <Modal isOpen={open} onClose={() => setOpen(false)} mt={12}>
-        <Modal.Content maxWidth="400px" style={styles.top}>
-          <Modal.CloseButton />
-          <Modal.Body>
-            <TextInput
-              multiline={true}
-              style={styles.input}
-              placeholder="Viết bình luận công khai..."
-              onChangeText={updateComment => setUpdateComment(updateComment)}
-              value={updateComment}
-            />
-          </Modal.Body>
-          <Modal.Footer>
-            <Button.Group variant="ghost" space={2}>
-              <Button onPress={() => {
-                setOpen(false), updateComments(updateComment, commentId, token)
-              }}>Cập nhật</Button>
-              <Button onPress={() => {
-                setOpen(false)
-              }}>
-                Đóng
-              </Button>
-            </Button.Group>
-          </Modal.Footer>
-        </Modal.Content>
-      </Modal>
-      <View style={styles.searchSection}>
-        <TextInput
-          multiline={true}
-          style={styles.input}
-          placeholder="Viết bình luận công khai..."
-          onChangeText={comment => setComment(comment)}
-          value={comment}
+              <Text style={styles.captionText}>{item.content}</Text>
+              <FlatList
+                data={item.mediaList}
+                renderItem={({ item }) => (
+                  <Image style={styles.feedImage} source={{ uri: `data:image/jpeg;base64,${item.attachBase64}` }} />
+                )}
+              />
+            </SafeAreaView>
+          )}
         />
-        <TouchableOpacity>
-          <MaterialCommunityIcons name="comment-arrow-right" style={{ paddingTop: 10 }} color={'#CCDEE4'} size={70} onPress={() => {
-            saveComment(comment, token, postId)
-          }} />
-        </TouchableOpacity>
-      </View>
-    </NativeBaseProvider>
+        <FlatList
+          style={styles.root}
+          data={listComments}
+          renderItem={({ item }) => (
+            <View style={styles.containerComment}>
+              <ScrollView>
+                <View style={styles.content}>
+                  <View style={styles.profileUserStatus}>
+                    <Image style={styles.image} source={{ uri: `data:image/jpeg;base64,${item.userImageBase64}` }} />
+
+                    <View style={styles.nameContainer}>
+                      <Text style={styles.name}>{item.userName}</Text>
+                      <Text style={styles.time}>
+                        {moment(item.createAt).format("hh:mm DD-MM-YY")}
+                      </Text>
+                    </View>
+                    <MenuProvider style={{ flexDirection: "column", padding: 30 }}>
+                      <Menu>
+
+                        <MenuTrigger >
+                          <MaterialCommunityIcons name="dots-vertical" color={'#fff'} size={25} />
+                        </MenuTrigger  >
+
+                        <MenuOptions>
+                          <MenuOption value={"Cập nhật"}>
+                            <Text style={styles.menuContent} onPress={() => { openModal("top"), setUpdateComment(item.content), setcommentId(item.id) }}>Cập nhật</Text>
+                          </MenuOption>
+                          <MenuOption value={"Xóa"}>
+                            <Text style={styles.menuContent} onPress={() => deleteComment(item.id, item.userId, token)}>Xóa</Text>
+                          </MenuOption>
+                        </MenuOptions>
+
+                      </Menu>
+                    </MenuProvider>
+                  </View>
+                  <Text>{item.content}</Text>
+                </View>
+                <View style={styles.buttonGroupContainer}>
+                  <TouchableOpacity style={styles.buttonContainer}>
+                    <Text style={{ fontSize: 12 }}>Thích</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.buttonContainer} onPress={() => setComment('Đang trả lời @' + item.userName)}>
+                    <Text style={{ fontSize: 12 }}>Trả lời </Text>
+                  </TouchableOpacity>
+                </View>
+              </ScrollView>
+            </View>
+          )}
+          keyExtractor={(item: any) => {
+            return item.id;
+          }}
+        />
+
+        <Modal isOpen={open} onClose={() => setOpen(false)} mt={12}>
+          <Modal.Content maxWidth="400px" style={styles.top}>
+            <Modal.CloseButton />
+            <Modal.Body>
+              <TextInput
+                multiline={true}
+                style={styles.input}
+                placeholder="Viết bình luận công khai..."
+                onChangeText={updateComment => setUpdateComment(updateComment)}
+                value={updateComment}
+              />
+            </Modal.Body>
+            <Modal.Footer>
+              <Button.Group variant="ghost" space={2}>
+                <Button onPress={() => {
+                  setOpen(false), updateComments(updateComment, commentId, token)
+                }}>Cập nhật</Button>
+                <Button onPress={() => {
+                  setOpen(false)
+                }}>
+                  Đóng
+                </Button>
+              </Button.Group>
+            </Modal.Footer>
+          </Modal.Content>
+        </Modal>
+        <View style={styles.searchSection}>
+          <TextInput
+            multiline={true}
+            style={styles.input}
+            placeholder="Viết bình luận công khai..."
+            onChangeText={comment => setComment(comment)}
+            value={comment}
+          />
+          <TouchableOpacity>
+            <MaterialCommunityIcons name="comment-arrow-right" style={{ paddingTop: 10 }} color={'#CCDEE4'} size={70} onPress={() => {
+              saveComment(comment, token, postId)
+            }} />
+          </TouchableOpacity>
+        </View>
+      </NativeBaseProvider>
+    </View>
   );
 }
 
@@ -162,14 +197,16 @@ const styles = StyleSheet.create({
     marginBottom: "auto",
     marginTop: 0,
   },
+  feedImage: {
+    height: 300,
+    marginTop: 10,
+  },
   menuContent: {
-    color: "#fff",
     padding: 1,
     fontSize: 15,
     backgroundColor: '#CCDEE4'
   },
   profileUserStatus: {
-    marginTop: 20,
     flexDirection: 'row',
     alignItems: 'center'
   },
@@ -184,6 +221,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 70,
   },
+  captionText: {
+    marginTop: 10,
+    backgroundColor: '#CCDEE4',
+    fontSize: 15,
+    padding: 5
+  },
   searchSection: {
     flex: 1,
     flexDirection: 'row',
@@ -194,19 +237,20 @@ const styles = StyleSheet.create({
     bottom: 0
   },
   root: {
-    backgroundColor: "#ffffff",
+    backgroundColor: "#fff",
     marginTop: 10,
-  },
-  buttonGroupContainer: {
-    height: 30,
-    flexDirection: 'row'
+    height: '100%'
   },
   container: {
     marginLeft: 10,
     marginRight: 10,
     paddingVertical: 10,
     flexDirection: 'row',
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
+    height: '100%'
+  },
+  containerComment: {
+    paddingVertical: 2,
   },
   buttonContainer: {
     flex: 1,
@@ -244,6 +288,11 @@ const styles = StyleSheet.create({
   },
   nameContainer: {
     marginLeft: 10,
+    marginRight: '35%'
+  },
+  buttonGroupContainer: {
+    height: 35,
+    flexDirection: 'row'
   },
 });
 

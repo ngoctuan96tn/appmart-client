@@ -5,6 +5,7 @@ import ApiCommon from '../constants/ApiCommon';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { FlatList, NativeBaseProvider } from 'native-base';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import moment from "moment";
 import { EvilIcons } from '@expo/vector-icons';
 export default function NewFeedScreen() {
     const [data, setData] = useState([]);
@@ -85,7 +86,7 @@ export default function NewFeedScreen() {
 
                                     <View style={styles.nameContainer}>
                                         <Text style={styles.nameText}>{item.user.userName}</Text>
-                                        <Text style={styles.timeText}>{item.createDate}</Text>
+                                        <Text style={styles.timeText}>{moment(item.createDate).format("hh:mm DD-MM-YY")}</Text>
                                     </View>
                                 </View>
                                 <Text style={styles.captionText}>{item.content}</Text>
