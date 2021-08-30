@@ -1,15 +1,43 @@
 import { FontAwesome } from '@expo/vector-icons';
+import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-import { Center, Image, NativeBaseProvider } from 'native-base';
+import { Box, Center, Image, NativeBaseProvider, FlatList, ScrollView } from 'native-base';
 import * as React from 'react';
+import { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { Text, View } from 'react-native';
+import ApiCommon from '../constants/ApiCommon';
 
 export default function MessageScreen() {
     const navigation = useNavigation();
+    const [token, setToken] = useState<string | null>('');
+    const { getItem, setItem } = useAsyncStorage('token');
+    const [retrieve, setRetrieve] = useState(true);
+    const [dataChat, setDataChat] = useState<any>([]);
+    React.useEffect(() => {
+        const readToken = async () => {
+            const item = await getItem();
+            setToken(item);
+            setRetrieve(false);
+        };
+
+        if (retrieve) {
+            readToken();
+        }
+        if (retrieve === false) {
+            const headers = { 'Authorization': `Bearer ${token}` }
+            fetch(ApiCommon.rootUrl + '/api/messages', { headers })
+                .then((response) => response.json())
+                .then((json) => setDataChat(json))
+                .catch((error) => console.error(error));
+        }
+
+
+
+    }, [retrieve]);
     return (
         <NativeBaseProvider>
-            <View style={{ flex: 1, flexDirection: 'row' }}>
+            <View style={{ flexDirection: 'row' }}>
                 <View style={{ width: '100%', height: 100, marginLeft: 5, marginTop: 5 }}>
                     <Text> Đang hoạt động</Text>
                     <TouchableOpacity onPress={() => { navigation.navigate('Chat') }}>
@@ -34,10 +62,32 @@ export default function MessageScreen() {
                             >
 
                             </Center>
-                            <Text> MiMart</Text>
+                            <Text>Admin</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
+
+            </View>
+            <View style={{ width: '100%' }}>
+                <FlatList
+                    data={dataChat.listData}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity onPress={() => { navigation.navigate('Chat') }}>
+                            <View style={{ flexDirection: "row", marginTop: '5%' }}>
+                                <View style={{ width: '15%', alignContent: 'center', alignItems: 'center' }}>
+                                    <Image source={{ uri: `data:image/jpeg;base64,${item.user.avatarHashCode}` }} alt="image base" resizeMode="cover" width='80%' height={45} rounded="80" />
+                                </View>
+                                <View style={{ width: '85%' }}>
+                                    <Box width='100%' px={2} py={1} rounded="lg" height={55} >
+                                        <Text style={{ fontWeight: 'bold' }}>{item.user.userName}</Text>
+                                        <Text style={{ fontSize: 12, fontStyle: 'italic' }}>{item.lastContent}</Text>
+                                    </Box>
+                                </View>
+
+                            </View>
+                        </TouchableOpacity>)}
+                    keyExtractor={item => item.receiveUserId.toString()}
+                />
             </View>
         </NativeBaseProvider>
     );
