@@ -114,6 +114,12 @@ function changePassWord(navigation: any, email: any, passWord: any, newPassWord:
             'Mật khẩu xác nhận không trùng khớp!',
         );
         //reload screen
+    } else if (newPassWord.length <= 5) {
+        Alert.alert(
+            '',
+            'Mật khẩu tối thiểu 5 ký tự!',
+        );
+        return
     } else if (!re.test(String(email).toLowerCase())) {
         Alert.alert(
             '',

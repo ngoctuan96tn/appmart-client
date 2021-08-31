@@ -82,6 +82,12 @@ function onLogin(email: any, passWord: any, navigation: any) {
       'Vui lòng nhập đủ thông tin!',
     );
     return
+  } else if (passWord.length <= 5) {
+    Alert.alert(
+      '',
+      'Mật khẩu tối thiểu 5 ký tự!',
+    );
+    return
   } else if (!re.test(String(email).toLowerCase())) {
     Alert.alert(
       '',
