@@ -72,7 +72,7 @@ export default function MessageScreen() {
                 <FlatList
                     data={dataChat.listData}
                     renderItem={({ item }) => (
-                        <TouchableOpacity onPress={() => { navigation.navigate('Chat') }}>
+                        <TouchableOpacity onPress={() => { navigation.navigate('Chat', {receiveUserId: item.user.id, receiveUserName:item.user.userName}) }}>
                             <View style={{ flexDirection: "row", marginTop: '5%' }}>
                                 <View style={{ width: '15%', alignContent: 'center', alignItems: 'center' }}>
                                     <Image source={{ uri: `data:image/jpeg;base64,${item.user.avatarHashCode}` }} alt="image base" resizeMode="cover" width='80%' height={45} rounded="80" />
