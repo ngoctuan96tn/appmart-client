@@ -55,7 +55,7 @@ export default function App() {
             <Stack.Screen name="RegisterApartment" component={RegisterApartment} />
             <Stack.Screen name="ImagePickerExample" component={ImagePickerExample} />
             <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
-            <Stack.Screen name="Main" component={MainNavigator} options={{ title: null, headerLeft: null, gestureEnabled: false }} />
+            <Stack.Screen name="Main" component={MainNavigator} />
             <Stack.Screen name="AllCategory" component={AllCategoryList} />
             <Stack.Screen name="ListProduct" component={ListProduct} />
             <Stack.Screen name="DetailProduct" component={DetailProduct} />
