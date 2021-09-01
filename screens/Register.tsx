@@ -113,6 +113,12 @@ export function validateRegister(navigation: any, userName: any, email: any, pho
       'Mật khẩu xác nhận không trùng khớp!',
     );
     return
+  } else if (passWord.length <= 5) {
+    Alert.alert(
+      '',
+      'Mật khẩu xác tối thiểu 5 ký tự!',
+    );
+    return
   } else if (!userName || !email || !phoneNumber || !passWord) {
     Alert.alert(
       '',
