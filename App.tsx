@@ -27,6 +27,7 @@ import NewFeedScreen from './screens/NewFeedScreen';
 import SearchProduct from './screens/SearchProduct';
 import ListComments from './screens/ListComments';
 import ProductRatting from './screens/ProductRatting';
+import Chat from './screens/Chat';
 
 const Stack = createStackNavigator();
 
@@ -54,7 +55,7 @@ export default function App() {
             <Stack.Screen name="RegisterApartment" component={RegisterApartment} />
             <Stack.Screen name="ImagePickerExample" component={ImagePickerExample} />
             <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
-            <Stack.Screen name="Main" component={MainNavigator} options={{ title: null, headerLeft: null, gestureEnabled: false }} />
+            <Stack.Screen name="Main" component={MainNavigator} />
             <Stack.Screen name="AllCategory" component={AllCategoryList} />
             <Stack.Screen name="ListProduct" component={ListProduct} />
             <Stack.Screen name="DetailProduct" component={DetailProduct} />
@@ -70,6 +71,7 @@ export default function App() {
             <Stack.Screen name="SearchProduct" component={SearchProduct} />
             <Stack.Screen name="ListComments" component={ListComments} />
             <Stack.Screen name="ProductRatting" component={ProductRatting} />
+            <Stack.Screen name="Chat" component={Chat} />
           </Stack.Navigator>
         </NavigationContainer>
       </RootSiblingParent>
