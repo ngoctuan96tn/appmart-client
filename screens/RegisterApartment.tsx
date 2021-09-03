@@ -80,9 +80,9 @@ export default function RegisterApartment(route: any) {
     });
 
     return (
-        <NativeBaseProvider>
-            <View style={styles.container}>
-                <Heading textAlign='center' color='#fff' marginTop={'20%'} fontSize={20}>ĐĂNG KÝ CĂN HỘ</Heading>
+        <SafeAreaView style={styles.container}>
+            <NativeBaseProvider>
+                <Heading size="md" textAlign='center' color='#fff' marginTop={20} fontSize={20}>ĐĂNG KÝ CĂN HỘ</Heading>
                 {/* <Input
                     backgroundColor='#f0f9ff'
                     width={300}
@@ -175,8 +175,8 @@ export default function RegisterApartment(route: any) {
                     style={{
                         ...pickerSelectStyles,
                         iconContainer: {
-                            top: '50%',
-                            right: '12%',
+                            top: 32,
+                            right: 12,
                         },
                     }}
                     value={idBuilding}
@@ -195,8 +195,8 @@ export default function RegisterApartment(route: any) {
                     style={{
                         ...pickerSelectStyles,
                         iconContainer: {
-                            top: '50%',
-                            right: '12%',
+                            top: 32,
+                            right: 12,
                         },
                     }}
                     items={floors.map(item => {
@@ -229,8 +229,8 @@ export default function RegisterApartment(route: any) {
                     style={{
                         ...pickerSelectStyles,
                         iconContainer: {
-                            top: '50%',
-                            right: '12%',
+                            top: 32,
+                            right: 12,
                         },
                     }}
                     value={idRoom}
@@ -240,31 +240,28 @@ export default function RegisterApartment(route: any) {
                     }}
                 />
 
-                <Button marginTop={'10%'} width={'80%'} backgroundColor='#6CDDED' onPress={() => onSave(photo, email, userName, phone, password, idBuilding, idFloor, idRoom, navigation, confirmPassWord)}>Cập nhật</Button>
-            </View>
-        </NativeBaseProvider>
+                <Button size="md" marginTop={30} backgroundColor='#6CDDED' onPress={() => onSave(photo, email, userName, phone, password, idBuilding, idFloor, idRoom, navigation, confirmPassWord)}>Cập nhật</Button>
+            </NativeBaseProvider>
+        </SafeAreaView>
     );
 }
 
 const pickerSelectStyles = StyleSheet.create({
     inputIOS: {
-        marginLeft: '10%',
-        width: '80%',
-        marginTop: '10%',
+        marginTop: 30,
         fontSize: 16,
-        paddingVertical: '3%',
-        paddingHorizontal: '5%',
+        paddingVertical: 12,
+        paddingHorizontal: 10,
         borderWidth: 1,
         borderColor: '#000',
+        borderRadius: 4,
         color: '#000',
         paddingRight: 30,
-        borderRadius: 5,
         backgroundColor: '#fff'
     },
     inputAndroid: {
-        marginLeft: '10%',
-        width: '80%',
-        marginTop: '7%',
+        width: 300,
+        marginTop: 30,
         fontSize: 16,
         paddingHorizontal: 10,
         paddingVertical: 8,
@@ -282,6 +279,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
+        justifyContent: 'center',
         backgroundColor: '#0ea5e9',
     },
 });

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, Alert } from 'react-native';
+import { StyleSheet, Text, SafeAreaView, Alert } from 'react-native';
 import {
   Input,
   Heading,
   NativeBaseProvider,
   Button,
   Link,
-  View
+  FormControl
 } from "native-base"
 import { useNavigation } from '@react-navigation/native';
 import ApiCommon from '../constants/ApiCommon';
@@ -22,14 +22,15 @@ export default function Login() {
 
   const navigation = useNavigation();
   return (
-    <NativeBaseProvider >
-      <View style={styles.container}>
-        <Heading size="md" textAlign='center' marginTop='20%' fontSize={20} color='#fff'>ĐĂNG NHẬP</Heading>
+    <SafeAreaView style={styles.container}>
+      <NativeBaseProvider >
+        <Heading size="md" textAlign='center' marginTop='20' fontSize={20} color='#fff'>ĐĂNG NHẬP</Heading>
         <Input
-          width={'80%'}
-          marginTop={'10%'}
+          width={300}
+          size="sm"
+          marginTop={20}
           backgroundColor='#f0f9ff'
-          marginBottom={'5%'}
+          marginBottom={5}
           variant="outline"
           placeholder="Email"
           onChangeText={email => setEmail(email)}
@@ -41,26 +42,26 @@ export default function Login() {
           }}
         />
         <Input
-          width={'80%'}
+          size="sm"
           backgroundColor='#f0f9ff'
-          marginBottom={'10%'}
+          marginBottom={10}
           type={show ? "text" : "password"}
           onChangeText={passWord => setPassWord(passWord)}
           InputRightElement={
-            <Icon name="eye" size={25} style={{ marginRight: '5%' }} onPress={handleClick} />
+            <Icon name="eye" size={25} style={{ marginRight: 10 }} onPress={handleClick} />
           }
-          placeholder="Mật khẩu"
+          placeholder="Password"
         />
         <Link onPress={() => navigation.navigate('ForgetPassword')}>Quên mật khẩu</Link>
-        <Button width={'80%'} marginBottom='5%' marginTop='5%' backgroundColor='#6CDDED' onPress={() => onLogin(email, passWord, navigation)}>Đăng nhập</Button>
+        <Button size="md" marginBottom='5' marginTop='5' backgroundColor='#6CDDED' onPress={() => onLogin(email, passWord, navigation)}>Đăng nhập</Button>
         <Text style={{ textAlign: 'center', textDecorationLine: 'underline' }}>Chưa có tài khoản? <Link onPress={() => navigation.navigate('Register', {
           data: null
         })}>Đăng ký</Link></Text>
         <Text style={{ textAlign: 'center' }}> Hoặc đăng nhập bằng </Text>
-        <Button marginTop='10%' width={'80%'} backgroundColor='#c4b5fd' onPress={() => console.log()}>Số điện thoại</Button>
-        <Button marginTop='5%' width={'80%'} backgroundColor="#1d4ed8" onPress={() => console.log()}>Facebook</Button>
-      </View>
-    </NativeBaseProvider>
+        <Button size="md" marginTop='10' backgroundColor='#c4b5fd' onPress={() => console.log()}>Số điện thoại</Button>
+        <Button size="md" marginTop='2' backgroundColor="#1d4ed8" onPress={() => console.log()}>Facebook</Button>
+      </NativeBaseProvider>
+    </SafeAreaView>
   );
 }
 
@@ -68,6 +69,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#0ea5e9'
   },
 });
@@ -80,7 +82,7 @@ function onLogin(email: any, passWord: any, navigation: any) {
       'Vui lòng nhập đủ thông tin!',
     );
     return
-  } else if (passWord.length < 5) {
+  } else if (passWord.length <= 5) {
     Alert.alert(
       '',
       'Mật khẩu tối thiểu 5 ký tự!',

@@ -5,7 +5,6 @@ import {
   Heading,
   NativeBaseProvider,
   Button,
-  View
 } from "native-base"
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
@@ -25,14 +24,13 @@ export default function Register(route: any) {
   const [confirmPassWord, setConfirmPassWord] = useState('');
 
   return (
-    <NativeBaseProvider>
-      <View style={styles.container}>
-        <Heading size="md" textAlign='center' marginTop={'20%'} fontSize={20} color='#fff'>ĐĂNG KÝ</Heading>
-        <MaterialCommunityIcons name="camera" color='#fff' size={40} style={{ marginBottom: '5%', marginTop: '10%' }} onPress={() => navigation.navigate('ImagePickerExample')} />
+    <SafeAreaView style={styles.container}>
+      <NativeBaseProvider>
+        <Heading size="md" textAlign='center' marginTop={20} fontSize={20} color='#fff'>ĐĂNG KÝ</Heading>
+        <MaterialCommunityIcons name="camera" color='#fff' size={40} style={{ marginBottom: 10 }} onPress={() => navigation.navigate('ImagePickerExample')} />
         <Input
-          width={'80%'}
           backgroundColor='#f0f9ff'
-          marginBottom={'5%'}
+          marginBottom={5}
           variant="outline"
           placeholder="Họ tên"
           onChangeText={userName => setUserName(userName)}
@@ -44,8 +42,7 @@ export default function Register(route: any) {
           }}
         />
         <Input
-          width={'80%'}
-          marginBottom={'5%'}
+          marginBottom={5}
           variant="outline"
           backgroundColor='#f0f9ff'
           placeholder="Email"
@@ -58,10 +55,9 @@ export default function Register(route: any) {
           }}
         />
         <Input
-          width={'80%'}
           keyboardType='numeric'
           backgroundColor='#f0f9ff'
-          marginBottom={'5%'}
+          marginBottom={5}
           variant="outline"
           placeholder="Số điện thoại"
           onChangeText={phoneNumber => setPhoneNumber(phoneNumber)}
@@ -73,29 +69,29 @@ export default function Register(route: any) {
           }}
         />
         <Input
-          width={'80%'}
-          marginBottom={'5%'}
+          size="sm"
+          marginBottom={5}
           backgroundColor='#f0f9ff'
           type={show ? "text" : "password"}
           onChangeText={passWord => setPassWord(passWord)}
           InputRightElement={
-            <Icon name="eye" size={25} style={{ marginRight: '5%' }} onPress={handleClick} />
+            <Icon name="eye" size={25} style={{ marginRight: 10 }} onPress={handleClick} />
           }
           placeholder="Mật khẩu"
         />
         <Input
-          width={'80%'}
+          width={300}
           backgroundColor='#f0f9ff'
-          marginBottom={'10%'}
+          marginBottom={10}
           size="sm"
           type={showConfirm ? "text" : "password"}
           onChangeText={confirmPassWord => setConfirmPassWord(confirmPassWord)}
           InputRightElement={
-            <Icon name="eye" size={25} style={{ marginRight: '5%' }} onPress={handleClickConfirm} />
+            <Icon name="eye" size={25} style={{ marginRight: 10 }} onPress={handleClickConfirm} />
           }
           placeholder="Nhập lại mật khẩu"
         />
-        <Button width={'80%'} backgroundColor='#6CDDED' onPress={() => validateRegister(navigation,
+        <Button size="md" backgroundColor='#6CDDED' onPress={() => validateRegister(navigation,
           userName,
           email,
           phoneNumber,
@@ -103,31 +99,30 @@ export default function Register(route: any) {
           avatarImg,
           confirmPassWord,
         )}>Tiếp theo</Button>
-      </View>
-    </NativeBaseProvider>
+      </NativeBaseProvider>
+    </SafeAreaView>
   );
 }
 
 export function validateRegister(navigation: any, userName: any, email: any, phoneNumber: any, passWord: any, avatarImg: any, confirmPassWord: any) {
   const vnf_regex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
   const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-  if (!userName || !email || !phoneNumber || !passWord) {
+  if (passWord != confirmPassWord) {
     Alert.alert(
       '',
-      'Vui lòng nhập đủ thông tin!',
+      'Mật khẩu xác nhận không trùng khớp!',
     );
     return
-  } else if (passWord.length < 5) {
+  } else if (passWord.length <= 5) {
     Alert.alert(
       '',
       'Mật khẩu xác tối thiểu 5 ký tự!',
     );
     return
-  } else if (passWord != confirmPassWord) {
+  } else if (!userName || !email || !phoneNumber || !passWord) {
     Alert.alert(
       '',
-      'Mật khẩu xác nhận không trùng khớp!',
+      'Vui lòng nhập đủ thông tin!',
     );
     return
   } else if (!vnf_regex.test(phoneNumber)) {
@@ -159,6 +154,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#0ea5e9'
   },
 });
