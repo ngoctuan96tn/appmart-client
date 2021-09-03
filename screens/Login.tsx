@@ -51,11 +51,11 @@ export default function Login() {
           }
           placeholder="Mật khẩu"
         />
-        <Link onPress={() => navigation.navigate('ForgetPassword')}><Text style={{ color: '#f0f9ff', fontSize: 16 }}>Quên mật khẩu</Text></Link>
+        <Link onPress={() => navigation.navigate('ForgetPassword')}>Quên mật khẩu</Link>
         <Button width={'80%'} marginBottom='5%' marginTop='5%' backgroundColor='#6CDDED' onPress={() => onLogin(email, passWord, navigation)}>Đăng nhập</Button>
         <Text style={{ textAlign: 'center', textDecorationLine: 'underline' }}>Chưa có tài khoản? <Link onPress={() => navigation.navigate('Register', {
           data: null
-        })}><Text style={{ color: '#f0f9ff', position: 'relative', top: 4, marginLeft: '6%', fontSize: 16 }}>Đăng ký</Text></Link></Text>
+        })}>Đăng ký</Link></Text>
         <Text style={{ textAlign: 'center' }}> Hoặc đăng nhập bằng </Text>
         <Button marginTop='10%' width={'80%'} backgroundColor='#c4b5fd' onPress={() => console.log()}>Số điện thoại</Button>
         <Button marginTop='5%' width={'80%'} backgroundColor="#1d4ed8" onPress={() => console.log()}>Facebook</Button>
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: 'rgba(29, 132, 249, 1)',
+    backgroundColor: '#0ea5e9'
   },
 });
 

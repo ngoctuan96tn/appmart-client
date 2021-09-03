@@ -25,7 +25,7 @@ export default function MainNavigator() {
   return (
     <BottomTab.Navigator
       initialRouteName="TabOne"
-      tabBarOptions={{ activeTintColor: Colors['dark'].tint, style: {backgroundColor: 'rgba(29, 132, 249, 1)'} }}>
+      tabBarOptions={{ activeTintColor: Colors['dark'].tint, style: {backgroundColor: '#0ea5e9'} }}>
       <BottomTab.Screen
         name="Mua sắm"
         component={TabOneNavigator}

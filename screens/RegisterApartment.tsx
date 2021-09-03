@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Platform, Alert } from 'react-native';
+import { SafeAreaView, StyleSheet, View, Platform } from 'react-native';
 import {
     Input,
     Heading,
@@ -282,56 +282,36 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: 'rgba(29, 132, 249, 1)',
+        backgroundColor: '#0ea5e9',
     },
 });
 
 function onSave(photo: any, email: any, userName: any, phone: any, password: any, idBuilding: any, idFloor: any, idRoom: any, navigation: any, confirmPassWord: any) {
-    if (!idBuilding) {
-        Alert.alert(
-            '',
-            'Vui lòng chọn thông tin tòa nhà!',
-        );
-        return
-    } else if (!idFloor) {
-        Alert.alert(
-            '',
-            'Vui lòng chọn thông tin tầng!',
-        );
-        return
-    } else if (!idRoom) {
-        Alert.alert(
-            '',
-            'Vui lòng chọn thông tin phòng!',
-        );
-        return
-    } else {
-        const data = new FormData();
-        data.append('avatarImg', photo);
-        data.append('email', email);
-        data.append('userName', userName);
-        data.append('phone', phone);
-        data.append('password', password);
-        data.append('roomId', idBuilding);
-        data.append('floorId', idFloor);
-        data.append('buildingId', idRoom);
+    const data = new FormData();
+    data.append('avatarImg', photo);
+    data.append('email', email);
+    data.append('userName', userName);
+    data.append('phone', phone);
+    data.append('password', password);
+    data.append('roomId', idBuilding);
+    data.append('floorId', idFloor);
+    data.append('buildingId', idRoom);
 
-        fetch(ApiCommon.rootUrl + '/api/register', {
-            method: 'post',
-            body: data,
-            headers: {
-                'Content-Type': 'multipart/form-data; ',
-            },
-        }).then((response) => response.json())
-            .then((responseJson) => {
-                if (responseJson.code == 1) {
-                    navigation.navigate('Login');
-                } else {
-                    console.log('đăng ký thất bại')
-                }
-            })
-            .catch((error) => {
-                console.log(error)
-            });
-    }
+    fetch(ApiCommon.rootUrl + '/api/register', {
+        method: 'post',
+        body: data,
+        headers: {
+            'Content-Type': 'multipart/form-data; ',
+        },
+    }).then((response) => response.json())
+        .then((responseJson) => {
+            if (responseJson.code == 1) {
+                navigation.navigate('Login');
+            } else {
+                console.log('đăng ký thất bại')
+            }
+        })
+        .catch((error) => {
+            console.log(error)
+        });
 }
