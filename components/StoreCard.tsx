@@ -3,10 +3,12 @@ import {
   Image, Text, NativeBaseProvider, Center, Box, Stack, Heading, Button
 } from "native-base";
 import { TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/core";
 function CategoryCard(data: any) {
   const store = data.data.data;
+  const navigation = useNavigation();
   return (
-    <TouchableOpacity onPress={() => console.log('hello')}>
+    <TouchableOpacity onPress={() => navigation.navigate('DetailStore', {storeId: store.id})}>
       <Box
         bg="white"
         shadow={2}
