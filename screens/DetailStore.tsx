@@ -5,10 +5,13 @@ import ApiCommon from "../constants/ApiCommon";
 import { createStackNavigator } from "@react-navigation/stack";
 import { TabOneParamList } from "../types";
 import { Rating } from "react-native-ratings";
+import ProductCard from "../components/ProductCard";
+import { ScrollView } from "react-native-gesture-handler";
 export function DetailStore(route: any) {
     const params = route.route.params.data.route.params;
     const [data, setData] = useState<any>({});
     const [isLoading, setLoading] = useState(true);
+    const [dataProduct, setDataProduct] = useState([]);
     useEffect(() => {
         if (isLoading) {
             fetch(ApiCommon.rootUrl + `/api/store/${params.storeId}`)
@@ -18,6 +21,13 @@ export function DetailStore(route: any) {
                         setData(json.listData[0]);
                     }
                 })
+                .catch((error) => console.error(error))
+                .finally(() => setLoading(false));
+
+
+            fetch(ApiCommon.rootUrl + `/api/products/store/${params.storeId}`)
+                .then((response) => response.json())
+                .then((json) => setDataProduct(json))
                 .catch((error) => console.error(error))
                 .finally(() => setLoading(false));
 
@@ -56,6 +66,33 @@ export function DetailStore(route: any) {
                 </View>
 
             </View>
+            <View style={{ flexDirection: "row", flexWrap: "wrap", marginTop: '5%', backgroundColor: '#fff' }}>
+                <View style={{ width: '20%' }}>
+                    <Text style={{ fontWeight: 'bold', }} >Đia chỉ: </Text>
+                </View>
+                <View style={{ width: '80%' }}>
+                    <Text  >{data.address}</Text>
+                </View>
+            </View>
+            <View style={{ flexDirection: "row", flexWrap: "wrap", marginTop: '5%', backgroundColor: '#fff' }}>
+                <View style={{ width: '20%' }}>
+                    <Text style={{ fontWeight: 'bold', }} >Mô tả: </Text>
+                </View>
+                <View style={{ width: '80%' }}>
+                    <Text >{data.description}</Text>
+                </View>
+            </View>
+
+            <ScrollView style={{marginTop:'3%'}}>
+                <FlatList
+                    data={dataProduct}
+                    renderItem={({ item }) => (
+                        <View style={{ marginTop: 3 }}><ProductCard data={item} /></View>
+                    )}
+                    keyExtractor={item => item.productId.toString()}
+                    numColumns={3}
+                />
+            </ScrollView>
         </SafeAreaView>
 
     )
