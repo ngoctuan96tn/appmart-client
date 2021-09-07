@@ -17,6 +17,7 @@ export function DetailProduct(route: any) {
     const [dataProduct, setDataproduct] = useState([]);
     const [productDetail, setProductDetail] = useState<any>({});
     const [dataComment, setDataComment] = useState<any>({});
+    const [dataStore, setDataStore] = useState<any>({});
     const [isLoading, setLoading] = useState(true);
     useEffect(() => {
         if (isLoading) {
@@ -28,7 +29,18 @@ export function DetailProduct(route: any) {
 
             fetch(ApiCommon.rootUrl + `/api/products/${productId}`)
                 .then((response) => response.json())
-                .then((json) => setProductDetail(json))
+                .then((json) => {
+                    setProductDetail(json);
+                    fetch(ApiCommon.rootUrl + `/api/store/${json.storeId}`)
+                    .then((response) => response.json())
+                    .then((json) => {
+                        if (json.listData.length > 0) {
+                            setDataStore(json.listData[0]);
+                        }
+                    })
+                    .catch((error) => console.error(error))
+                    .finally(() => setLoading(false));
+                })
                 .catch((error) => console.error(error))
                 .finally(() => setLoading(false));
 
@@ -38,6 +50,7 @@ export function DetailProduct(route: any) {
                 .catch((error) => console.error(error))
                 .finally(() => setLoading(false));
         }
+       
     }, []);
 
     const price = productDetail.discount > 0 ? productDetail.unitPrice - (productDetail.unitPrice * productDetail.discount / 100) : productDetail.unitPrice;
@@ -84,20 +97,20 @@ export function DetailProduct(route: any) {
                         </View>
                     }
                     <View style={{ flexDirection: "row", flexWrap: "wrap", marginTop: '5%', marginLeft: '4%' }}>
-                        <Image source={require('../assets/images/MiMartLogoGradientApp.png')} alt="image base" resizeMode="cover" width='12%' height={45} roundedTop="md" />
-                        <Text style={{ marginLeft: '1%', marginTop: '3%' }} width='50%'>MiMart</Text>
-                        <Button borderColor='#e27741' size="sm" variant="outline" colorScheme="secondary" onPress={() => console.log("hello world")}>
+                        <Image source={{uri: `data:image/jpeg;base64,${dataStore.image}`}} alt="image base" resizeMode="cover" width='12%' height={45} roundedTop="md" />
+                        <Text style={{ marginLeft: '1%', marginTop: '3%' }} width='50%'>{dataStore.name}</Text>
+                        <Button borderColor='#e27741' size="sm" variant="outline" colorScheme="secondary" onPress={() => navigation.navigate('DetailStore', {storeId: dataStore.id})}>
                             Đến cửa hàng
                         </Button>
 
                     </View>
                     <View style={{ flexDirection: "row", flexWrap: "wrap", marginTop: '5%', backgroundColor: '#fff' }}>
                         <View style={{ width: '50%' }}>
-                            <Text style={{ textAlign: 'center', fontWeight: 'bold', color: 'red' }} >{productDetail.quantity}</Text>
+                            <Text style={{ textAlign: 'center', fontWeight: 'bold', color: 'red' }} >{dataStore.totalProduct}</Text>
                             <Text style={{ textAlign: 'center' }} >Sản phẩm</Text>
                         </View>
                         <View style={{ width: '50%' }}>
-                            <Text style={{ textAlign: 'center', fontWeight: 'bold', color: 'red' }} >0</Text>
+                            <Text style={{ textAlign: 'center', fontWeight: 'bold', color: 'red' }} >{dataStore.totalComment}</Text>
                             <Text style={{ textAlign: 'center' }} >Đánh giá</Text>
                         </View>
 
@@ -133,7 +146,7 @@ export function DetailProduct(route: any) {
                                         <Image source={{ uri: `data:image/jpeg;base64,${item.user.avatarHashCode}` }} alt="image base" resizeMode="cover" height='100%' />
                                     </View>
                                     <View width="60%" left="10%" height="100%">
-                                        <Text style={{fontWeight:'bold'}}>{item.user.userName}</Text>
+                                        <Text style={{ fontWeight: 'bold' }}>{item.user.userName}</Text>
                                         <Text>
                                             <Rating
                                                 type='star'

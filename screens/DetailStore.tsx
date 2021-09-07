@@ -54,7 +54,7 @@ export function DetailStore(route: any) {
                     <Text style={{ textAlign: 'center' }} >Đánh giá</Text>
                 </View>
                 <View style={{ width: '33%' }}>
-                    <Text style={{ textAlign: 'center', fontWeight: 'bold', color: 'red' }} >{data.rating}</Text>
+                    <Text style={{ textAlign: 'center', fontWeight: 'bold', color: 'red' }} >{data.rating.toFixed(2)}</Text>
                     <Text style={{ alignSelf: 'center' }} >
                         <Rating
                             type='star'
