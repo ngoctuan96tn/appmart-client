@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, Alert } from 'react-native';
+import { StyleSheet, Text, Alert, TouchableOpacity } from 'react-native';
 import {
   Input,
   Heading,
@@ -51,11 +51,16 @@ export default function Login() {
           }
           placeholder="Mật khẩu"
         />
-        <Link onPress={() => navigation.navigate('ForgetPassword')}>Quên mật khẩu</Link>
+        <TouchableOpacity onPress={() => navigation.navigate('ForgetPassword')}><Text style={{ color: '#f0f9ff', fontSize: 16 }}>Quên mật khẩu</Text></TouchableOpacity>
         <Button width={'80%'} marginBottom='5%' marginTop='5%' backgroundColor='#6CDDED' onPress={() => onLogin(email, passWord, navigation)}>Đăng nhập</Button>
-        <Text style={{ textAlign: 'center', textDecorationLine: 'underline' }}>Chưa có tài khoản? <Link onPress={() => navigation.navigate('Register', {
+        <View style={{flexDirection:'row', alignItems: 'center'}}>
+        <Text style={{ textAlign: 'center', textDecorationLine: 'underline' }}>Chưa có tài khoản?</Text> 
+        <TouchableOpacity onPress={() => navigation.navigate('Register', {
           data: null
-        })}>Đăng ký</Link></Text>
+        })}>
+          <Text style={{ color: '#f0f9ff', marginLeft: '6%', fontSize: 16 }}>Đăng ký</Text>
+        </TouchableOpacity>
+        </View>
         <Text style={{ textAlign: 'center' }}> Hoặc đăng nhập bằng </Text>
         <Button marginTop='10%' width={'80%'} backgroundColor='#c4b5fd' onPress={() => console.log()}>Số điện thoại</Button>
         <Button marginTop='5%' width={'80%'} backgroundColor="#1d4ed8" onPress={() => console.log()}>Facebook</Button>
