@@ -28,6 +28,8 @@ import SearchProduct from './screens/SearchProduct';
 import ListComments from './screens/ListComments';
 import ProductRatting from './screens/ProductRatting';
 import Chat from './screens/Chat';
+import ListStores from './screens/ListStoreBuilding';
+import DetailStore from './screens/DetailStore';
 
 const Stack = createStackNavigator();
 
@@ -72,6 +74,8 @@ export default function App() {
             <Stack.Screen name="ListComments" component={ListComments} />
             <Stack.Screen name="ProductRatting" component={ProductRatting} />
             <Stack.Screen name="Chat" component={Chat} />
+            <Stack.Screen name="ListStores" component={ListStores} />
+            <Stack.Screen name="DetailStore" component={DetailStore} />
           </Stack.Navigator>
         </NavigationContainer>
       </RootSiblingParent>

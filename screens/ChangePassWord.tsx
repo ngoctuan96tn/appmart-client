@@ -5,6 +5,7 @@ import {
     Heading,
     NativeBaseProvider,
     Button,
+    View
 } from "native-base"
 import ApiCommon from '../constants/ApiCommon';
 import { useNavigation } from '@react-navigation/native';
@@ -46,16 +47,15 @@ export default function ChangePassword() {
     }, [retrieve]);
 
     return (
-        <SafeAreaView style={styles.container} >
-            <NativeBaseProvider >
-                <Heading size="md" textAlign='center' marginTop={20} color='#fff' fontSize={20}>THAY ĐỔI MẬT KHẨU</Heading>
+        <NativeBaseProvider >
+            <View style={styles.container}>
+                <Heading textAlign='center' marginTop={'20%'} color='#fff' fontSize={20}>THAY ĐỔI MẬT KHẨU</Heading>
                 <Input
-                    isRequired
-                    size="sm"
+                    width={'80%'}
                     onChangeText={email => setEmail(email)}
                     backgroundColor='#f0f9ff'
-                    marginTop={20}
-                    marginBottom={5}
+                    marginTop={'10%'}
+                    marginBottom={'5%'}
                     variant="outline"
                     placeholder="Email"
                     _light={{
@@ -66,43 +66,42 @@ export default function ChangePassword() {
                     }}
                 />
                 <Input
-                    size="sm"
+                    width={'80%'}
                     onChangeText={passWord => setPassWord(passWord)}
                     backgroundColor='#f0f9ff'
-                    marginBottom={5}
+                    marginBottom={'5%'}
                     variant="outline"
                     type={show ? "text" : "password"}
                     placeholder="Mật khẩu cũ"
                     InputRightElement={
-                        <Icon name="eye" size={25} style={{ marginRight: 10 }} onPress={handleClick} />
+                        <Icon name="eye" size={25} style={{ marginRight: '5%' }} onPress={handleClick} />
                     }
                 />
                 <Input
-                    size="sm"
-                    marginBottom={5}
+                    width={'80%'}
+                    marginBottom={'5%'}
                     backgroundColor='#f0f9ff'
                     type={showNewPass ? "text" : "password"}
                     onChangeText={newPassWord => setNewPassWord(newPassWord)}
                     InputRightElement={
-                        <Icon name="eye" size={25} style={{ marginRight: 10 }} onPress={handleClickNewPass} />
+                        <Icon name="eye" size={25} style={{ marginRight: '5%' }} onPress={handleClickNewPass} />
                     }
                     placeholder="Mật khẩu mới"
                 />
                 <Input
-                    width={300}
+                    width={'80%'}
                     backgroundColor='#f0f9ff'
-                    marginBottom={10}
-                    size="sm"
+                    marginBottom={'10%'}
                     type={showConfirmPass ? "text" : "password"}
                     onChangeText={confirmPassWord => setConfirmPassWord(confirmPassWord)}
                     InputRightElement={
-                        <Icon name="eye" size={25} style={{ marginRight: 10 }} onPress={handleClickConfirm} />
+                        <Icon name="eye" size={25} style={{ marginRight: '5%' }} onPress={handleClickConfirm} />
                     }
                     placeholder="Nhập lại mật khẩu mới"
                 />
-                <Button size="md" backgroundColor='#6CDDED' onPress={() => changePassWord(navigation, email, passWord, newPassWord, token, confirmPassWord)}>Cập nhật mật khẩu</Button>
-            </NativeBaseProvider>
-        </SafeAreaView>
+                <Button width={'80%'} backgroundColor='#6CDDED' onPress={() => changePassWord(navigation, email, passWord, newPassWord, token, confirmPassWord)}>Cập nhật mật khẩu</Button>
+            </View>
+        </NativeBaseProvider>
     );
 }
 
@@ -114,7 +113,7 @@ function changePassWord(navigation: any, email: any, passWord: any, newPassWord:
             'Mật khẩu xác nhận không trùng khớp!',
         );
         //reload screen
-    } else if (newPassWord.length <= 5) {
+    } else if (newPassWord.length < 5) {
         Alert.alert(
             '',
             'Mật khẩu tối thiểu 5 ký tự!',
@@ -187,7 +186,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center',
         backgroundColor: '#0ea5e9'
     },
 });

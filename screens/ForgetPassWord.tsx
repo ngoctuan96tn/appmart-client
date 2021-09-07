@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, Alert } from 'react-native';
+import { StyleSheet, Alert } from 'react-native';
 import {
   Input,
   Heading,
   NativeBaseProvider,
   Button,
+  View
 } from "native-base"
 import ApiCommon from '../constants/ApiCommon';
 import { useNavigation } from '@react-navigation/native';
@@ -13,16 +14,16 @@ export default function ForgetPassword() {
   const [phone, setPhone] = useState('');
   const navigation = useNavigation();
   return (
-    <SafeAreaView style={styles.container}>
-      <NativeBaseProvider >
-        <Heading size="md" textAlign='center' marginTop={20} color='#fff' fontSize={20}>QUÊN MẬT KHẨU</Heading>
+    <NativeBaseProvider >
+      <View style={styles.container}>
+        <Heading textAlign='center' marginTop={'20%'} color='#fff' fontSize={20}>QUÊN MẬT KHẨU</Heading>
         <Input
-          size="sm"
+          width={'80%'}
           onChangeText={phone => setPhone(phone)}
           keyboardType='numeric'
           backgroundColor='#f0f9ff'
-          marginTop={20}
-          marginBottom={5}
+          marginTop={'10%'}
+          marginBottom={'5%'}
           variant="outline"
           placeholder="Nhập số điện thoại"
           _light={{
@@ -32,9 +33,9 @@ export default function ForgetPassword() {
             placeholderTextColor: "blueGray.50",
           }}
         />
-        <Button size="md" backgroundColor='#6CDDED' onPress={() => getPassWord(phone, navigation)}>Lấy lại mật khẩu</Button>
-      </NativeBaseProvider>
-    </SafeAreaView>
+        <Button width={'80%'} backgroundColor='#6CDDED' onPress={() => getPassWord(phone, navigation)}>Lấy lại mật khẩu</Button>
+      </View>
+    </NativeBaseProvider>
   );
 }
 
@@ -78,7 +79,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: '#0ea5e9'
   },
 });

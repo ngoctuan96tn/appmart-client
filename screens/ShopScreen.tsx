@@ -11,7 +11,7 @@ import ProductSuggestList from '../components/ProductSuggestList';
 import ApiCommon from '../constants/ApiCommon';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage, { useAsyncStorage } from '@react-native-async-storage/async-storage';
 const { width } = Dimensions.get('window')
 
 const styles = StyleSheet.create({
@@ -73,8 +73,29 @@ export default function ShopScreen() {
   const [data, setData] = useState([]);
   const [dataProduct, setDataproduct] = useState([]);
   const [isLoading, setLoading] = useState(true);
+  const [token, setToken] = useState<string | null>('');
+  const { getItem, setItem } = useAsyncStorage('token');
+  const [retrieve, setRetrieve] = useState(true);
+  const [dataStore, setDataStore] = useState<any>([]);
 
   useEffect(() => {
+    const readToken = async () => {
+      const item = await getItem();
+      setToken(item);
+      setRetrieve(false);
+    };
+
+    if (retrieve) {
+      readToken();
+    }
+    if (retrieve === false) {
+      const headers = { 'Authorization': `Bearer ${token}` }
+      fetch(ApiCommon.rootUrl + '/api/stores', { headers })
+        .then((response) => response.json())
+        .then((json) => setDataStore(json))
+        .catch((error) => console.error(error));
+    }
+
     if (isLoading) {
       fetch(ApiCommon.rootUrl + '/api/categories')
         .then((response) => response.json())
@@ -88,7 +109,7 @@ export default function ShopScreen() {
         .catch((error) => console.error(error))
         .finally(() => setLoading(false));
     }
-  });
+  }, [retrieve]);
 
   if (!isLoading) {
     return (
@@ -172,7 +193,7 @@ export default function ShopScreen() {
                 <CategoryList data={data} />
               </View>
               <View style={{ marginTop: 10 }}>
-                <StoreList />
+                <StoreList data={dataStore}/>
               </View>
               <View style={{ marginTop: 15 }}>
                 <ProductSuggestList data={dataProduct} />
