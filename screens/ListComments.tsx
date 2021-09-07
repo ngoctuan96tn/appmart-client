@@ -100,17 +100,13 @@ export default function ListComments(route: any) {
           renderItem={({ item }) => (
             <View style={styles.containerComment}>
               <ScrollView>
+
                 <View style={styles.content}>
                   <View style={styles.profileUserStatus}>
-                    <Image style={styles.image} source={{ uri: `data:image/jpeg;base64,${item.userImageBase64}` }} />
+                  <Image style={styles.image} source={{ uri: `data:image/jpeg;base64,${item.userImageBase64}` }} />
 
-                    <View style={styles.nameContainer}>
-                      <Text style={styles.name}>{item.userName}</Text>
-                      <Text style={styles.time}>
-                        {moment(item.createAt).format("hh:mm DD-MM-YY")}
-                      </Text>
-                    </View>
-                    <MenuProvider style={{ flexDirection: "column", padding: 30 }}>
+                    <Text style={styles.name}>{item.userName}</Text>
+                    <MenuProvider style={{ flexDirection: "column", padding: 10, marginLeft: '70%' }}>
                       <Menu>
 
                         <MenuTrigger >
@@ -127,16 +123,16 @@ export default function ListComments(route: any) {
                         </MenuOptions>
 
                       </Menu>
-                    </MenuProvider>
+                    </MenuProvider> 
                   </View>
                   <Text>{item.content}</Text>
                 </View>
                 <View style={styles.buttonGroupContainer}>
-                  <TouchableOpacity style={styles.buttonContainer}>
-                    <Text style={{ fontSize: 12 }}>Thích</Text>
+                  <TouchableOpacity>
+                    <Text style={{ fontSize: 12, marginLeft: '10%' }}>Thích</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={styles.buttonContainer} onPress={() => setComment('Đang trả lời @' + item.userName)}>
-                    <Text style={{ fontSize: 12 }}>Trả lời </Text>
+                  <TouchableOpacity onPress={() => setComment('Đang trả lời @' + item.userName)}>
+                    <Text style={{ fontSize: 12, marginLeft: '10%' }}>Trả lời </Text>
                   </TouchableOpacity>
                 </View>
               </ScrollView>
@@ -202,9 +198,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   menuContent: {
-    padding: 1,
-    fontSize: 15,
-    backgroundColor: '#CCDEE4'
+    fontSize: 10,
   },
   profileUserStatus: {
     flexDirection: 'row',
@@ -250,12 +244,6 @@ const styles = StyleSheet.create({
     height: '100%'
   },
   containerComment: {
-    paddingVertical: 2,
-  },
-  buttonContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   content: {
     flex: 1,
@@ -276,7 +264,8 @@ const styles = StyleSheet.create({
     color: "#808080",
   },
   name: {
-    fontSize: 16,
+    marginLeft: '2%',
+    fontSize: 15,
     fontWeight: "bold",
   },
   image: {
@@ -291,6 +280,7 @@ const styles = StyleSheet.create({
     marginRight: '35%'
   },
   buttonGroupContainer: {
+    marginTop: '2%',
     height: 35,
     flexDirection: 'row'
   },
