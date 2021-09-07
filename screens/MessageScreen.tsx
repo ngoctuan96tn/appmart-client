@@ -17,7 +17,7 @@ export default function MessageScreen() {
     const [loading, setLoading] = useState(true);
     const [userLogin, setUserLogin] = useState<any>({});
 
-    //let schedule = setTimeout(() => setLoading(true), 3000);
+    let schedule = setTimeout(() => setLoading(true), 3000);
     React.useEffect(() => {
         const readToken = async () => {
             const item = await getItem();
@@ -43,7 +43,7 @@ export default function MessageScreen() {
                 .finally(() => setLoading(false));
         }
 
-        //clearTimeout(schedule);
+        clearTimeout(schedule);
     }, [retrieve, loading]);
     return (
         <NativeBaseProvider>
