@@ -80,7 +80,7 @@ export default function ListComments(route: any) {
                 <Image style={styles.image} source={{ uri: `data:image/jpeg;base64,${item.user.avatarHashCode}` }} />
 
                 <View style={styles.nameContainer}>
-                  <Text style={styles.nameText}>{item.user.userName}</Text>
+                  <Text style={styles.name}>{item.user.userName}</Text>
                   <Text style={styles.timeText}>{moment(item.createDate).format("hh:mm DD-MM-YY")}</Text>
                 </View>
               </View>
@@ -94,17 +94,15 @@ export default function ListComments(route: any) {
             </SafeAreaView>
           )}
         />
-         <ScrollView>
-        <FlatList
-          style={styles.root}
-          data={listComments}
-          renderItem={({ item }) => (
-            <View style={styles.containerComment}>
-             
-
+        <ScrollView>
+          <FlatList
+            style={styles.root}
+            data={listComments}
+            renderItem={({ item }) => (
+              <View>
                 <View style={styles.content}>
                   <View style={styles.profileUserStatus}>
-                  <Image style={styles.image} source={{ uri: `data:image/jpeg;base64,${item.userImageBase64}` }} />
+                    <Image style={styles.imageComment} source={{ uri: `data:image/jpeg;base64,${item.userImageBase64}` }} />
 
                     <Text style={styles.name}>{item.userName}</Text>
                     <MenuProvider style={{ flexDirection: "column", padding: 10, marginLeft: '70%' }}>
@@ -124,7 +122,7 @@ export default function ListComments(route: any) {
                         </MenuOptions>
 
                       </Menu>
-                    </MenuProvider> 
+                    </MenuProvider>
                   </View>
                   <Text>{item.content}</Text>
                 </View>
@@ -136,14 +134,13 @@ export default function ListComments(route: any) {
                     <Text style={{ fontSize: 12, marginLeft: '10%' }}>Trả lời </Text>
                   </TouchableOpacity>
                 </View>
-            
-            </View>
-          )}
-          keyExtractor={(item: any) => {
-            return item.id;
-          }}
-        />
-          <View style={{height:80}}></View>
+              </View>
+            )}
+            keyExtractor={(item: any) => {
+              return item.id;
+            }}
+          />
+          <View style={{ height: 80 }}></View>
         </ScrollView>
         <Modal isOpen={open} onClose={() => setOpen(false)} mt={12}>
           <Modal.Content maxWidth="400px" style={styles.top}>
@@ -180,7 +177,7 @@ export default function ListComments(route: any) {
             value={comment}
           />
           <TouchableOpacity>
-            <MaterialCommunityIcons name="comment-arrow-right" style={{ paddingTop: 10 }} color={'#CCDEE4'} size={70} onPress={() => {
+            <MaterialCommunityIcons name="comment-arrow-right" style={{ paddingTop: 10 }} color={'#DDDBDB'} size={70} onPress={() => {
               saveComment(comment, token, postId)
             }} />
           </TouchableOpacity>
@@ -195,16 +192,18 @@ const styles = StyleSheet.create({
     marginBottom: "auto",
     marginTop: 0,
   },
+  timeText: {
+    fontSize: 10,
+  },
   feedImage: {
     height: 300,
-    marginTop: 10,
   },
   menuContent: {
     fontSize: 10,
   },
   profileUserStatus: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   input: {
     flex: 1,
@@ -212,16 +211,14 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     paddingBottom: 10,
     paddingLeft: 0,
-    backgroundColor: '#CCDEE4',
+    backgroundColor: '#DDDBDB',
     color: '#424242',
     borderRadius: 10,
     height: 70,
   },
   captionText: {
-    marginTop: 10,
-    backgroundColor: '#CCDEE4',
-    fontSize: 15,
-    padding: 5
+    marginTop: '2%',
+    marginBottom: '2%'
   },
   searchSection: {
     flex: 1,
@@ -250,7 +247,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     borderRadius: 10,
-    backgroundColor: '#CCDEE4'
+    backgroundColor: '#DDDBDB'
   },
   contentHeader: {
     flexDirection: 'row',
@@ -276,6 +273,11 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     borderWidth: 2,
     borderColor: '#BDBDBD',
+  },
+  imageComment: {
+    height: 30,
+    width: 30,
+    borderRadius: 25,
   },
   nameContainer: {
     marginLeft: 10,
