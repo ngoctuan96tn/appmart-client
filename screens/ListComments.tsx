@@ -94,12 +94,13 @@ export default function ListComments(route: any) {
             </SafeAreaView>
           )}
         />
+         <ScrollView>
         <FlatList
           style={styles.root}
           data={listComments}
           renderItem={({ item }) => (
             <View style={styles.containerComment}>
-              <ScrollView>
+             
 
                 <View style={styles.content}>
                   <View style={styles.profileUserStatus}>
@@ -135,14 +136,15 @@ export default function ListComments(route: any) {
                     <Text style={{ fontSize: 12, marginLeft: '10%' }}>Trả lời </Text>
                   </TouchableOpacity>
                 </View>
-              </ScrollView>
+            
             </View>
           )}
           keyExtractor={(item: any) => {
             return item.id;
           }}
         />
-
+          <View style={{height:80}}></View>
+        </ScrollView>
         <Modal isOpen={open} onClose={() => setOpen(false)} mt={12}>
           <Modal.Content maxWidth="400px" style={styles.top}>
             <Modal.CloseButton />
