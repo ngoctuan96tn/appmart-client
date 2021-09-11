@@ -27,7 +27,7 @@ export function OrderPaymentSuccess(route: any) {
                     size="lg"
                     variant="solid"
                     colorScheme="secondary"
-                    onPress={() => navigation.navigate('Main')}
+                    onPress={() => navigation.navigate('Main', {index : 1})}
                 >
                     Tiếp tục mua sắm
                 </Button>

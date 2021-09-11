@@ -74,20 +74,7 @@ export function PostArticle(route: any) {
             onChangeText={text => setText(text)}
           />
         </View>
-        {/* <ImagePickerStatus /> */}
 
-        {/* <View style={styles.buttonGroupContainer}>
-          <TouchableOpacity style={styles.buttonContainer} onPress={pickImage}>
-            <Text style={styles.buttonText}>Chọn ảnh</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonContainer} onPress={() => console.log(image)}>
-            <Text style={styles.buttonText}>Cập nhật</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.line} />
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <Text>{image && <Image source={{ uri: image }} style={{ width: '100%', height: 300 }} />}</Text>
-        </View> */}
         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
           {image && <Image source={{ uri: image }} style={{ width: '100%', height: 300 }} />}
         </View>
@@ -148,7 +135,7 @@ const styles = StyleSheet.create({
 
 function saveStatus(photo: any, token: any, text: any, navigation: any) {
   const dataStatus = new FormData();
-  if (photo.image != '' && photo.image != null && photo.image != undefined){
+  if (photo.uri != '' && photo.uri != null && photo.uri != undefined){
     dataStatus.append('listMedia', photo);
   }
   dataStatus.append('content', text);
@@ -164,7 +151,7 @@ function saveStatus(photo: any, token: any, text: any, navigation: any) {
   }).then((response) => response.json())
     .then((responseJson) => {
       if (responseJson.code == 1) {
-        navigation.navigate('NewFeedScreen');
+        navigation.navigate('Main', {index : 3});
       }
     })
     .catch((error) => {
