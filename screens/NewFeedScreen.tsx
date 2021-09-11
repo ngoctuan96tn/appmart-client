@@ -16,6 +16,7 @@ export default function NewFeedScreen() {
     const [avatarHashCode, setAvatarHashCode] = useState([]);
     const [loading, setLoading] = useState(true);
     const [loadData, setLoadData] = useState(true);
+    const [userLogin, setUserLogin] = useState<any>({});
     useEffect(() => {
 
         const readToken = async () => {
@@ -31,7 +32,7 @@ export default function NewFeedScreen() {
             const headers = { 'Authorization': `Bearer ${token}` }
             fetch(ApiCommon.rootUrl + '/api/user/login', { headers })
                 .then((response) => response.json())
-                .then((responseJson) => setAvatarHashCode(responseJson.avatarHashCode))
+                .then((responseJson) => setUserLogin(responseJson))
 
 
             fetch(ApiCommon.rootUrl + '/api/posts', { headers })
@@ -67,10 +68,10 @@ export default function NewFeedScreen() {
                 <ScrollView>
                     <TouchableOpacity style={styles.text}>
                         <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen')}>
-                            <Image style={styles.imageStatus} source={{ uri: `data:image/jpeg;base64,${avatarHashCode}` }} />
+                            <Image style={styles.imageStatus} source={{ uri: `data:image/jpeg;base64,${userLogin.avatarHashCode}` }} />
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => navigation.navigate('PostArticle', {
-                            data: null, flag: false
+                            data: userLogin
                         })}>
                             <Text style={styles.postStatus}>Bạn đang nghĩ gì?</Text>
                         </TouchableOpacity>

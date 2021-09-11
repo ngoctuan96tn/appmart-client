@@ -3,7 +3,7 @@
  * https://reactnavigation.org/docs/bottom-tab-navigator
  */
 
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
@@ -59,7 +59,8 @@ export default function MainNavigator() {
         component={TabFiveNavigator}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="message" color={color} size={size} />
+            // <MaterialCommunityIcons name="message" color={color} size={size} />
+            <AntDesign name="message1" color={color} size={size}/>
           ),
         }}
       />
