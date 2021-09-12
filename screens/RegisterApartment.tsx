@@ -7,11 +7,14 @@ import {
     Button,
     Select,
     Icon,
+    Modal,
+    Text
 } from "native-base"
 import ApiCommon from '../constants/ApiCommon';
 import RNPickerSelect from 'react-native-picker-select';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import Toast from 'react-native-root-toast';
 
 export default function RegisterApartment(route: any) {
     const navigation = useNavigation();
@@ -38,6 +41,9 @@ export default function RegisterApartment(route: any) {
     const [rooms, setRooms] = useState<any[]>([]);
     const [idFloor, setIdFloor] = useState(Number);
     const [idRoom, setIdRoom] = useState(Number);
+    const [showModal, setShowModal] = useState(false)
+    const [code, setCode] = useState('')
+    const [userId, setUserId] = useState(0);
 
     useEffect(() => {
         if (isLoading) {
@@ -78,6 +84,98 @@ export default function RegisterApartment(route: any) {
                 .finally(() => setIsLoadRoom(false));
         }
     });
+
+    const onSave = (photo: any, email: any, userName: any, phone: any, password: any, idBuilding: any, idFloor: any, idRoom: any, navigation: any, confirmPassWord: any) => {
+
+        if (!idBuilding) {
+            Alert.alert(
+                '',
+                'Vui lòng chọn thông tin tòa nhà!',
+            );
+            return
+        } else if (!idFloor) {
+            Alert.alert(
+                '',
+                'Vui lòng chọn thông tin tầng!',
+            );
+            return
+        } else if (!idRoom) {
+            Alert.alert(
+                '',
+                'Vui lòng chọn thông tin phòng!',
+            );
+            return
+        } else {
+            const data = new FormData();
+            data.append('avatarImg', photo);
+            data.append('email', email);
+            data.append('userName', userName);
+            data.append('phone', phone);
+            data.append('password', password);
+            data.append('roomId', idBuilding);
+            data.append('floorId', idFloor);
+            data.append('buildingId', idRoom);
+
+            fetch(ApiCommon.rootUrl + '/api/register', {
+                method: 'post',
+                body: data,
+                headers: {
+                    'Content-Type': 'multipart/form-data; ',
+                },
+            }).then((response) => response.json())
+                .then((responseJson) => {
+                    if (responseJson.code == 1) {
+                        setShowModal(true);
+                        setUserId(responseJson.listData[0].id);
+                    } else {
+                        Toast.show(responseJson.message, {
+                            duration: Toast.durations.LONG,
+                            position: 0,
+                            shadow: true,
+                            animation: true,
+                            hideOnPress: true,
+                            backgroundColor: '#ffffff',
+                            textColor: '#ff0000',
+
+                        });
+                        console.log(responseJson.message);
+                    }
+                })
+                .catch((error) => {
+                    console.log(error)
+                });
+        }
+
+    }
+
+    const verifyAccount = () => {
+        console.log(code);
+        console.log(userId);
+        fetch(ApiCommon.rootUrl + '/api/verify', {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id: userId,
+                token: code
+            }),
+        }).then((response) => response.json())
+            .then((responseJson) => {
+                if (responseJson.code == 1) {
+                    navigation.navigate('Login');
+                } else {
+                    Alert.alert(
+                        responseJson.message,
+                    );
+                }
+            })
+            .catch((error) => {
+                console.log(error)
+            });
+    }
 
     return (
         <NativeBaseProvider>
@@ -175,7 +273,7 @@ export default function RegisterApartment(route: any) {
                     style={{
                         ...pickerSelectStyles,
                         iconContainer: {
-                            top: '50%',
+                            top: '20%',
                             right: '12%',
                         },
                     }}
@@ -195,7 +293,7 @@ export default function RegisterApartment(route: any) {
                     style={{
                         ...pickerSelectStyles,
                         iconContainer: {
-                            top: '50%',
+                            top: '20%',
                             right: '12%',
                         },
                     }}
@@ -229,7 +327,7 @@ export default function RegisterApartment(route: any) {
                     style={{
                         ...pickerSelectStyles,
                         iconContainer: {
-                            top: '50%',
+                            top: '20%',
                             right: '12%',
                         },
                     }}
@@ -242,6 +340,42 @@ export default function RegisterApartment(route: any) {
 
                 <Button marginTop={'10%'} width={'80%'} backgroundColor='#6CDDED' onPress={() => onSave(photo, email, userName, phone, password, idBuilding, idFloor, idRoom, navigation, confirmPassWord)}>Cập nhật</Button>
             </View>
+
+            <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+                <Modal.Content maxWidth="400px">
+                    <Modal.Header>Xác thực tài khoản</Modal.Header>
+                    <Modal.Body>
+                        <Text>Mã xác thực sẽ được gửi về số điện thoại của bạn.</Text>
+                        <Text>Vui lòng nhập nó ở đây.</Text>
+                        <Input
+                            variant="rounded"
+                            placeholder="Mã xác thực"
+                            m={1}
+                            w='100%'
+                            value={code}
+                            _light={{
+                                placeholderTextColor: "blueGray.400",
+                            }}
+                            _dark={{
+                                placeholderTextColor: "blueGray.50",
+                            }}
+                            onChangeText={(content) => { setCode(content) }}
+                        />
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button.Group variant="ghost" space={2}>
+                            <Button onPress={() => { verifyAccount() }}>Xác thực</Button>
+                            <Button
+                                onPress={() => {
+                                    setShowModal(false)
+                                }}
+                            >
+                                Hủy
+                            </Button>
+                        </Button.Group>
+                    </Modal.Footer>
+                </Modal.Content>
+            </Modal>
         </NativeBaseProvider>
     );
 }
@@ -286,54 +420,4 @@ const styles = StyleSheet.create({
     },
 });
 
-function onSave(photo: any, email: any, userName: any, phone: any, password: any, idBuilding: any, idFloor: any, idRoom: any, navigation: any, confirmPassWord: any) {
-    
-    if (!idBuilding) {
-        Alert.alert(
-            '',
-            'Vui lòng chọn thông tin tòa nhà!',
-        );
-        return
-    } else if (!idFloor) {
-        Alert.alert(
-            '',
-            'Vui lòng chọn thông tin tầng!',
-        );
-        return
-    } else if (!idRoom) {
-        Alert.alert(
-            '',
-            'Vui lòng chọn thông tin phòng!',
-        );
-        return
-    } else {
-        const data = new FormData();
-        data.append('avatarImg', photo);
-        data.append('email', email);
-        data.append('userName', userName);
-        data.append('phone', phone);
-        data.append('password', password);
-        data.append('roomId', idBuilding);
-        data.append('floorId', idFloor);
-        data.append('buildingId', idRoom);
 
-        fetch(ApiCommon.rootUrl + '/api/register', {
-            method: 'post',
-            body: data,
-            headers: {
-                'Content-Type': 'multipart/form-data; ',
-            },
-        }).then((response) => response.json())
-            .then((responseJson) => {
-                if (responseJson.code == 1) {
-                    navigation.navigate('Login');
-                } else {
-                    console.log('đăng ký thất bại')
-                }
-            })
-            .catch((error) => {
-                console.log(error)
-            });
-    }
-
-}
