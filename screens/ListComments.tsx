@@ -1,5 +1,5 @@
 import {
-  NativeBaseProvider, Modal, Button
+  NativeBaseProvider, Modal, Button, Input
 } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import {
@@ -9,16 +9,18 @@ import {
   FlatList,
   TouchableOpacity,
   ScrollView,
-  TextInput, Image, SafeAreaView
+  TextInput, Image, SafeAreaView, Alert
 } from 'react-native';
 import moment from "moment";
 import ApiCommon from '../constants/ApiCommon';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Menu, MenuProvider, MenuOptions, MenuOption, MenuTrigger } from "react-native-popup-menu";
+import { createStackNavigator } from '@react-navigation/stack';
+import { TabOneParamList } from '../types';
 
-export default function ListComments(route: any) {
-  const postId = route.route.params.postId;
+export function ListComments(route: any) {
+  const postId = route.route.params.data.route.params.postId;
   const [listComments, setListComments] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [comment, setComment] = useState('');
@@ -30,6 +32,8 @@ export default function ListComments(route: any) {
   const [updateComment, setUpdateComment] = useState('');
   const [commentId, setcommentId] = useState(Number);
   const [postArticles, setPostArticles] = useState([])
+  const [userLogin, setUserLogin] = useState<any>({});
+
   useEffect(() => {
 
     const readToken = async () => {
@@ -49,7 +53,7 @@ export default function ListComments(route: any) {
           if (responseJson.code == 1) {
             setListComments(responseJson.listData);
           }
-        })
+        });
 
       const headers = { 'Authorization': `Bearer ${token}` }
       fetch(ApiCommon.rootUrl + `/api/post/${postId}`, { headers })
@@ -59,7 +63,12 @@ export default function ListComments(route: any) {
             setPostArticles(responseJson.listData);
             setLoading(false)
           }
-        })
+        });
+
+      fetch(ApiCommon.rootUrl + '/api/user/login', { headers })
+        .then((response) => response.json())
+        .then((responseJson) => setUserLogin(responseJson));
+
     }
 
   }, [retrieve]);
@@ -68,90 +77,226 @@ export default function ListComments(route: any) {
     setOpen(true)
     setPlacement(placement)
   }
+  const loadCommentData = () => {
+    fetch(ApiCommon.rootUrl + `/api/post/${postId}/comments`)
+      .then((response) => response.json())
+      .then((responseJson) => {
+        if (responseJson.code == 1) {
+          setListComments(responseJson.listData);
+        }
+      });
+  }
+  const saveComment = (comment: any, token: any, postId: any) => {
+    const body = {
+      content: comment,
+      postId: postId,
+    }
+
+    fetch(ApiCommon.rootUrl + '/api/post/comment', {
+      method: 'post',
+      body: JSON.stringify(body),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+    }).then((response) => response.json())
+      .then((responseJson) => {
+        if (responseJson.code == 1) {
+          //reload list comment
+          loadCommentData();
+          setComment('');
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+  }
+
+  const deleteComment = (commentId: any, userId: any, token: any) => {
+    Alert.alert(
+      "Xóa bình luận",
+      `Bạn có chắc chắn muốn xóa bình luận ?`,
+      [
+        // The "Yes" button
+        {
+          text: "Có",
+          onPress: async () => {
+
+            // gọi api xóa bình luận
+            fetch(ApiCommon.rootUrl + `/api/post/comment/${commentId}`, {
+              method: 'DELETE',
+              headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+              },
+            }).then((response) => response.json())
+              .then((responseJson) => {
+                if (responseJson.code == 1) {
+                  loadCommentData();
+                }
+              })
+              .catch((error) => {
+                console.log(error)
+              });
+            // gọi api xóa bình luận
+
+          },
+        },
+        // The "No" button
+        // Does nothing but dismiss the dialog when tapped
+        {
+          text: "Không",
+        },
+      ]
+    );
+
+  }
+
+  const updateComments = (content: string, commentId: Number, token: any) => {
+    fetch(ApiCommon.rootUrl + `/api/post/comment`, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        content: content,
+        id: commentId,
+      }),
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        if (responseJson.code == 1) {
+          loadCommentData();
+        }
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <NativeBaseProvider>
-        <FlatList
-          data={postArticles}
-          renderItem={({ item }) => (
-            <SafeAreaView>
-              <View style={styles.profileUserStatus}>
-                <Image style={styles.image} source={{ uri: `data:image/jpeg;base64,${item.user.avatarHashCode}` }} />
-
-                <View style={styles.nameContainer}>
-                  <Text style={styles.name}>{item.user.userName}</Text>
-                  <Text style={styles.timeText}>{moment(item.createDate).format("hh:mm DD-MM-YY")}</Text>
-                </View>
-              </View>
-              <Text style={styles.captionText}>{item.content}</Text>
-              <FlatList
-                data={item.mediaList}
-                renderItem={({ item }) => (
-                  <Image style={styles.feedImage} source={{ uri: `data:image/jpeg;base64,${item.attachBase64}` }} />
-                )}
-              />
-            </SafeAreaView>
-          )}
-        />
         <ScrollView>
+
+          <FlatList
+            data={postArticles}
+            renderItem={({ item }) => (
+              <SafeAreaView>
+                <View style={styles.profileUserStatus}>
+                  <Image style={styles.image} source={{ uri: `data:image/jpeg;base64,${item.user.avatarHashCode}` }} />
+
+                  <View style={styles.nameContainer}>
+                    <Text style={{ fontWeight: 'bold' }}>{item.user.userName}</Text>
+                    <Text>{moment(item.createDate).format("hh:mm DD-MM-YY")}</Text>
+                  </View>
+                </View>
+                <Text style={styles.captionText}>{item.content}</Text>
+                <FlatList
+                  data={item.mediaList}
+                  renderItem={({ item }) => (
+                    <Image style={styles.feedImage} source={{ uri: `data:image/jpeg;base64,${item.attachBase64}` }} />
+                  )}
+                />
+              </SafeAreaView>
+            )}
+          />
+          <View style={{ flex: 1, height: 3, backgroundColor: 'black' }} />
           <FlatList
             style={styles.root}
             data={listComments}
             renderItem={({ item }) => (
-              <View>
+              <View style={styles.containerComment}>
+
+
                 <View style={styles.content}>
                   <View style={styles.profileUserStatus}>
-                    <Image style={styles.imageComment} source={{ uri: `data:image/jpeg;base64,${item.userImageBase64}` }} />
+                    <View style={{ width: '15%' }}>
+                      <Image style={styles.image} source={{ uri: `data:image/jpeg;base64,${item.userImageBase64}` }} />
+                    </View>
 
-                    <Text style={styles.name}>{item.userName}</Text>
-                    <MenuProvider style={{ flexDirection: "column", padding: 10, marginLeft: '70%' }}>
-                      <Menu>
+                    <View style={{ width: '80%' }}>
+                      <Text style={styles.name}>{item.userName}</Text>
+                      <Text>{item.content}</Text>
+                    </View>
+                    {/* <View style={{ width: '5%', paddingTop: 10 }}>
+                      <MenuProvider style={{ flexDirection: "column", }}>
+                        <Menu style={{ position: 'absolute' }}>
+                          <MenuTrigger >
+                            <MaterialCommunityIcons name="dots-vertical" color={'#000'} size={25} />
+                          </MenuTrigger  >
 
-                        <MenuTrigger >
-                          <MaterialCommunityIcons name="dots-vertical" color={'#fff'} size={25} />
-                        </MenuTrigger  >
+                          <MenuOptions>
+                            <MenuOption value={"Cập nhật"}>
+                              <Text style={styles.menuContent} onPress={() => { openModal("top"), setUpdateComment(item.content), setcommentId(item.id) }}>Cập nhật</Text>
+                            </MenuOption>
+                            <MenuOption value={"Xóa"}>
+                              <Text style={styles.menuContent} onPress={() => deleteComment(item.id, item.userId, token)}>Xóa</Text>
+                            </MenuOption>
+                          </MenuOptions>
 
-                        <MenuOptions>
-                          <MenuOption value={"Cập nhật"}>
-                            <Text style={styles.menuContent} onPress={() => { openModal("top"), setUpdateComment(item.content), setcommentId(item.id) }}>Cập nhật</Text>
-                          </MenuOption>
-                          <MenuOption value={"Xóa"}>
-                            <Text style={styles.menuContent} onPress={() => deleteComment(item.id, item.userId, token)}>Xóa</Text>
-                          </MenuOption>
-                        </MenuOptions>
-
-                      </Menu>
-                    </MenuProvider>
+                        </Menu>
+                      </MenuProvider>
+                    </View> */}
                   </View>
-                  <Text>{item.content}</Text>
                 </View>
-                <View style={styles.buttonGroupContainer}>
-                  <TouchableOpacity>
-                    <Text style={{ fontSize: 12, marginLeft: '10%' }}>Thích</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={() => setComment('Đang trả lời @' + item.userName)}>
-                    <Text style={{ fontSize: 12, marginLeft: '10%' }}>Trả lời </Text>
-                  </TouchableOpacity>
-                </View>
+                {item.userId == userLogin.id &&
+                  <View style={styles.buttonGroupContainer}>
+                    <Text style={styles.menuContent}>{moment(item.createAt).format("hh:mm DD-MM-YY")}</Text>
+                    <TouchableOpacity onPress={() => { openModal("top"), setUpdateComment(item.content), setcommentId(item.id) }}>
+                      <Text style={styles.menuContent}>Cập nhật</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => deleteComment(item.id, item.userId, token)}>
+                      <Text style={styles.menuContent} >Xóa</Text>
+                    </TouchableOpacity>
+                  </View>
+                }
+
+                {item.userId != userLogin.id &&
+                  <View style={styles.buttonGroupContainer}>
+                    <Text style={styles.menuContent}>{moment(item.createAt).format("hh:mm DD-MM-YY")}</Text>
+                    <TouchableOpacity onPress={() => setComment('Đang trả lời @' + item.userName + ' ')}>
+                      <Text style={{ fontSize: 12, marginLeft: '10%', fontWeight: 'bold' }}>Trả lời </Text>
+                    </TouchableOpacity>
+                  </View>
+                }
+
+
               </View>
             )}
             keyExtractor={(item: any) => {
               return item.id;
             }}
           />
-          <View style={{ height: 80 }}></View>
+          <View style={{ height: 50 }}></View>
         </ScrollView>
         <Modal isOpen={open} onClose={() => setOpen(false)} mt={12}>
           <Modal.Content maxWidth="400px" style={styles.top}>
-            <Modal.CloseButton />
             <Modal.Body>
-              <TextInput
+              {/* <TextInput
                 multiline={true}
                 style={styles.input}
                 placeholder="Viết bình luận công khai..."
                 onChangeText={updateComment => setUpdateComment(updateComment)}
                 value={updateComment}
+              /> */}
+              <Input
+                variant="rounded"
+                placeholder="Nhập bình luận..."
+                m={1}
+                w='100%'
+                value={updateComment}
+                _light={{
+                  placeholderTextColor: "blueGray.400",
+                }}
+                _dark={{
+                  placeholderTextColor: "blueGray.50",
+                }}
+                onChangeText={updateComment => setUpdateComment(updateComment)}
               />
             </Modal.Body>
             <Modal.Footer>
@@ -169,21 +314,25 @@ export default function ListComments(route: any) {
           </Modal.Content>
         </Modal>
         <View style={styles.searchSection}>
-          <TextInput
-            multiline={true}
-            style={styles.input}
-            placeholder="Viết bình luận công khai..."
-            onChangeText={comment => setComment(comment)}
+          <Input
+            variant="rounded"
+            placeholder="Nhập bình luận..."
+            m={1}
+            w='80%'
             value={comment}
+            _light={{
+              placeholderTextColor: "blueGray.400",
+            }}
+            _dark={{
+              placeholderTextColor: "blueGray.50",
+            }}
+            onChangeText={comment => setComment(comment)}
           />
-          <TouchableOpacity>
-            <MaterialCommunityIcons name="comment-arrow-right" style={{ paddingTop: 10 }} color={'#DDDBDB'} size={70} onPress={() => {
-              saveComment(comment, token, postId)
-            }} />
-          </TouchableOpacity>
+          <Feather name='send' size={30} style={{ width: '15%', paddingLeft: '3%', paddingTop: '3%' }} onPress={() => { saveComment(comment, token, postId) }} />
+
         </View>
       </NativeBaseProvider>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -192,18 +341,18 @@ const styles = StyleSheet.create({
     marginBottom: "auto",
     marginTop: 0,
   },
-  timeText: {
-    fontSize: 10,
-  },
   feedImage: {
     height: 300,
+    marginTop: 10,
   },
   menuContent: {
-    fontSize: 10,
+    fontSize: 12,
+    marginLeft: 10,
+    fontWeight: 'bold'
   },
   profileUserStatus: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   input: {
     flex: 1,
@@ -211,28 +360,29 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     paddingBottom: 10,
     paddingLeft: 0,
-    backgroundColor: '#DDDBDB',
+    backgroundColor: '#CCDEE4',
     color: '#424242',
     borderRadius: 10,
     height: 70,
   },
   captionText: {
-    marginTop: '2%',
-    marginBottom: '2%'
+    marginTop: 10,
+    fontSize: 15,
+    padding: 5
   },
   searchSection: {
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
     position: 'absolute',
-    bottom: 0
+    bottom: 0,
+    width: '100%',
+    height: 50
   },
   root: {
     backgroundColor: "#fff",
-    marginTop: 10,
-    height: '100%'
+    marginTop: 20
   },
   container: {
     marginLeft: 10,
@@ -240,14 +390,16 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     flexDirection: 'row',
     alignItems: 'flex-start',
-    height: '100%'
+    height: '100%',
+    flex: 1
   },
   containerComment: {
   },
   content: {
     flex: 1,
     borderRadius: 10,
-    backgroundColor: '#DDDBDB'
+    margin: 5,
+    backgroundColor: '#f5f5f5'
   },
   contentHeader: {
     flexDirection: 'row',
@@ -274,11 +426,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#BDBDBD',
   },
-  imageComment: {
-    height: 30,
-    width: 30,
-    borderRadius: 25,
-  },
   nameContainer: {
     marginLeft: 10,
     marginRight: '35%'
@@ -290,69 +437,116 @@ const styles = StyleSheet.create({
   },
 });
 
-export function saveComment(comment: any, token: any, postId: any) {
-  const body = {
-    content: comment,
-    postId: postId,
-  }
+// export function saveComment(comment: any, token: any, postId: any) {
+//   const body = {
+//     content: comment,
+//     postId: postId,
+//   }
 
-  fetch(ApiCommon.rootUrl + '/api/post/comment', {
-    method: 'post',
-    body: JSON.stringify(body),
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    },
-  }).then((response) => response.json())
-    .then((responseJson) => {
-      if (responseJson.code == 1) {
-      }
-    })
-    .catch((error) => {
-      console.log(error)
-    });
+//   fetch(ApiCommon.rootUrl + '/api/post/comment', {
+//     method: 'post',
+//     body: JSON.stringify(body),
+//     headers: {
+//       Accept: 'application/json',
+//       'Content-Type': 'application/json',
+//       'Authorization': `Bearer ${token}`
+//     },
+//   }).then((response) => response.json())
+//     .then((responseJson) => {
+//       if (responseJson.code == 1) {
+
+//       }
+//     })
+//     .catch((error) => {
+//       console.log(error)
+//     });
+// }
+
+// export function updateComments(content: string, commentId: Number, token: any) {
+//   fetch(ApiCommon.rootUrl + `/api/post/comment`, {
+//     method: 'PUT',
+//     headers: {
+//       Accept: 'application/json',
+//       'Content-Type': 'application/json',
+//       'Authorization': `Bearer ${token}`
+//     },
+//     body: JSON.stringify({
+//       content: content,
+//       id: commentId,
+//     }),
+//   })
+//     .then((response) => response.json())
+//     .then((responseJson) => {
+//       if (responseJson.code == 1) {
+//         //reload screen
+//       }
+//     })
+//     .catch((error) => {
+//       console.error(error)
+//     })
+// }
+
+// export function deleteComment(commentId: any, userId: any, token: any) {
+//   Alert.alert(
+//     "Xóa bình luận",
+//     `Bạn có chắc chắn muốn xóa bình luận ?`,
+//     [
+//       // The "Yes" button
+//       {
+//         text: "Có",
+//         onPress: async () => {
+
+//           // gọi api xóa bình luận
+//           fetch(ApiCommon.rootUrl + `/api/post/comment/${commentId}`, {
+//             method: 'DELETE',
+//             headers: {
+//               Accept: 'application/json',
+//               'Content-Type': 'application/json',
+//               'Authorization': `Bearer ${token}`
+//             },
+//           }).then((response) => response.json())
+//             .then((responseJson) => {
+//               if (responseJson.code == 1) {
+//                 //reload screen
+//               }
+//             })
+//             .catch((error) => {
+//               console.log(error)
+//             });
+//           // gọi api xóa bình luận
+
+//         },
+//       },
+//       // The "No" button
+//       // Does nothing but dismiss the dialog when tapped
+//       {
+//         text: "Không",
+//       },
+//     ]
+//   );
+
+// }
+
+
+export default (data: any) => {
+  return (
+    <NativeBaseProvider>
+      <TabOneNavigator data={data} />
+    </NativeBaseProvider>
+  )
 }
 
-export function updateComments(content: string, commentId: Number, token: any) {
-  fetch(ApiCommon.rootUrl + `/api/post/comment`, {
-    method: 'PUT',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    },
-    body: JSON.stringify({
-      content: content,
-      id: commentId,
-    }),
-  })
-    .then((response) => response.json())
-    .then((responseJson) => {
-      if (responseJson.code == 1) {
-        //reload screen
-      }
-    })
-    .catch((error) => {
-      console.error(error)
-    })
-}
+const TabOneStack = createStackNavigator<TabOneParamList>();
 
-export function deleteComment(commentId: any, userId: any, token: any) {
-  fetch(ApiCommon.rootUrl + `/api/post/comment/${commentId}`, {
-    method: 'DELETE',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    },
-  }).then((response) => response.json())
-    .then((responseJson) => {
-      if (responseJson.code == 1) {
-        //reload screen
-      }
-    })
-    .catch((error) => {
-      console.log(error)
-    });
+function TabOneNavigator(data: any) {
+  return (
+    <TabOneStack.Navigator>
+      <TabOneStack.Screen
+        name="TabOneScreen"
+        component={ListComments}
+        options={{ headerTitle: "BÌNH LUẬN", headerTitleAlign: 'center' }}
+        initialParams={data}
+      />
+    </TabOneStack.Navigator>
+  );
 }

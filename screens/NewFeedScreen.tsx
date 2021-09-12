@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, Image, Text, TouchableOpacity, ScrollView, } from 'react-native'
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import ApiCommon from '../constants/ApiCommon';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import { FlatList, NativeBaseProvider } from 'native-base';
@@ -16,6 +16,39 @@ export default function NewFeedScreen() {
     const [avatarHashCode, setAvatarHashCode] = useState([]);
     const [loading, setLoading] = useState(true);
     const [loadData, setLoadData] = useState(true);
+    const [userLogin, setUserLogin] = useState<any>({});
+
+    useFocusEffect(
+        React.useCallback(() => {
+            // Do something when the screen is focused
+            const readToken = async () => {
+                const item = await getItem();
+                setToken(item);
+                setRetrieve(false);
+            };
+
+            if (retrieve) {
+                readToken();
+            }
+
+            const headers = { 'Authorization': `Bearer ${token}` }
+
+            if (retrieve === false) {
+                fetch(ApiCommon.rootUrl + '/api/posts', { headers })
+                    .then((response) => response.json())
+                    .then((responseJson) => {
+                        if (responseJson.code == 1) {
+                            setData(responseJson.listData);
+                        }
+                    })
+            }
+            return () => {
+                // Do something when the screen is unfocused
+                // Useful for cleanup functions
+            };
+
+        }, [retrieve])
+    );
     useEffect(() => {
 
         const readToken = async () => {
@@ -31,7 +64,7 @@ export default function NewFeedScreen() {
             const headers = { 'Authorization': `Bearer ${token}` }
             fetch(ApiCommon.rootUrl + '/api/user/login', { headers })
                 .then((response) => response.json())
-                .then((responseJson) => setAvatarHashCode(responseJson.avatarHashCode))
+                .then((responseJson) => setUserLogin(responseJson))
 
 
             fetch(ApiCommon.rootUrl + '/api/posts', { headers })
@@ -60,6 +93,7 @@ export default function NewFeedScreen() {
         }
         setLoading(true);
     }
+
     return (
         <NativeBaseProvider>
             <View style={styles.container}>
@@ -67,10 +101,10 @@ export default function NewFeedScreen() {
                 <ScrollView>
                     <TouchableOpacity style={styles.text}>
                         <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen')}>
-                            <Image style={styles.imageStatus} source={{ uri: `data:image/jpeg;base64,${avatarHashCode}` }} />
+                            <Image style={styles.imageStatus} source={{ uri: `data:image/jpeg;base64,${userLogin.avatarHashCode}` }} />
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => navigation.navigate('PostArticle', {
-                            data: null, flag: false
+                            data: userLogin
                         })}>
                             <Text style={styles.postStatus}>Bạn đang nghĩ gì?</Text>
                         </TouchableOpacity>
@@ -100,52 +134,52 @@ export default function NewFeedScreen() {
                                 <View style={styles.line} />
                                 <View style={styles.buttonGroupContainer}>
                                     <TouchableOpacity style={styles.buttonContainer}>
-                                        {item.totalLike ? 
-                                            <View style={{flex:1, flexDirection:'row',  alignItems: 'center',}}>
+                                        {item.totalLike ?
+                                            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', }}>
                                                 <EvilIcons name='like' size={16} /><Text style={{ fontSize: 12 }}> {item.totalLike} </Text>
                                             </View>
-                                        : 
-                                            <View style={{flex:1, flexDirection:'row',  alignItems: 'center',}}>
+                                            :
+                                            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', }}>
                                                 <EvilIcons name='like' size={16} /><Text style={{ fontSize: 12 }}> 0 </Text>
                                             </View>
                                         }
                                     </TouchableOpacity>
                                     <TouchableOpacity style={styles.buttonContainer}>
-                                    {item.totalComment ?
-                                        <View style={{flex:1, flexDirection:'row',  alignItems: 'center',}}>
-                                            <EvilIcons name='comment' size={16} /><Text style={{ fontSize: 12 }}> {item.totalComment} </Text>
-                                        </View>
-                                        :
-                                        <View style={{flex:1, flexDirection:'row',  alignItems: 'center',}}>
-                                            <EvilIcons name='comment' size={16} /><Text style={{ fontSize: 12 }}> 0 </Text>
-                                        </View>
-                                    }
+                                        {item.totalComment ?
+                                            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', }}>
+                                                <EvilIcons name='comment' size={16} /><Text style={{ fontSize: 12 }}> {item.totalComment} </Text>
+                                            </View>
+                                            :
+                                            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', }}>
+                                                <EvilIcons name='comment' size={16} /><Text style={{ fontSize: 12 }}> 0 </Text>
+                                            </View>
+                                        }
                                     </TouchableOpacity>
                                 </View>
                                 <View style={styles.line} /><View style={styles.buttonGroupContainer}>
                                     <TouchableOpacity style={styles.buttonContainer} onPress={() => { addReactionLike(item.postId, token), handleAfterLike(item) }}>
-                                        {(item.isLike) ? 
-                                        (
-                                            <View style={{flex:1, flexDirection:'row',  alignItems: 'center',}}>
-                                                <EvilIcons name='like' size={25} color='#00BBF7'/>
-                                                <Text style={styles.buttonTextIsLike}>Thích</Text>
-                                            </View>
-                                        ) : 
-                                        (
-                                            <View style={{flex:1, flexDirection:'row',  alignItems: 'center',}}>
-                                                <EvilIcons name='like' size={25} color='#000000'/>
-                                                <Text style={styles.buttonText}>Thích</Text>
-                                            </View>
-                                        
-                                        )
+                                        {(item.isLike) ?
+                                            (
+                                                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', }}>
+                                                    <EvilIcons name='like' size={25} color='#00BBF7' />
+                                                    <Text style={styles.buttonTextIsLike}>Thích</Text>
+                                                </View>
+                                            ) :
+                                            (
+                                                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', }}>
+                                                    <EvilIcons name='like' size={25} color='#000000' />
+                                                    <Text style={styles.buttonText}>Thích</Text>
+                                                </View>
+
+                                            )
                                         }
                                     </TouchableOpacity>
 
                                     <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('ListComments', {
                                         postId: item.postId
                                     })}>
-                                        <View style={{flex:1, flexDirection:'row',  alignItems: 'center',}}>
-                                            <EvilIcons name='comment' size={25} color='#000000'/>
+                                        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', }}>
+                                            <EvilIcons name='comment' size={25} color='#000000' />
                                             <Text style={styles.buttonText}>Bình luận</Text>
                                         </View>
                                     </TouchableOpacity>
@@ -243,9 +277,9 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     lineImg: {
-        height: 6,
+        height: 10,
         backgroundColor: '#AFBCBE',
-        marginTop: 10
+        marginTop: 10,
     },
 })
 

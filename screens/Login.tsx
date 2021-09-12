@@ -113,7 +113,7 @@ function onLogin(email: any, passWord: any, navigation: any) {
       .then((responseJson) => {
         if (responseJson.code == 1) {
           AsyncStorage.setItem('token', responseJson.listData[0].token)
-          navigation.navigate('Main');
+          navigation.navigate('Main', {index : 1});
         }
       })
       .catch((error) => {

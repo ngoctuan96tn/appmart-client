@@ -144,7 +144,7 @@ export class Cart extends Component<{}, any> {
 
               </View>
               <View style={{ position: 'absolute', bottom: 0, backgroundColor: '#f8f8ff', flexDirection: "row", flexWrap: "wrap", justifyContent: 'center', width: '100%', height: 60 }}>
-                <Button borderColor='#f8f8ff' borderRadius={0} size="sm" variant="outline" onPress={() => navigation.navigate('Main')} width='59%'>
+                <Button borderColor='#f8f8ff' borderRadius={0} size="sm" variant="outline" onPress={() => navigation.navigate('Main', {index : 1})} width='59%'>
                   Tiếp tục mua hàng
                 </Button>
                 <View style={{ height: '100%', width: 1, backgroundColor: '#909090', }}></View>
@@ -166,7 +166,7 @@ export class Cart extends Component<{}, any> {
             size="sm"
             variant="solid"
             colorScheme="secondary"
-            onPress={() => navigation.navigate('Main')}
+            onPress={() => navigation.navigate('Main', {index : 1})}
           >
             Hãy mua sắm ngay
           </Button>

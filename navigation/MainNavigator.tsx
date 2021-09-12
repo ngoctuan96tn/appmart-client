@@ -3,7 +3,7 @@
  * https://reactnavigation.org/docs/bottom-tab-navigator
  */
 
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
@@ -16,15 +16,38 @@ import NewFeedScreen from '../screens/NewFeedScreen';
 import MessageScreen from '../screens/MessageScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import { TabFiveParamList, TabFourParamList, TabOneParamList, TabSixParamList, TabThreeParamList, TabTwoParamList } from '../types';
+import { useNavigation } from '@react-navigation/core';
 
 const BottomTab = createBottomTabNavigator();
 
-export default function MainNavigator() {
+export default function MainNavigator(data: any) {
+  const params = data.route.params;
+  const navigation = useNavigation();
+
+  const [initName, setInitName] = React.useState('Mua sắm');
   const colorScheme = useColorScheme();
+
+  const tabMuaSam = 'Mua sắm';
+  const tabThongBao = 'Thông báo';
+
+  React.useEffect(() => {
+    // check index để gen init route name
+  if (params != null && params != undefined) {
+    if (params.index == 1) {
+      setInitName(tabMuaSam);
+    }
+  
+    if (params.index == 3) {
+      setInitName(tabThongBao);
+    }
+  }
+  });
+  
+  
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName={initName}
       tabBarOptions={{ activeTintColor: Colors['dark'].tint, style: {backgroundColor: '#0ea5e9'} }}>
       <BottomTab.Screen
         name="Mua sắm"
@@ -59,7 +82,8 @@ export default function MainNavigator() {
         component={TabFiveNavigator}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="message" color={color} size={size} />
+            // <MaterialCommunityIcons name="message" color={color} size={size} />
+            <AntDesign name="message1" color={color} size={size}/>
           ),
         }}
       />
