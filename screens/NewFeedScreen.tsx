@@ -277,9 +277,9 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     lineImg: {
-        height: 6,
+        height: 10,
         backgroundColor: '#AFBCBE',
-        marginTop: 10
+        marginTop: 10,
     },
 })
 
