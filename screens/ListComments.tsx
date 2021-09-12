@@ -259,7 +259,7 @@ export function ListComments(route: any) {
                 {item.userId != userLogin.id &&
                   <View style={styles.buttonGroupContainer}>
                     <Text style={styles.menuContent}>{moment(item.createAt).format("hh:mm DD-MM-YY")}</Text>
-                    <TouchableOpacity onPress={() => setComment('Đang trả lời @' + item.userName + ' ')}>
+                    <TouchableOpacity onPress={() => setComment('Trả lời @' + item.userName + ' ')}>
                       <Text style={{ fontSize: 12, marginLeft: '10%', fontWeight: 'bold' }}>Trả lời </Text>
                     </TouchableOpacity>
                   </View>
