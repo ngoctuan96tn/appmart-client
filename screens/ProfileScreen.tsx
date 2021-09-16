@@ -114,14 +114,14 @@ function logout(navigation: any) {
     'Bạn có muốn đăng xuất khỏi thiết bị?',
     [
       {
-        text: 'Yes',
+        text: 'Đăng xuất',
         onPress: () => {
           AsyncStorage.removeItem('token');
           navigation.navigate('Login');
         }
       },
       {
-        text: 'No',
+        text: 'Hủy',
       },
     ],
     { cancelable: false },
