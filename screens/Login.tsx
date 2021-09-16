@@ -12,6 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 import ApiCommon from '../constants/ApiCommon';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Toast from 'react-native-root-toast';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -114,6 +115,17 @@ function onLogin(email: any, passWord: any, navigation: any) {
         if (responseJson.code == 1) {
           AsyncStorage.setItem('token', responseJson.listData[0].token)
           navigation.navigate('Main', {index : 1});
+        } else {
+          Toast.show('Đăng nhập thất bại. Vui lòng thử lại!', {
+            duration: Toast.durations.LONG,
+            position: 0,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
+            backgroundColor: '#ffffff',
+            textColor: '#ff0000',
+
+        });
         }
       })
       .catch((error) => {
