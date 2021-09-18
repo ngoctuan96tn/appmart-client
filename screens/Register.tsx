@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, Alert } from 'react-native';
+import { Text, StyleSheet, Alert } from 'react-native';
 import {
   Input,
   Heading,
@@ -27,82 +27,100 @@ export default function Register(route: any) {
   return (
     <NativeBaseProvider>
       <View style={styles.container}>
-        <Heading size="md" textAlign='center' marginTop={'20%'} fontSize={20} color='#fff'>ĐĂNG KÝ</Heading>
+        <Heading size="md" textAlign='center' marginTop={'20%'} color='#fff' fontWeight='400' marginBottom='10%'>ĐĂNG KÝ</Heading>
         <MaterialCommunityIcons name="camera" color='#fff' size={40} style={{ marginBottom: '5%', marginTop: '10%' }} onPress={() => navigation.navigate('ImagePickerExample')} />
         <Input
-          width={'80%'}
-          backgroundColor='#f0f9ff'
+          width={'90%'}
           marginBottom={'5%'}
-          variant="outline"
+          paddingLeft={'1%'}
+          size="sm"
+          variant="underlined"
           placeholder="Họ tên"
           onChangeText={userName => setUserName(userName)}
           _light={{
-            placeholderTextColor: "blueGray.400",
+            placeholderTextColor: "#fff",
           }}
           _dark={{
-            placeholderTextColor: "blueGray.50",
+            placeholderTextColor: "#fff",
           }}
         />
         <Input
-          width={'80%'}
+          width={'90%'}
           marginBottom={'5%'}
-          variant="outline"
-          backgroundColor='#f0f9ff'
+          paddingLeft={'1%'}
+          variant="underlined"
+          size="sm"
           placeholder="Email"
           onChangeText={email => setEmail(email)}
           _light={{
-            placeholderTextColor: "blueGray.400",
+            placeholderTextColor: "#fff",
           }}
           _dark={{
-            placeholderTextColor: "blueGray.50",
+            placeholderTextColor: "#fff",
           }}
         />
         <Input
-          width={'80%'}
+          width={'90%'}
           keyboardType='numeric'
-          backgroundColor='#f0f9ff'
+          paddingLeft={'1%'}
+          size="sm"
           marginBottom={'5%'}
-          variant="outline"
+          variant="underlined"
           placeholder="Số điện thoại"
           onChangeText={phoneNumber => setPhoneNumber(phoneNumber)}
           _light={{
-            placeholderTextColor: "blueGray.400",
+            placeholderTextColor: "#fff",
           }}
           _dark={{
-            placeholderTextColor: "blueGray.50",
+            placeholderTextColor: "#fff",
           }}
         />
         <Input
-          width={'80%'}
+          width={'90%'}
           marginBottom={'5%'}
-          backgroundColor='#f0f9ff'
+          paddingLeft={'1%'}
+          variant="underlined"
+          size="sm"
           type={show ? "text" : "password"}
           onChangeText={passWord => setPassWord(passWord)}
           InputRightElement={
-            <Icon name="eye" size={25} style={{ marginRight: '5%' }} onPress={handleClick} />
+            <Icon name="eye" size={20} color='#fff' style={{ marginRight: '5%' }} onPress={handleClick} />
           }
+          _light={{
+            placeholderTextColor: "#fff",
+          }}
+          _dark={{
+            placeholderTextColor: "#fff",
+          }}
           placeholder="Mật khẩu"
         />
         <Input
-          width={'80%'}
-          backgroundColor='#f0f9ff'
+          width={'90%'}
+          paddingLeft={'1%'}
+          variant="underlined"
           marginBottom={'10%'}
           size="sm"
           type={showConfirm ? "text" : "password"}
           onChangeText={confirmPassWord => setConfirmPassWord(confirmPassWord)}
           InputRightElement={
-            <Icon name="eye" size={25} style={{ marginRight: '5%' }} onPress={handleClickConfirm} />
+            <Icon name="eye" size={20} color='#fff' style={{ marginRight: '5%' }} onPress={handleClickConfirm} />
           }
+          _light={{
+            placeholderTextColor: "#fff",
+          }}
+          _dark={{
+            placeholderTextColor: "#fff",
+          }}
           placeholder="Nhập lại mật khẩu"
         />
-        <Button width={'80%'} backgroundColor='#6CDDED' onPress={() => validateRegister(navigation,
+        <Button width={'80%'} backgroundColor='#fff' borderRadius={25} onPress={() => validateRegister(navigation,
           userName,
           email,
           phoneNumber,
           passWord,
           avatarImg,
           confirmPassWord,
-        )}>Tiếp theo</Button>
+        )}><Text style={{ color: '#4EC8F2', fontSize: 12 }}>Tiếp theo</Text></Button>
       </View>
     </NativeBaseProvider>
   );
@@ -159,6 +177,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#0ea5e9'
+    backgroundColor: '#4EC8F2'
   },
 });

@@ -81,7 +81,7 @@ export function Chat(route: any) {
     if (!loading) {
         return (
             <NativeBaseProvider>
-                <View style={{ height: '100%' }}>
+                <View style={{ height: '100%', padding:'3%' }}>
                     <ScrollView
                         ref={scrollViewRef}
                         onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}

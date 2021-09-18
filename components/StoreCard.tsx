@@ -18,7 +18,7 @@ function CategoryCard(data: any) {
         marginRight={1}
       >
         <Image source={{ uri: `data:image/jpeg;base64,${store.image}` }} alt="image base" resizeMode="cover" height={150} roundedTop="md" />
-        <Text color='black' left={1}>{store.name}</Text>
+        <Text color='black' left={1} bottom='1%' style={{textAlign: 'center'}}>{store.name}</Text>
       </Box>
     </TouchableOpacity>
   );

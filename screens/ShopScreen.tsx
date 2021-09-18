@@ -186,16 +186,16 @@ export default function ShopScreen() {
             {/* end slide show */}
 
             <NativeBaseProvider>
-              <View style={{ marginTop: 5 }}>
+              <View style={{ marginTop: '5%' }}>
                 <ProductList data={dataProduct} />
               </View>
-              <View style={{ marginTop: 10 }}>
+              <View style={{ marginTop: '5%'}}>
                 <CategoryList data={data} />
               </View>
-              <View style={{ marginTop: 10 }}>
+              <View style={{ marginTop: '5%'}}>
                 <StoreList data={dataStore}/>
               </View>
-              <View style={{ marginTop: 15 }}>
+              <View style={{ marginTop: '5%' }}>
                 <ProductSuggestList data={dataProduct} />
               </View>
             </NativeBaseProvider>

@@ -104,26 +104,26 @@ export function DetailProduct(route: any) {
                         </Button>
 
                     </View>
-                    <View style={{ flexDirection: "row", flexWrap: "wrap", marginTop: '5%', backgroundColor: '#fff' }}>
+                    <View style={{ flexDirection: "row", flexWrap: "wrap", marginTop: '5%', backgroundColor: '#fff', paddingTop:'3%', paddingBottom:'3%' }}>
                         <View style={{ width: '50%' }}>
                             <Text style={{ textAlign: 'center', fontWeight: 'bold', color: 'red' }} >{dataStore.totalProduct}</Text>
-                            <Text style={{ textAlign: 'center' }} >Sản phẩm</Text>
+                            <Text style={{ textAlign: 'center' }} fontSize={13}>Sản phẩm</Text>
                         </View>
                         <View style={{ width: '50%' }}>
                             <Text style={{ textAlign: 'center', fontWeight: 'bold', color: 'red' }} >{dataStore.totalComment}</Text>
-                            <Text style={{ textAlign: 'center' }} >Đánh giá</Text>
+                            <Text style={{ textAlign: 'center' }} fontSize={13}>Đánh giá</Text>
                         </View>
 
                     </View>
 
-                    <View style={{ marginTop: '5%', backgroundColor: '#fff' }}>
+                    <View style={{ marginTop: '2%', backgroundColor: '#fff', padding:'3%' }}>
                         <Text fontWeight='bold'>Chi tiết sản phẩm</Text>
-                        <Text>{productDetail.description}</Text>
+                        <Text style={{marginTop:'2%', textAlign:'justify'}} fontWeight='300' fontSize={13}>{productDetail.description}</Text>
                     </View>
 
-                    <View style={{ marginTop: '5%', backgroundColor: '#fff' }}>
+                    <View style={{ marginTop: '2%', backgroundColor: '#fff', paddingTop:'3%', paddingBottom:'3%' }}>
                         <Text marginLeft='2%' fontWeight='bold'>Đánh giá và nhận xét</Text>
-                        <Text marginLeft='2%'>
+                        <Text marginLeft='2%' marginTop='2%' fontSize={13}>
                             <Rating
                                 type='star'
                                 ratingCount={5}
@@ -164,7 +164,7 @@ export function DetailProduct(route: any) {
                         />
                     </View>
 
-                    <View style={{ marginTop: '5%', backgroundColor: '#fff' }}>
+                    <View style={{ marginTop: '2%', backgroundColor: '#fff' }}>
                         <ProductSimilarSuggestList data={dataProduct} />
                     </View>
 

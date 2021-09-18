@@ -13,6 +13,7 @@ import { useState } from 'react';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import ApiCommon from '../constants/ApiCommon';
 import { AsyncStorage } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 // import files from '../assets/filesBase64';
 
 export default function ProfileScreen() {
@@ -67,12 +68,10 @@ export default function ProfileScreen() {
               source={{
                 uri: `data:image/jpeg;base64,${userLogin.avatarHashCode}`,
               }}
-              size={80}
+              size={60}
             />
             <View style={{ marginLeft: 20 }}>
               <Title style={[styles.title, {
-                marginTop: 15,
-                marginBottom: 5,
               }]}>{userLogin.userName}</Title>
               {userLogin.roleId == 1 ?
                 <Caption style={styles.caption}>@Quản trị viên</Caption>
@@ -91,18 +90,27 @@ export default function ProfileScreen() {
             <Text style={styles.menuItemText}>Đơn hàng của tôi</Text>
           </View>
         </TouchableRipple>
+        <TouchableOpacity>
+          <View style={styles.line} />
+        </TouchableOpacity>
         <TouchableRipple onPress={() => navigation.navigate('ChangePassWord')}>
           <View style={styles.menuItem}>
             <Icon name="onepassword" color="#FF6347" size={25} />
             <Text style={styles.menuItemText}>Thay đổi mật khẩu</Text>
           </View>
         </TouchableRipple>
+        <TouchableOpacity>
+          <View style={styles.line} />
+        </TouchableOpacity>
         <TouchableRipple onPress={() => logout(navigation)}>
           <View style={styles.menuItem}>
             <Icon name="logout" color="#FF6347" size={25} />
             <Text style={styles.menuItemText}>Đăng xuất</Text>
           </View>
         </TouchableRipple>
+        <TouchableOpacity>
+          <View style={styles.line} />
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -129,21 +137,29 @@ function logout(navigation: any) {
 }
 
 const styles = StyleSheet.create({
+  line: {
+    height: 0.5,
+    backgroundColor: '#BDBDBD',
+    marginTop: 10
+  },
   container: {
     flex: 1,
   },
   userInfoSection: {
+    backgroundColor: '#fff',
     paddingHorizontal: 30,
     marginBottom: 25,
+    paddingBottom: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
   },
   caption: {
-    fontSize: 14,
+    fontSize: 12,
     lineHeight: 16,
-    fontWeight: '500',
+    fontWeight: '300',
+    color: 'black'
   },
   row: {
     flexDirection: 'row',
@@ -163,18 +179,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   menuWrapper: {
-    marginTop: 10,
+    marginTop: -10,
+    backgroundColor: '#fff'
   },
   menuItem: {
     flexDirection: 'row',
     paddingVertical: 15,
     paddingHorizontal: 30,
+    paddingBottom: 3
   },
   menuItemText: {
-    color: '#777777',
+    color: 'black',
     marginLeft: 20,
-    fontWeight: '600',
-    fontSize: 16,
+    fontWeight: '300',
+    fontSize: 13,
     lineHeight: 26,
   },
 });

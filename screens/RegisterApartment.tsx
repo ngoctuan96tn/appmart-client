@@ -180,7 +180,7 @@ export default function RegisterApartment(route: any) {
     return (
         <NativeBaseProvider>
             <View style={styles.container}>
-                <Heading textAlign='center' color='#fff' marginTop={'20%'} fontSize={20}>ĐĂNG KÝ CĂN HỘ</Heading>
+                <Heading textAlign='center' size='md' color='#fff' marginTop={'30%'} fontWeight='400' marginBottom='20%'>ĐĂNG KÝ CĂN HỘ</Heading>
                 {/* <Input
                     backgroundColor='#f0f9ff'
                     width={300}
@@ -273,8 +273,8 @@ export default function RegisterApartment(route: any) {
                     style={{
                         ...pickerSelectStyles,
                         iconContainer: {
-                            top: '20%',
-                            right: '12%',
+                            top: '55%',
+                            right: '8%',
                         },
                     }}
                     value={idBuilding}
@@ -293,8 +293,8 @@ export default function RegisterApartment(route: any) {
                     style={{
                         ...pickerSelectStyles,
                         iconContainer: {
-                            top: '20%',
-                            right: '12%',
+                            top: '55%',
+                            right: '8%',
                         },
                     }}
                     items={floors.map(item => {
@@ -327,8 +327,8 @@ export default function RegisterApartment(route: any) {
                     style={{
                         ...pickerSelectStyles,
                         iconContainer: {
-                            top: '20%',
-                            right: '12%',
+                            top: '55%',
+                            right: '8%',
                         },
                     }}
                     value={idRoom}
@@ -338,7 +338,7 @@ export default function RegisterApartment(route: any) {
                     }}
                 />
 
-                <Button marginTop={'10%'} width={'80%'} backgroundColor='#6CDDED' onPress={() => onSave(photo, email, userName, phone, password, idBuilding, idFloor, idRoom, navigation, confirmPassWord)}>Cập nhật</Button>
+                <Button marginTop={'20%'} width={'50%'} backgroundColor='#fff' borderRadius={25} onPress={() => onSave(photo, email, userName, phone, password, idBuilding, idFloor, idRoom, navigation, confirmPassWord)}><Text style={{ color: '#4EC8F2', fontSize: 12 }}>CẬP NHẬT</Text></Button>
             </View>
 
             <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
@@ -382,33 +382,28 @@ export default function RegisterApartment(route: any) {
 
 const pickerSelectStyles = StyleSheet.create({
     inputIOS: {
-        marginLeft: '10%',
-        width: '80%',
+        marginLeft: '5%',
+        width: '90%',
         marginTop: '10%',
-        fontSize: 16,
+        fontSize: 13,
         paddingVertical: '3%',
         paddingHorizontal: '5%',
-        borderWidth: 1,
-        borderColor: '#000',
         color: '#000',
         paddingRight: 30,
-        borderRadius: 5,
+        borderRadius: 20,
         backgroundColor: '#fff'
     },
     inputAndroid: {
-        marginLeft: '10%',
-        width: '80%',
-        marginTop: '7%',
-        fontSize: 16,
-        paddingHorizontal: 10,
-        paddingVertical: 8,
-        borderWidth: 0.5,
-        borderColor: '#000',
-        borderRadius: 8,
+        marginLeft: '5%',
+        width: 300,
+        marginTop: '5%',
+        fontSize: 13,
+        paddingHorizontal: '5%',
+        paddingVertical: '3%',
+        borderRadius: 20,
         color: '#000',
         paddingRight: 30,
         backgroundColor: '#fff',
-        top: -10,
     },
 });
 
@@ -416,7 +411,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: '#0ea5e9',
+        backgroundColor: '#4EC8F2',
     },
 });
 
