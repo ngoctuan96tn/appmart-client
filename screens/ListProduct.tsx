@@ -20,11 +20,11 @@ export function ListProduct(route: any) {
         }
     });
     return (
-        <SafeAreaView style={{alignItems:'center' ,justifyContent:'center'}}>
+        <SafeAreaView style={{alignItems:'center' ,justifyContent:'center', marginTop: '3%'}}>
             <FlatList
                 data={data}
                 renderItem={({ item }) => (
-                    <View style={{ marginTop: 3 }}><ProductCard data={item} /></View>
+                    <View style={{ marginTop: '2%' }}><ProductCard data={item} /></View>
                 )}
                 keyExtractor={item => item.id}
                 numColumns={3}

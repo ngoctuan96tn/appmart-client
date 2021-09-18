@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Alert } from 'react-native';
+import { StyleSheet, Alert, Text } from 'react-native';
 import {
   Input,
   Heading,
@@ -16,24 +16,25 @@ export default function ForgetPassword() {
   return (
     <NativeBaseProvider >
       <View style={styles.container}>
-        <Heading textAlign='center' marginTop={'20%'} color='#fff' fontSize={20}>QUÊN MẬT KHẨU</Heading>
+        <Heading size="md" textAlign='center' marginTop='30%' fontWeight='400' color='#fff' marginBottom='20%'>QUÊN MẬT KHẨU</Heading>
         <Input
-          width={'80%'}
+          width={'90%'}
           onChangeText={phone => setPhone(phone)}
           keyboardType='numeric'
-          backgroundColor='#f0f9ff'
+          paddingLeft={'1%'}
+          size= 'sm'
           marginTop={'10%'}
-          marginBottom={'5%'}
-          variant="outline"
+          marginBottom={'10%'}
+          variant="underlined"
           placeholder="Nhập số điện thoại"
           _light={{
-            placeholderTextColor: "blueGray.400",
+            placeholderTextColor: "#fff",
           }}
           _dark={{
-            placeholderTextColor: "blueGray.50",
+            placeholderTextColor: "#fff",
           }}
         />
-        <Button width={'80%'} backgroundColor='#6CDDED' onPress={() => getPassWord(phone, navigation)}>Lấy lại mật khẩu</Button>
+        <Button width={'50%'} backgroundColor='#fff' borderRadius={25} onPress={() => getPassWord(phone, navigation)}><Text style={{ color: '#4EC8F2', fontSize: 12 }}>LẤY LẠI MẬT KHẨU</Text></Button>
       </View>
     </NativeBaseProvider>
   );
@@ -79,6 +80,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#0ea5e9'
+    backgroundColor: '#4EC8F2'
   },
 });

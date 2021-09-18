@@ -7,11 +7,11 @@ export function CategoryList(data: any) {
     const navigation = useNavigation();
     const list = data.data.data;
     return (
-        <><View style={{ flexDirection: 'row' }}>
-            <Text style={{ marginLeft: 5, flex: 1, fontWeight: 'bold', }}>DANH MỤC NGÀNH HÀNG</Text>
-            <Text style={{ textAlign: 'right', flex: 1, marginRight: 5, fontWeight: 'bold', color: '#ffa500' }} onPress={() => navigation.navigate('AllCategory')} >Xem thêm</Text>
+        <><View style={{ flexDirection: 'row', marginTop:'2%' }}>
+            <Text style={{ marginLeft: '3%', fontWeight: 'bold', fontSize:15, width:'60%' }}>DANH MỤC NGÀNH HÀNG</Text>
+            <Text style={{ textAlign: 'right', width:'35%', marginRight: '1%', fontWeight: '300', color: '#ffa500' }} onPress={() => navigation.navigate('AllCategory')} >Xem thêm</Text>
         </View>
-            <SafeAreaView style={{ flex: 1, marginTop: 10 }}>
+            <SafeAreaView style={{ flex: 1, marginTop: '2%', marginLeft:'2%', marginBottom:'5%' }}>
                 <FlatList
                     data={list}
                     renderItem={({ item }) => (

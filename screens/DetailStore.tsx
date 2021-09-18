@@ -44,7 +44,7 @@ export function DetailStore(route: any) {
                 </Button>
 
             </View>
-            <View style={{ flexDirection: "row", flexWrap: "wrap", marginTop: '5%', backgroundColor: '#fff' }}>
+            <View style={{ flexDirection: "row", flexWrap: "wrap", marginTop: '5%', backgroundColor: '#fff', paddingTop: '3%', paddingBottom: '3%' }}>
                 <View style={{ width: '33%' }}>
                     <Text style={{ textAlign: 'center', fontWeight: 'bold', color: 'red' }} >{data.totalProduct}</Text>
                     <Text style={{ textAlign: 'center' }} >Sản phẩm</Text>
@@ -54,7 +54,7 @@ export function DetailStore(route: any) {
                     <Text style={{ textAlign: 'center' }} >Đánh giá</Text>
                 </View>
                 <View style={{ width: '33%' }}>
-                    <Text style={{ textAlign: 'center', fontWeight: 'bold', color: 'red' }} >{data.rating? data.rating.toFixed(2): 0}</Text>
+                    <Text style={{ textAlign: 'center', fontWeight: 'bold', color: 'red' }} >{data.rating ? data.rating.toFixed(2) : 0}</Text>
                     <Text style={{ alignSelf: 'center' }} >
                         <Rating
                             type='star'
@@ -66,24 +66,23 @@ export function DetailStore(route: any) {
                 </View>
 
             </View>
-            <View style={{ flexDirection: "row", flexWrap: "wrap", marginTop: '5%', backgroundColor: '#fff' }}>
+
+            <View style={{ flexDirection: "row", flexWrap: "wrap", marginTop: '1%', backgroundColor: '#fff', paddingTop: '5%', paddingBottom: '5%' }}>
                 <View style={{ width: '20%' }}>
-                    <Text style={{ fontWeight: 'bold', }} >Đia chỉ: </Text>
+                    <Text style={{ fontWeight: 'bold', marginLeft: '10%' }} >Địa chỉ: </Text>
                 </View>
                 <View style={{ width: '80%' }}>
                     <Text  >{data.address}</Text>
                 </View>
-            </View>
-            <View style={{ flexDirection: "row", flexWrap: "wrap", marginTop: '5%', backgroundColor: '#fff' }}>
-                <View style={{ width: '20%' }}>
-                    <Text style={{ fontWeight: 'bold', }} >Mô tả: </Text>
+                <View style={{ width: '20%', marginTop:'3%' }}>
+                    <Text style={{ fontWeight: 'bold', marginLeft: '10%' }} >Mô tả: </Text>
                 </View>
-                <View style={{ width: '80%' }}>
+                <View style={{ width: '80%', marginTop:'3%' }}>
                     <Text >{data.description}</Text>
                 </View>
             </View>
 
-            <ScrollView style={{marginTop:'3%'}}>
+            <ScrollView style={{ marginTop: '3%' }}>
                 <FlatList
                     data={dataProduct}
                     renderItem={({ item }) => (

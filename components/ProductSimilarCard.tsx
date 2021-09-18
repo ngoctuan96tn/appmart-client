@@ -6,6 +6,7 @@ import { ToastAndroid, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import CartProvider, { IProduct } from "./CartProvider";
 import NumberFormat from "react-number-format";
+import { FontAwesome } from "@expo/vector-icons";
 function ProductSuggestCard(data: any) {
   const dataProduct = data.data.data;
   const navigation = useNavigation();
@@ -47,20 +48,20 @@ function ProductSuggestCard(data: any) {
               fontSize: "xs",
             }}
           >
-            <Text>{dataProduct.discount}%</Text>
+            <Text color="#fff">{dataProduct.discount}%</Text>
           </Center>
         }
-        <Text color='black' left={1}>{dataProduct.productName}</Text>
+        <Text color='black' left={1} fontWeight='200'>{dataProduct.productName}</Text>
         <NumberFormat
           value={dataProduct.unitPrice}
           displayType={'text'}
           thousandSeparator={true}
           suffix={'đ'}
-          renderText={formattedValue => <Text color='red.500'>{formattedValue}</Text>} // <--- Don't forget this!
+          renderText={formattedValue => <Text color='red.500' left={1} fontSize={13}>{formattedValue}</Text>} // <--- Don't forget this!
         />
       </TouchableOpacity>
-      <Button size="sm" variant='outline' borderColor='#0ea5e9' bottom={0} onPress={() => addCart()}>
-        <Text>Chọn mua</Text>
+      <Button size="xs" variant='outline' borderColor='#0ea5e9' bottom={0} marginTop='10%' onPress={() => addCart()}>
+        <Text fontSize={13} color='#0ea5e9'><FontAwesome name ="cart-plus" size={13}/>  Chọn mua</Text>
       </Button>
     </Box>
   );

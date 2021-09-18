@@ -25,46 +25,57 @@ export default function Login() {
   return (
     <NativeBaseProvider >
       <View style={styles.container}>
-        <Heading size="md" textAlign='center' marginTop='20%' fontSize={20} color='#fff'>ĐĂNG NHẬP</Heading>
+        <Heading size="md" textAlign='center' marginTop='20%' fontWeight='400' color='#fff' marginBottom='20%'>ĐĂNG NHẬP</Heading>
         <Input
-          width={'80%'}
+          width={'90%'}
           marginTop={'10%'}
-          backgroundColor='#f0f9ff'
+          size="sm"
           marginBottom={'5%'}
-          variant="outline"
+          paddingLeft={'1%'}
+          variant="underlined"
           placeholder="Email"
           onChangeText={email => setEmail(email)}
           _light={{
-            placeholderTextColor: "blueGray.400",
+            placeholderTextColor: "#fff",
           }}
           _dark={{
-            placeholderTextColor: "blueGray.50",
+            placeholderTextColor: "#fff",
           }}
         />
         <Input
-          width={'80%'}
-          backgroundColor='#f0f9ff'
-          marginBottom={'10%'}
+          width={'90%'}
+          paddingLeft={'1%'}
+          variant="underlined"
+          size="sm"
+          fontSize= "13"
+          marginBottom={'5%'}
           type={show ? "text" : "password"}
           onChangeText={passWord => setPassWord(passWord)}
           InputRightElement={
-            <Icon name="eye" size={25} style={{ marginRight: '5%' }} onPress={handleClick} />
+            <Icon name="eye" size={20} color='#fff' style={{ marginRight: '5%' }} onPress={handleClick} />
           }
           placeholder="Mật khẩu"
+          _light={{
+            placeholderTextColor: "#fff",
+          }}
+          _dark={{
+            placeholderTextColor: "#fff",
+          }}
         />
-        <TouchableOpacity onPress={() => navigation.navigate('ForgetPassword')}><Text style={{ color: '#f0f9ff', fontSize: 16 }}>Quên mật khẩu</Text></TouchableOpacity>
-        <Button width={'80%'} marginBottom='5%' marginTop='5%' backgroundColor='#6CDDED' onPress={() => onLogin(email, passWord, navigation)}>Đăng nhập</Button>
-        <View style={{flexDirection:'row', alignItems: 'center'}}>
-        <Text style={{ textAlign: 'center', textDecorationLine: 'underline' }}>Chưa có tài khoản?</Text> 
-        <TouchableOpacity onPress={() => navigation.navigate('Register', {
-          data: null
-        })}>
-          <Text style={{ color: '#f0f9ff', marginLeft: '6%', fontSize: 16 }}>Đăng ký</Text>
-        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => navigation.navigate('ForgetPassword')}><Text style={{ color: '#f0f9ff', fontSize: 13, marginLeft: '60%' }}>Quên mật khẩu</Text></TouchableOpacity>
+        <Button width={'80%'} marginBottom='5%' marginTop='5%' backgroundColor='#fff' borderRadius={25} onPress={() => onLogin(email, passWord, navigation)}><Text style={{ color: '#4EC8F2', fontSize: 12 }}>ĐĂNG NHẬP</Text></Button>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text style={{ textAlign: 'center', fontSize: 13 }}>Chưa có tài khoản?</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Register', {
+            data: null
+          })}>
+            <Text style={{ color: '#f0f9ff', marginLeft: '6%', fontSize: 13 }}>Đăng ký</Text>
+          </TouchableOpacity>
         </View>
-        <Text style={{ textAlign: 'center' }}> Hoặc đăng nhập bằng </Text>
-        <Button marginTop='10%' width={'80%'} backgroundColor='#c4b5fd' onPress={() => console.log()}>Số điện thoại</Button>
-        <Button marginTop='5%' width={'80%'} backgroundColor="#1d4ed8" onPress={() => console.log()}>Facebook</Button>
+        <Text style={{ textAlign: 'center', marginTop: '10%', color: '#fff', fontSize: 12 }}> HOẶC ĐĂNG NHẬP BẰNG </Text>
+        <Button marginTop='10%' width={'80%'} backgroundColor='#fff' borderRadius={25} onPress={() => console.log()}><Text style={{ color: '#4EC8F2', fontSize: 12 }}>SỐ ĐIỆN THOẠI</Text></Button>
+        <Button marginTop='5%' width={'80%'} backgroundColor="#1F67C9" borderRadius={25} onPress={() => console.log()}><Text style={{ fontSize: 12, color: '#fff' }}>FACEBOOK</Text></Button>
       </View>
     </NativeBaseProvider>
   );
@@ -74,7 +85,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#0ea5e9'
+    backgroundColor: '#4EC8F2'
   },
 });
 
@@ -114,7 +125,7 @@ function onLogin(email: any, passWord: any, navigation: any) {
       .then((responseJson) => {
         if (responseJson.code == 1) {
           AsyncStorage.setItem('token', responseJson.listData[0].token)
-          navigation.navigate('Main', {index : 1});
+          navigation.navigate('Main', { index: 1 });
         } else {
           Toast.show('Đăng nhập thất bại. Vui lòng thử lại!', {
             duration: Toast.durations.LONG,
@@ -125,7 +136,7 @@ function onLogin(email: any, passWord: any, navigation: any) {
             backgroundColor: '#ffffff',
             textColor: '#ff0000',
 
-        });
+          });
         }
       })
       .catch((error) => {

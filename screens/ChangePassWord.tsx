@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { SafeAreaView, StyleSheet, Alert } from 'react-native';
+import { SafeAreaView, StyleSheet, Alert, Text } from 'react-native';
 import {
     Input,
     Heading,
@@ -49,57 +49,81 @@ export default function ChangePassword() {
     return (
         <NativeBaseProvider >
             <View style={styles.container}>
-                <Heading textAlign='center' marginTop={'20%'} color='#fff' fontSize={20}>THAY ĐỔI MẬT KHẨU</Heading>
+                <Heading size='md' textAlign='center' marginTop={'30%'} fontWeight='400' color='#fff' marginBottom='10%'>THAY ĐỔI MẬT KHẨU</Heading>
                 <Input
-                    width={'80%'}
-                    onChangeText={email => setEmail(email)}
-                    backgroundColor='#f0f9ff'
+                    width={'90%'}
                     marginTop={'10%'}
+                    size='sm'
+                    onChangeText={email => setEmail(email)}
                     marginBottom={'5%'}
-                    variant="outline"
+                    variant="underlined"
                     placeholder="Email"
+                    paddingLeft={'1%'}
                     _light={{
-                        placeholderTextColor: "blueGray.400",
+                        placeholderTextColor: "#fff",
                     }}
                     _dark={{
-                        placeholderTextColor: "blueGray.50",
+                        placeholderTextColor: "#fff",
                     }}
                 />
                 <Input
-                    width={'80%'}
+                    width={'90%'}
                     onChangeText={passWord => setPassWord(passWord)}
-                    backgroundColor='#f0f9ff'
                     marginBottom={'5%'}
-                    variant="outline"
+                    size='sm'
+                    variant="underlined"
+                    paddingLeft={'1%'}
                     type={show ? "text" : "password"}
                     placeholder="Mật khẩu cũ"
                     InputRightElement={
-                        <Icon name="eye" size={25} style={{ marginRight: '5%' }} onPress={handleClick} />
+                        <Icon name="eye" size={20} color='#fff' style={{ marginRight: '5%' }} onPress={handleClick} />
                     }
+                    _light={{
+                        placeholderTextColor: "#fff",
+                    }}
+                    _dark={{
+                        placeholderTextColor: "#fff",
+                    }}
                 />
                 <Input
-                    width={'80%'}
+                    width={'90%'}
                     marginBottom={'5%'}
-                    backgroundColor='#f0f9ff'
+                    variant="underlined"
+                    size='sm'
+                    paddingLeft={'1%'}
                     type={showNewPass ? "text" : "password"}
                     onChangeText={newPassWord => setNewPassWord(newPassWord)}
                     InputRightElement={
-                        <Icon name="eye" size={25} style={{ marginRight: '5%' }} onPress={handleClickNewPass} />
+                        <Icon name="eye" size={20} color='#fff' style={{ marginRight: '5%' }} onPress={handleClickNewPass} />
                     }
                     placeholder="Mật khẩu mới"
+                    _light={{
+                        placeholderTextColor: "#fff",
+                    }}
+                    _dark={{
+                        placeholderTextColor: "#fff",
+                    }}
                 />
                 <Input
-                    width={'80%'}
-                    backgroundColor='#f0f9ff'
+                    width={'90%'}
                     marginBottom={'10%'}
+                    variant="underlined"
+                    size='sm'
+                    paddingLeft={'1%'}
                     type={showConfirmPass ? "text" : "password"}
                     onChangeText={confirmPassWord => setConfirmPassWord(confirmPassWord)}
                     InputRightElement={
-                        <Icon name="eye" size={25} style={{ marginRight: '5%' }} onPress={handleClickConfirm} />
+                        <Icon name="eye" size={20} color='#fff' style={{ marginRight: '5%' }} onPress={handleClickConfirm} />
                     }
                     placeholder="Nhập lại mật khẩu mới"
+                    _light={{
+                        placeholderTextColor: "#fff",
+                    }}
+                    _dark={{
+                        placeholderTextColor: "#fff",
+                    }}
                 />
-                <Button width={'80%'} backgroundColor='#6CDDED' onPress={() => changePassWord(navigation, email, passWord, newPassWord, token, confirmPassWord)}>Cập nhật mật khẩu</Button>
+                <Button width={'60%'} backgroundColor='#fff' borderRadius={25} onPress={() => changePassWord(navigation, email, passWord, newPassWord, token, confirmPassWord)}><Text style={{ color: '#4EC8F2', fontSize: 12 }}>CẬP NHẬT LẠI MẬT KHẨU</Text></Button>
             </View>
         </NativeBaseProvider>
     );

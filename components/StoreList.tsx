@@ -8,11 +8,11 @@ export function StoreList(data: any) {
     const navigation = useNavigation();
     return (
         <><View style={{ flexDirection: 'row' }}>
-            <Text style={{ marginLeft: 5, flex: 1, fontWeight: 'bold', }}>CỬA HÀNG</Text>
-            <Text style={{ textAlign: 'right', flex: 1, marginRight: 5, fontWeight: 'bold', color: '#ffa500' }} onPress={() => {navigation.navigate('ListStores')}}>Xem thêm</Text>
+            <Text style={{ marginLeft: '3%', flex: 1, fontWeight: 'bold', }}>CỬA HÀNG</Text>
+            <Text style={{ textAlign: 'right', flex: 1, marginRight: 5, fontWeight: '300', color: '#ffa500' }} onPress={() => {navigation.navigate('ListStores')}}>Xem thêm</Text>
         </View>
 
-            <SafeAreaView style={{ flex: 1, marginTop: 10 }}>
+            <SafeAreaView style={{ flex: 1, marginTop: '5%', marginBottom:'2%', marginLeft: '2%' }}>
                 <FlatList
                     data={dataStore}
                     renderItem={({ item }) => (

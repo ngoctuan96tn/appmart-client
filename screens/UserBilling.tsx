@@ -45,14 +45,14 @@ export function UserBilling() {
             <Box
               flex={1}
               alignItems='center'
+              justifyContent='center'
             >
               <TouchableOpacity
-
                 onPress={() => {
                   console.log(i);
                   setIndex(i);
                 }}>
-                <Animated.Text style={{ opacity, fontWeight: 'bold'  }}>{route.title}</Animated.Text>
+                <Animated.Text style={{ opacity, fontWeight:'bold'}}>{route.title}</Animated.Text>
               </TouchableOpacity>
             </Box>
 
