@@ -94,7 +94,7 @@ export default function UserBillingFourth() {
                                                     suffix={'đ'}
                                                     renderText={formattedValue => <Text style={{ fontWeight: 'bold', color: "red",  fontSize: 12}}>{formattedValue}</Text>} // <--- Don't forget this!
                                                 /></Text>
-                                                <View style={{ flexDirection: "row", flexWrap: "wrap", marginTop:'13%' }}>
+                                                <View style={{ flexDirection: "row", flexWrap: "wrap", marginTop:'12%' }}>
                                                     <Image source={require('../assets/images/MiMartLogoGradientApp.png')} alt="image base" resizeMode="cover" width={6} height={6} />
                                                     <Text style={{ marginLeft: '3%', marginTop: '3%', fontWeight: 'bold', fontSize: 12 }} width='45%'>MiMart</Text>
                                                 </View>

@@ -10,6 +10,7 @@ import { ToastAndroid } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 function ProductCard(data: any) {
   const dataProduct = data.data.data;
+  const productImage = dataProduct.productImageBase64[0];
   const navigation = useNavigation();
   const price = dataProduct.discount > 0 ? dataProduct.unitPrice - (dataProduct.unitPrice * dataProduct.discount / 100) : dataProduct.unitPrice;
   const product: IProduct = { id: dataProduct.productId, name: dataProduct.productName, image: dataProduct.productImageBase64, price: price };
@@ -27,7 +28,7 @@ function ProductCard(data: any) {
       marginLeft={2}
     >
       <TouchableOpacity onPress={() => navigation.navigate('DetailProduct', { productId: dataProduct.productId })}>
-        <Image source={{ uri: `data:image/jpeg;base64,${dataProduct.productImageBase64}` }} alt="image base" resizeMode="cover" height={150} roundedTop="md" />
+        <Image source={{ uri: `data:image/jpeg;base64,${productImage}` }} alt="image base" resizeMode="cover" height={150} roundedTop="md" />
 
 
         {dataProduct.discount > 0 &&

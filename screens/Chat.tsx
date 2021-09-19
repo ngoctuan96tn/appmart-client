@@ -81,7 +81,7 @@ export function Chat(route: any) {
     if (!loading) {
         return (
             <NativeBaseProvider>
-                <View style={{ height: '100%', padding:'3%' }}>
+                <View style={{ height: '100%', padding: '3%' }}>
                     <ScrollView
                         ref={scrollViewRef}
                         onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
@@ -120,25 +120,26 @@ export function Chat(route: any) {
                         />
                         <View style={{ height: 65 }}></View>
                     </ScrollView>
-                    <View style={{ position: 'absolute', bottom: 0, flexDirection: "row", width: '100%', height: 50, backgroundColor:'#f5f5f5' }}>
 
-                        <Input
-                            variant="rounded"
-                            placeholder="Nhập tin nhắn..."
-                            m={1}
-                            w='80%'
-                            value={content}
-                            _light={{
-                                placeholderTextColor: "blueGray.400",
-                            }}
-                            _dark={{
-                                placeholderTextColor: "blueGray.50",
-                            }}
-                            onChangeText={(content) => { setContent(content) }}
-                        />
-                        <Feather name='send' size={30} style={{ width: '15%', paddingLeft: '3%', paddingTop: '3%' }} onPress={() => { sendMessage() }} />
+                </View>
+                <View style={{ position: 'absolute', bottom: 0, flexDirection: "row", width: '100%', height: 50, backgroundColor: '#f5f5f5' }}>
 
-                    </View>
+                    <Input
+                        variant="rounded"
+                        placeholder="Nhập tin nhắn..."
+                        m={1}
+                        w='80%'
+                        value={content}
+                        _light={{
+                            placeholderTextColor: "blueGray.400",
+                        }}
+                        _dark={{
+                            placeholderTextColor: "blueGray.50",
+                        }}
+                        onChangeText={(content) => { setContent(content) }}
+                    />
+                    <Feather name='send' size={30} style={{ width: '15%', paddingLeft: '3%', paddingTop: '3%' }} onPress={() => { sendMessage() }} />
+
                 </View>
             </NativeBaseProvider>
         );

@@ -60,7 +60,7 @@ export default function NotifyScreen() {
 
 
             }}>
-              <View style={{ flexDirection: "row", marginTop: '5%' }}>
+              <View style={{ flexDirection: "row", marginTop: '5%', paddingLeft:'2%' }}>
                 <View style={{ width: '15%', alignContent: 'center', alignItems: 'center' }}>
                   <Image source={require('../assets/images/MiMartLogoGradientApp.png')} alt="image base" resizeMode="cover" width='80%' height={45} rounded="80" />
                   {item.notifyType == 1 &&
@@ -86,7 +86,7 @@ export default function NotifyScreen() {
                   }
                 </View>
                 <View style={{ width: '85%' }}>
-                  <Box width='100%' px={5} py={2} rounded="lg" bg="primary.300" height={55} backgroundColor='#FFCC66'>
+                  <Box width='100%' px={5} py={2} rounded="lg" height={55}>
                     <Text style={{fontWeight:'bold'}}>{item.title}</Text>
                     {item.notifyType == 1 &&
                     <Text style={{fontSize:12, fontStyle:'italic'}}>{item.content}</Text>
