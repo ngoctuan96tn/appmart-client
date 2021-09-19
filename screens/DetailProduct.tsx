@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { Center, NativeBaseProvider, Text, Box, FlatList, ScrollView, Image, Button, View } from "native-base"
-import { ActivityIndicator, SafeAreaView, ToastAndroid, } from "react-native"
+import { ActivityIndicator, Dimensions, SafeAreaView, ToastAndroid, } from "react-native"
 import ApiCommon from "../constants/ApiCommon";
 import { createStackNavigator } from "@react-navigation/stack";
 import { TabOneParamList } from "../types";
@@ -11,6 +11,7 @@ import ProductSimilarSuggestList from "../components/ProductSimilarSuggestList";
 import CartProvider, { IProduct } from "../components/CartProvider";
 import NumberFormat from "react-number-format";
 import { useNavigation } from "@react-navigation/native";
+const { width } = Dimensions.get('window')
 export function DetailProduct(route: any) {
     const navigation = useNavigation();
     const productId = route.route.params.data.route.params.productId;
@@ -32,14 +33,14 @@ export function DetailProduct(route: any) {
                 .then((json) => {
                     setProductDetail(json);
                     fetch(ApiCommon.rootUrl + `/api/store/${json.storeId}`)
-                    .then((response) => response.json())
-                    .then((json) => {
-                        if (json.listData.length > 0) {
-                            setDataStore(json.listData[0]);
-                        }
-                    })
-                    .catch((error) => console.error(error))
-                    .finally(() => setLoading(false));
+                        .then((response) => response.json())
+                        .then((json) => {
+                            if (json.listData.length > 0) {
+                                setDataStore(json.listData[0]);
+                            }
+                        })
+                        .catch((error) => console.error(error))
+                        .finally(() => setLoading(false));
                 })
                 .catch((error) => console.error(error))
                 .finally(() => setLoading(false));
@@ -50,7 +51,7 @@ export function DetailProduct(route: any) {
                 .catch((error) => console.error(error))
                 .finally(() => setLoading(false));
         }
-       
+
     }, []);
 
     const price = productDetail.discount > 0 ? productDetail.unitPrice - (productDetail.unitPrice * productDetail.discount / 100) : productDetail.unitPrice;
@@ -70,7 +71,26 @@ export function DetailProduct(route: any) {
         return (
             <SafeAreaView>
                 <ScrollView>
-                    <Image source={{ uri: `data:image/jpeg;base64,${productDetail.productImageBase64}` }} alt="image base" resizeMode="cover" height={350} roundedTop="md" />
+                    <View>
+                        <FlatList
+                            horizontal={true}
+                            data={productDetail.productImageBase64}
+                            renderItem={({ item }) => (
+                                // <Image source={{ uri: `data:image/jpeg;base64,${item}` }} alt="image base" resizeMode="cover" height={350} roundedTop="md" />
+                                <Image
+                                    source={{
+                                        uri: `data:image/jpeg;base64,${item}`,
+                                    }}
+                                    height={350}
+                                    width={width}
+                                    flex={1}
+                                    alt="Ảnh sản phẩm"
+                                    size={"xl"}
+                                />
+                            )}
+                            keyExtractor={(item) => item.id} />
+                    </View>
+
                     <Text style={{ textAlign: 'center', fontWeight: 'bold', top: 5 }}>{productDetail.productName}</Text>
                     {productDetail.discount > 0 &&
                         <View>
@@ -97,14 +117,14 @@ export function DetailProduct(route: any) {
                         </View>
                     }
                     <View style={{ flexDirection: "row", flexWrap: "wrap", marginTop: '5%', marginLeft: '4%' }}>
-                        <Image source={{uri: `data:image/jpeg;base64,${dataStore.image}`}} alt="image base" resizeMode="cover" width='12%' height={45} roundedTop="md" />
+                        <Image source={{ uri: `data:image/jpeg;base64,${dataStore.image}` }} alt="image base" resizeMode="cover" width='12%' height={45} roundedTop="md" />
                         <Text style={{ marginLeft: '1%', marginTop: '3%' }} width='50%'>{dataStore.name}</Text>
-                        <Button borderColor='#e27741' size="sm" variant="outline" colorScheme="secondary" onPress={() => navigation.navigate('DetailStore', {storeId: dataStore.id})}>
+                        <Button borderColor='#e27741' size="sm" variant="outline" colorScheme="secondary" onPress={() => navigation.navigate('DetailStore', { storeId: dataStore.id })}>
                             Đến cửa hàng
                         </Button>
 
                     </View>
-                    <View style={{ flexDirection: "row", flexWrap: "wrap", marginTop: '5%', backgroundColor: '#fff', paddingTop:'3%', paddingBottom:'3%' }}>
+                    <View style={{ flexDirection: "row", flexWrap: "wrap", marginTop: '5%', backgroundColor: '#fff', paddingTop: '3%', paddingBottom: '3%' }}>
                         <View style={{ width: '50%' }}>
                             <Text style={{ textAlign: 'center', fontWeight: 'bold', color: 'red' }} >{dataStore.totalProduct}</Text>
                             <Text style={{ textAlign: 'center' }} fontSize={13}>Sản phẩm</Text>
@@ -116,12 +136,12 @@ export function DetailProduct(route: any) {
 
                     </View>
 
-                    <View style={{ marginTop: '2%', backgroundColor: '#fff', padding:'3%' }}>
+                    <View style={{ marginTop: '2%', backgroundColor: '#fff', padding: '3%' }}>
                         <Text fontWeight='bold'>Chi tiết sản phẩm</Text>
-                        <Text style={{marginTop:'2%', textAlign:'justify'}} fontWeight='300' fontSize={13}>{productDetail.description}</Text>
+                        <Text style={{ marginTop: '2%', textAlign: 'justify' }} fontWeight='300' fontSize={13}>{productDetail.description}</Text>
                     </View>
 
-                    <View style={{ marginTop: '2%', backgroundColor: '#fff', paddingTop:'3%', paddingBottom:'3%' }}>
+                    <View style={{ marginTop: '2%', backgroundColor: '#fff', paddingTop: '3%', paddingBottom: '3%' }}>
                         <Text marginLeft='2%' fontWeight='bold'>Đánh giá và nhận xét</Text>
                         <Text marginLeft='2%' marginTop='2%' fontSize={13}>
                             <Rating

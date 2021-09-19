@@ -9,6 +9,7 @@ import NumberFormat from "react-number-format";
 import { FontAwesome } from "@expo/vector-icons";
 function ProductSuggestCard(data: any) {
   const dataProduct = data.data.data;
+  const productImage = dataProduct.productImageBase64[0];
   const navigation = useNavigation();
 
   const price = dataProduct.discount > 0 ? dataProduct.unitPrice - (dataProduct.unitPrice * dataProduct.discount / 100) : dataProduct.unitPrice;
@@ -27,7 +28,7 @@ function ProductSuggestCard(data: any) {
       marginLeft={2}
     >
       <TouchableOpacity onPress={() => navigation.navigate('DetailProduct', { productId: dataProduct.productId })}>
-        <Image source={{ uri: `data:image/jpeg;base64,${dataProduct.productImageBase64}` }} alt="image base" resizeMode="cover" height={150} roundedTop="md" />
+        <Image source={{ uri: `data:image/jpeg;base64,${productImage}` }} alt="image base" resizeMode="cover" height={150} roundedTop="md" />
         {dataProduct.discount > 0 &&
 
           <Center
