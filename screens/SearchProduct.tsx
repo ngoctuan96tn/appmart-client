@@ -52,22 +52,28 @@ export function SearchProduct() {
 
     const searchProduct = (name: string) => {
         setLoading(true);
-        fetch(ApiCommon.rootUrl + '/api/products/search', {
-            method: 'post',
-            body: JSON.stringify({ productName: name }),
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        }).then((response) => response.json())
-            .then((responseJson) => {
-                if (responseJson.code == 1) {
-                    setDataproduct(responseJson.listData);
-                }
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-            .finally(() => {setLoading(false)});
+        if (!name || name.length === 0) {
+            setDataproduct([]);
+            setLoading(false);
+        } else {
+            setDataproduct([]);
+            fetch(ApiCommon.rootUrl + '/api/products/search', {
+                method: 'post',
+                body: JSON.stringify({ productName: name }),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            }).then((response) => response.json())
+                .then((responseJson) => {
+                    if (responseJson.code == 1) {
+                        setDataproduct(responseJson.listData);
+                    }
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+                .finally(() => { setLoading(false) });
+        }
 
     }
     useEffect(() => {
@@ -84,7 +90,7 @@ export function SearchProduct() {
         <View style={styles.container}>
             <NativeBaseProvider>
                 <Animated.View>
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={{ flexDirection: 'row', paddingTop: '5%', paddingLeft: '3%' }}>
                         <Input
                             placeholder="  Tìm kiếm  "
                             variant="filled"
@@ -92,8 +98,9 @@ export function SearchProduct() {
                             py={1}
                             px={2}
                             width="85%"
-                            borderColor='#ffa500'
-                            onChangeText={(name) => { setName(name) }}
+                            borderColor='#0ea5e9'
+                            borderRadius={50}
+                            onChangeText={(name) => { searchProduct(name) }}
                             onSubmitEditing={() => { searchProduct(name) }}
                         />
 
@@ -103,7 +110,7 @@ export function SearchProduct() {
                             variant="link"
                             onPress={() => navigation.navigate('Cart')}
                         >
-                            <Icon name="shopping-cart" size={25} color='#ffa500' />
+                            <Icon name="shopping-cart" size={25} color='#0ea5e9' />
 
                             {isProduct === true &&
                                 <Center
@@ -145,7 +152,7 @@ export function SearchProduct() {
                 }
                 {dataProduct.length == 0 &&
                     <SafeAreaView style={{ alignItems: 'center', justifyContent: 'center', marginTop: '50%' }}>
-                        <MaterialCommunityIcons name='text-box-search-outline' size={80} color='#ffa500' />
+                        <MaterialCommunityIcons name='text-box-search-outline' size={80} color='#0ea5e9' />
                         <Text marginTop={2}>Nhập để tìm kiếm sản phẩm!</Text>
                     </SafeAreaView>
                 }
