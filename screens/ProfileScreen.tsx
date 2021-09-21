@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, SafeAreaView, StyleSheet, Alert } from 'react-native';
+import { View, SafeAreaView, StyleSheet, Alert, Linking } from 'react-native';
 import {
   Avatar,
   Title,
@@ -14,6 +14,7 @@ import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import ApiCommon from '../constants/ApiCommon';
 import { AsyncStorage } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Entypo } from '@expo/vector-icons';
 // import files from '../assets/filesBase64';
 
 export default function ProfileScreen() {
@@ -90,27 +91,45 @@ export default function ProfileScreen() {
             <Text style={styles.menuItemText}>Đơn hàng của tôi</Text>
           </View>
         </TouchableRipple>
-        <TouchableOpacity>
-          <View style={styles.line} />
-        </TouchableOpacity>
+
+        <View style={styles.line} />
+
         <TouchableRipple onPress={() => navigation.navigate('ChangePassWord')}>
           <View style={styles.menuItem}>
             <Icon name="onepassword" color="#FF6347" size={25} />
             <Text style={styles.menuItemText}>Thay đổi mật khẩu</Text>
           </View>
         </TouchableRipple>
-        <TouchableOpacity>
-          <View style={styles.line} />
-        </TouchableOpacity>
+
+        <View style={styles.line} />
+
+        <TouchableRipple onPress={() => Linking.openURL('https://mimart.vn/chinh-sach-bao-mat/')}>
+          <View style={styles.menuItem}>
+            <Entypo name="text" color="#FF6347" size={25}/>
+            <Text style={styles.menuItemText}>Chính sách</Text>
+          </View>
+        </TouchableRipple>
+
+        <View style={styles.line} />
+        
+        <TouchableRipple onPress={() => navigation.navigate('FeedBack')}>
+          <View style={styles.menuItem}>
+            <Entypo name="mail" color="#FF6347" size={25}/>
+            <Text style={styles.menuItemText}>Phản hồi</Text>
+          </View>
+        </TouchableRipple>
+
+        <View style={styles.line} />
+
         <TouchableRipple onPress={() => logout(navigation)}>
           <View style={styles.menuItem}>
             <Icon name="logout" color="#FF6347" size={25} />
             <Text style={styles.menuItemText}>Đăng xuất</Text>
           </View>
         </TouchableRipple>
-        <TouchableOpacity>
-          <View style={styles.line} />
-        </TouchableOpacity>
+
+        <View style={styles.line} />
+
       </View>
     </SafeAreaView>
   );

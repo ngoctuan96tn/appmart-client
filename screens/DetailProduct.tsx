@@ -11,6 +11,7 @@ import ProductSimilarSuggestList from "../components/ProductSimilarSuggestList";
 import CartProvider, { IProduct } from "../components/CartProvider";
 import NumberFormat from "react-number-format";
 import { useNavigation } from "@react-navigation/native";
+import moment from "moment";
 const { width } = Dimensions.get('window')
 export function DetailProduct(route: any) {
     const navigation = useNavigation();
@@ -162,8 +163,8 @@ export function DetailProduct(route: any) {
                                     shadowOpacity: 0.25,
                                     shadowRadius: 3.84,
                                 }}>
-                                    <View width="20%" height="100%">
-                                        <Image source={{ uri: `data:image/jpeg;base64,${item.user.avatarHashCode}` }} alt="image base" resizeMode="cover" height='100%' />
+                                    <View width="20%" height="100%" alignItems='center'>
+                                        <Image source={{ uri: `data:image/jpeg;base64,${item.user.avatarHashCode}` }} borderRadius={50} alt="image base" resizeMode="cover" width='80%' height='80%' />
                                     </View>
                                     <View width="60%" left="10%" height="100%">
                                         <Text style={{ fontWeight: 'bold' }}>{item.user.userName}</Text>
@@ -176,7 +177,7 @@ export function DetailProduct(route: any) {
                                             />
                                         </Text>
                                         <Text>{item.content}</Text>
-                                        <Text>{item.createDate}</Text>
+                                        <Text style={{ fontWeight: '400', fontSize: 12 }}>{moment(item.createDate).format("DD-MM-YYYY hh:mm")}</Text>
                                     </View>
                                 </View>
                             )}

@@ -261,7 +261,7 @@ function SearchBar() {
         variant="link"
         onPress={() => navigation.navigate('Cart')}
       >
-        <Icon name="shopping-cart" size={25} color='#ffa500' />
+        <Icon name="shopping-cart" size={25} color='#0ea5e9' />
 
         {isProduct === true &&
           <Center
