@@ -33,7 +33,7 @@ export default function Login() {
           marginBottom={'5%'}
           paddingLeft={'1%'}
           variant="underlined"
-          placeholder="Email"
+          placeholder="Email / Số điện thoại"
           onChangeText={email => setEmail(email)}
           _light={{
             placeholderTextColor: "#fff",
@@ -103,13 +103,15 @@ function onLogin(email: any, passWord: any, navigation: any) {
       'Mật khẩu tối thiểu 5 ký tự!',
     );
     return
-  } else if (!re.test(String(email).toLowerCase())) {
-    Alert.alert(
-      '',
-      'Email không đúng định dạng!',
-    );
-    return
-  } else {
+  } 
+  // else if (!re.test(String(email).toLowerCase())) {
+  //   Alert.alert(
+  //     '',
+  //     'Email không đúng định dạng!',
+  //   );
+  //   return
+  // }
+   else {
     fetch(ApiCommon.rootUrl + '/authenticate', {
       method: 'POST',
       mode: 'no-cors',
