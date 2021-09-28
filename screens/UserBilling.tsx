@@ -394,18 +394,11 @@ export function UserBilling() {
   };
 
   const renderTabBar = (props: any) => {
-    const inputRange = props.navigationState.routes.map((x: any, i: any) => i);
     return (
       <Box flexDirection="row">
         {props.navigationState.routes.map((route: any, i: any) => {
-          const opacity = props.position.interpolate({
-            inputRange,
-            outputRange: inputRange.map((inputIndex: any) =>
-              inputIndex === i ? 1 : 0.5
-            ),
-          });
-          const color = index === i ? '#1f2937' : '#a1a1aa';
-          const borderColor = index === i ? 'cyan.500' : 'coolGray.200';
+          const color = index === i ? '#4EC8F2' : '#1f2937';
+          const borderColor = index === i ? '#4EC8F2' : 'coolGray.200';
 
           return (
             <Box
@@ -419,7 +412,7 @@ export function UserBilling() {
                   console.log(i);
                   setIndex(i);
                 }}>
-                <Animated.Text style={{ color, textAlign: 'center' }}>{route.title}</Animated.Text>
+                <Animated.Text style={{ color, textAlign: 'center', fontSize:16 }}>{route.title}</Animated.Text>
               </Pressable>
             </Box>
           );
@@ -436,7 +429,6 @@ export function UserBilling() {
         renderTabBar={renderTabBar}
         onIndexChange={setIndex}
         initialLayout={initialLayout}
-        style={{ marginTop: StatusBar.currentHeight }}
       />
     </NativeBaseProvider>
   );
@@ -445,7 +437,7 @@ export function UserBilling() {
 
 export default () => {
   return (
-    <NativeBaseProvider>
+    <NativeBaseProvider>   
       <TabOneNavigator />
     </NativeBaseProvider>
   )

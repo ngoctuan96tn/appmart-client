@@ -120,7 +120,7 @@ export default function NewFeedScreen() {
 
                                     <View style={styles.nameContainer}>
                                         <Text style={styles.nameText}>{item.user.userName}</Text>
-                                        <Text style={styles.timeText}>{moment(item.createDate).format("hh:mm DD-MM-YY")}</Text>
+                                        <Text style={styles.timeText}>{item.user.floorName}</Text>
                                     </View>
                                 </View>
                                 <Text style={styles.captionText}>{item.content}</Text>
@@ -132,29 +132,34 @@ export default function NewFeedScreen() {
                                     keyExtractor={(item) => item.attachId.toString()}
                                 />
                                 <View style={styles.line} />
-                                <View style={styles.buttonGroupContainer}>
-                                    <TouchableOpacity style={styles.buttonContainerLike}>
-                                        {item.totalLike ?
-                                            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                                                <EvilIcons name='like' size={16} /><Text style={{ fontSize: 12 }}> {item.totalLike} </Text>
-                                            </View>
-                                            :
-                                            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', }}>
-                                                <EvilIcons name='like' size={16} /><Text style={{ fontSize: 12 }}> 0 </Text>
-                                            </View>
-                                        }
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={styles.buttonContainerComment}>
-                                        {item.totalComment ?
-                                            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', }}>
-                                                <EvilIcons name='comment' size={16} /><Text style={{ fontSize: 12 }}> {item.totalComment} </Text>
-                                            </View>
-                                            :
-                                            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', }}>
-                                                <EvilIcons name='comment' size={16} /><Text style={{ fontSize: 12 }}> 0 </Text>
-                                            </View>
-                                        }
-                                    </TouchableOpacity>
+                                <View style={{flexDirection:'row'}}>
+                                    <View style={{width:'50%', paddingLeft:'2%', paddingTop:'3%'}}>
+                                        <Text>{moment(item.createDate).format("DD-MM-YYYY hh:mm")}</Text>
+                                    </View>
+                                    <View style={{width:'50%', flexDirection:'row', alignContent:'flex-end', justifyContent:'flex-end', paddingRight:'2%', paddingTop:'3%'}}>
+                                        <TouchableOpacity>
+                                            {item.totalLike ?
+                                                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                                                    <EvilIcons name='like' size={16} /><Text style={{ fontSize: 12 }}> {item.totalLike} </Text>
+                                                </View>
+                                                :
+                                                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', }}>
+                                                    <EvilIcons name='like' size={16} /><Text style={{ fontSize: 12 }}> 0 </Text>
+                                                </View>
+                                            }
+                                        </TouchableOpacity>
+                                        <TouchableOpacity>
+                                            {item.totalComment ?
+                                                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', }}>
+                                                    <EvilIcons name='comment' size={16} /><Text style={{ fontSize: 12 }}> {item.totalComment} </Text>
+                                                </View>
+                                                :
+                                                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', }}>
+                                                    <EvilIcons name='comment' size={16} /><Text style={{ fontSize: 12 }}> 0 </Text>
+                                                </View>
+                                            }
+                                        </TouchableOpacity>
+                                    </View>
                                 </View>
                                 <View style={styles.line} /><View style={styles.buttonGroupContainer}>
                                     <TouchableOpacity style={styles.buttonContainer} onPress={() => { addReactionLike(item.postId, token), handleAfterLike(item) }}>
@@ -250,9 +255,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-    },
-    buttonContainerLike: {
-        marginLeft: '80%'
     },
     buttonContainerComment: {
         marginLeft: '2%'
