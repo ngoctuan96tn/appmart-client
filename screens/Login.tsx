@@ -127,7 +127,8 @@ function onLogin(email: any, passWord: any, navigation: any) {
       .then((responseJson) => {
         if (responseJson.code == 1) {
           AsyncStorage.setItem('token', responseJson.listData[0].token)
-          navigation.navigate('Main', { index: 1 });
+          // navigation.navigate('Main', { index: 1 });
+          navigation.reset({ index: 0, routes: [{ name: 'Main', params: {index: 1} }]});
         } else {
           Toast.show('Đăng nhập thất bại. Vui lòng thử lại!', {
             duration: Toast.durations.LONG,
