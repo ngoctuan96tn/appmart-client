@@ -133,9 +133,9 @@ export default function NewFeedScreen() {
                                 />
                                 <View style={styles.line} />
                                 <View style={styles.buttonGroupContainer}>
-                                    <TouchableOpacity style={styles.buttonContainer}>
+                                    <TouchableOpacity style={styles.buttonContainerLike}>
                                         {item.totalLike ?
-                                            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', }}>
+                                            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
                                                 <EvilIcons name='like' size={16} /><Text style={{ fontSize: 12 }}> {item.totalLike} </Text>
                                             </View>
                                             :
@@ -144,7 +144,7 @@ export default function NewFeedScreen() {
                                             </View>
                                         }
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={styles.buttonContainer}>
+                                    <TouchableOpacity style={styles.buttonContainerComment}>
                                         {item.totalComment ?
                                             <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', }}>
                                                 <EvilIcons name='comment' size={16} /><Text style={{ fontSize: 12 }}> {item.totalComment} </Text>
@@ -250,6 +250,12 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    buttonContainerLike: {
+        marginLeft: '80%'
+    },
+    buttonContainerComment: {
+        marginLeft: '2%'
     },
     buttonText: {
         fontSize: 15,
