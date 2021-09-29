@@ -106,6 +106,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+    paddingTop: '5%'
   },
   buttonContainer: {
     flex: 1,
