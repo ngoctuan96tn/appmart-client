@@ -55,8 +55,12 @@ export function DetailProduct(route: any) {
 
     }, []);
 
+    let productImage = ""; 
+    if (productDetail.productImageBase64 != undefined) {
+        productImage = productDetail.productImageBase64[0];
+    }
     const price = productDetail.discount > 0 ? productDetail.unitPrice - (productDetail.unitPrice * productDetail.discount / 100) : productDetail.unitPrice;
-    const product: IProduct = { id: productDetail.productId, name: productDetail.productName, image: productDetail.productImageBase64, price: price };
+    const product: IProduct = { id: productDetail.productId, name: productDetail.productName, image: productImage, price: price };
 
     const addCart = async () => {
         const lineItems = await CartProvider.getItemFromStorage();
