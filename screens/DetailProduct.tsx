@@ -96,7 +96,7 @@ export function DetailProduct(route: any) {
                             keyExtractor={(item) => item.id} />
                     </View>
 
-                    <Text style={{ textAlign: 'center', fontWeight: 'bold', top: 5 }}>{productDetail.productName}</Text>
+                    <Text style={{ textAlign: 'center', fontWeight: '400', top: 5 }}>{productDetail.productName}</Text>
                     {productDetail.discount > 0 &&
                         <View>
                             <NumberFormat
@@ -104,21 +104,21 @@ export function DetailProduct(route: any) {
                                 displayType={'text'}
                                 thousandSeparator={true}
                                 suffix={' đồng'}
-                                renderText={formattedValue => <Text style={{ textAlign: 'center', fontWeight: 'bold', top: 5, color: 'black', textDecorationLine: 'line-through' }}>{formattedValue}</Text>} // <--- Don't forget this!
+                                renderText={formattedValue => <Text style={{ textAlign: 'center', fontWeight: '400', top: 5, color: 'black', textDecorationLine: 'line-through' }}>{formattedValue}</Text>} // <--- Don't forget this!
                             />
                             <NumberFormat
                                 value={productDetail.unitPrice - (productDetail.unitPrice * productDetail.discount / 100)}
                                 displayType={'text'}
                                 thousandSeparator={true}
                                 suffix={' đồng'}
-                                renderText={formattedValue => <Text style={{ textAlign: 'center', fontWeight: 'bold', top: 5, color: 'red' }}>{formattedValue}      -{productDetail.discount}%</Text>} // <--- Don't forget this!
+                                renderText={formattedValue => <Text style={{ textAlign: 'center', fontWeight: '400', top: 5, color: 'red' }}>{formattedValue}      -{productDetail.discount}%</Text>} // <--- Don't forget this!
                             />
                         </View>
                     }
 
                     {productDetail.discount == 0 &&
                         <View>
-                            <Text style={{ textAlign: 'center', fontWeight: 'bold', top: 5, color: 'red', }}>{productDetail.unitPrice} đồng</Text>
+                            <Text style={{ textAlign: 'center', fontWeight: '400', top: 5, color: 'red', }}>{productDetail.unitPrice} đồng</Text>
                         </View>
                     }
                     <View style={{ flexDirection: "row", flexWrap: "wrap", marginTop: '5%', marginLeft: '4%' }}>
@@ -167,20 +167,20 @@ export function DetailProduct(route: any) {
                                     shadowOpacity: 0.25,
                                     shadowRadius: 3.84,
                                 }}>
-                                    <View width="20%" height="100%" alignItems='center'>
-                                        <Image source={{ uri: `data:image/jpeg;base64,${item.user.avatarHashCode}` }} borderRadius={50} alt="image base" resizeMode="cover" width='80%' height='80%' />
+                                    <View width="20%" height="100%" alignItems='center' justifyContent='center'>
+                                        <Image source={{ uri: `data:image/jpeg;base64,${item.user.avatarHashCode}` }} borderRadius={50} alt="image base" resizeMode="cover" width='60%' height='60%' />
                                     </View>
                                     <View width="60%" left="10%" height="100%">
-                                        <Text style={{ fontWeight: 'bold' }}>{item.user.userName}</Text>
+                                        <Text style={{ fontWeight: '700' }}>{item.user.userName}</Text>
                                         <Text>
                                             <Rating
                                                 type='star'
                                                 ratingCount={5}
-                                                imageSize={16}
+                                                imageSize={12}
                                                 startingValue={item.ratting ? item.ratting : 0}
                                             />
                                         </Text>
-                                        <Text>{item.content}</Text>
+                                        <Text style={{fontWeight:'400', fontSize: 12}}>{item.content}</Text>
                                         <Text style={{ fontWeight: '400', fontSize: 12 }}>{moment(item.createDate).format("DD-MM-YYYY hh:mm")}</Text>
                                     </View>
                                 </View>

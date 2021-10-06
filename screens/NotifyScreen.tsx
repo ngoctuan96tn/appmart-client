@@ -47,7 +47,7 @@ export default function NotifyScreen() {
 
   return (
     <NativeBaseProvider>
-      <Center flex={1}>
+      <Center flex={1} backgroundColor="#ffffff">
         <FlatList
           data={itemNotifi}
           renderItem={({ item }) => (
@@ -62,7 +62,7 @@ export default function NotifyScreen() {
             }}>
               <View style={{ flexDirection: "row", marginTop: '5%', paddingLeft:'2%' }}>
                 <View style={{ width: '15%', alignContent: 'center', alignItems: 'center' }}>
-                  <Image source={require('../assets/images/MiMartLogoGradientApp.png')} alt="image base" resizeMode="cover" width='80%' height={45} borderRadius={50} />
+                  <Image source={require('../assets/images/MiMartLogoGradientApp.png')} alt="image base" resizeMode="cover" width={45} height={45} borderRadius={50} />
                   {item.notifyType == 1 &&
                     <Center
                       p={1}
@@ -90,7 +90,7 @@ export default function NotifyScreen() {
                     <Text style={{fontWeight:'300'}}>{item.title}</Text>
                     {item.notifyType == 1 &&
                     <Text style={{fontSize:12, fontStyle:'italic', fontWeight:'300'}}>{item.content}</Text>
-                  }
+                      }
                   </Box>
                 </View>
 

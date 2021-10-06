@@ -134,7 +134,7 @@ export default function NewFeedScreen() {
                                 <View style={styles.line} />
                                 <View style={{flexDirection:'row'}}>
                                     <View style={{width:'50%', paddingLeft:'2%', paddingTop:'3%'}}>
-                                        <Text>{moment(item.createDate).format("DD-MM-YYYY hh:mm")}</Text>
+                                        <Text style={{ fontSize: 12 }}>{moment(item.createDate).format("DD-MM-YYYY hh:mm")}</Text>
                                     </View>
                                     <View style={{width:'50%', flexDirection:'row', alignContent:'flex-end', justifyContent:'flex-end', paddingRight:'2%', paddingTop:'3%'}}>
                                         <TouchableOpacity>
@@ -261,12 +261,12 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         fontSize: 15,
-        fontWeight: 'bold',
+        fontWeight: '500',
         color: '#000000'
     },
     buttonTextIsLike: {
         fontSize: 15,
-        fontWeight: 'bold',
+        fontWeight: '500',
         color: '#00BBF7',
     },
     line: {

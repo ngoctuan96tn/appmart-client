@@ -27,6 +27,7 @@
         "foregroundImage": "./assets/images/MiMartLogoGradientApp.png",
         "backgroundColor": "#ffffff"
       },
+      "versionCode": 2,
       "package": "com.vp.mimart"
     },
     "web": {

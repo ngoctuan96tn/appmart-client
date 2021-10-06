@@ -241,7 +241,7 @@ function SearchBar() {
   });
 
   return (
-    <View style={{ flexDirection: 'row', padding: '2%'}}>
+    <View style={{ flexDirection: 'row', padding: '2%',}}>
       <Input
         placeholder="  Tìm kiếm  "
         variant="filled"
@@ -251,8 +251,7 @@ function SearchBar() {
         width="85%"
         onTouchEnd={() => {navigation.navigate('SearchProduct')}}
         borderRadius={50}
-        borderWidth={1}
-        borderColor="#0ea5e9"
+        borderWidth={0}
       />
 
       <Button
