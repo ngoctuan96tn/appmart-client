@@ -98,6 +98,62 @@ export function UserBilling() {
 
   }, [retrieve, loadingLogin]);
 
+  const handleCancel = (billId: any, userId: any, orderCode: any) => {
+    Alert.alert(
+      "Hủy đơn hàng",
+      `Bạn có chắc chắn muốn hủy đơn hàng ${orderCode} ?`,
+      [
+        // The "Yes" button
+        {
+          text: "Có",
+          onPress: async () => {
+  
+            // gọi api hủy đơn
+            fetch(ApiCommon.rootUrl + '/api/cancel-order', {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                billId: billId,
+                userId: userId,
+              }),
+            }).then((response) => response.json())
+              .then((responseJson) => {
+                if (responseJson.code == 1) {
+                  setRetrieve(true);
+                  Toast.show('Bạn đã hủy đơn hàng thành công!', {
+                    duration: Toast.durations.LONG,
+                    position: 0,
+                    shadow: true,
+                    animation: true,
+                    hideOnPress: true,
+                    backgroundColor: '#ffffff',
+                    textColor: '#ff0000',
+  
+                  });
+                }
+              })
+              .catch((error) => {
+                console.log(error)
+              });
+            //END gọi api hủy đơn
+  
+          },
+        },
+        // The "No" button
+        // Does nothing but dismiss the dialog when tapped
+        {
+          text: "Không",
+        },
+      ]
+    );
+  
+  
+  }
+
   const FirstRoute = () => {
     if (index == 0) {
       return (
@@ -500,57 +556,3 @@ const styles = StyleSheet.create({
 });
 
 
-function handleCancel(billId: any, userId: any, orderCode: any) {
-  Alert.alert(
-    "Hủy đơn hàng",
-    `Bạn có chắc chắn muốn hủy đơn hàng ${orderCode} ?`,
-    [
-      // The "Yes" button
-      {
-        text: "Có",
-        onPress: async () => {
-
-          // gọi api hủy đơn
-          fetch(ApiCommon.rootUrl + '/api/cancel-order', {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              billId: billId,
-              userId: userId,
-            }),
-          }).then((response) => response.json())
-            .then((responseJson) => {
-              if (responseJson.code == 1) {
-                Toast.show('Bạn đã hủy đơn hàng thành công!', {
-                  duration: Toast.durations.LONG,
-                  position: 0,
-                  shadow: true,
-                  animation: true,
-                  hideOnPress: true,
-                  backgroundColor: '#ffffff',
-                  textColor: '#ff0000',
-
-                });
-              }
-            })
-            .catch((error) => {
-              console.log(error)
-            });
-          //END gọi api hủy đơn
-
-        },
-      },
-      // The "No" button
-      // Does nothing but dismiss the dialog when tapped
-      {
-        text: "Không",
-      },
-    ]
-  );
-
-
-}
