@@ -63,7 +63,7 @@ function ProductCard(data: any) {
           renderText={formattedValue => <Text left={1} color='red.500' fontSize={13}>{formattedValue}</Text>} // <--- Don't forget this!
         />
       </TouchableOpacity>
-      <Button size="xs" variant='outline' borderColor='#0ea5e9' bottom={0} marginTop='10%' onPress={() => addCart()}>
+      <Button size="xs" variant='outline' borderColor='#0ea5e9' bottom={0} marginTop='10%' onPress={() => addCart()} marginLeft="6%" marginRight="6%" marginBottom="3%">
         <Text fontSize={13} color='#0ea5e9'><FontAwesome name ="cart-plus" size={13}/>  Chọn mua</Text>
       </Button>
     </Box>
