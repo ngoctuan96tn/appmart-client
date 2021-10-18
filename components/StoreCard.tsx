@@ -2,8 +2,10 @@ import React from "react";
 import {
   Image, Text, NativeBaseProvider, Center, Box, Stack, Heading, Button
 } from "native-base";
-import { TouchableOpacity } from "react-native";
+import { Dimensions, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/core";
+
+const width = Dimensions.get('window').width;
 function CategoryCard(data: any) {
   const store = data.data.data;
   const navigation = useNavigation();
@@ -13,7 +15,7 @@ function CategoryCard(data: any) {
         bg="white"
         shadow={2}
         rounded="lg"
-        width={120}
+        width={width/3.4}
         marginLeft={1}
         marginRight={1}
       >
