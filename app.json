@@ -2,7 +2,7 @@
   "expo": {
     "name": "MiMart",
     "slug": "MiMart",
-    "version": "1.0.0",
+    "version": "3.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/MiMartLogoGradientApp.png",
     "scheme": "myapp",
@@ -27,7 +27,7 @@
         "foregroundImage": "./assets/images/MiMartLogoGradientApp.png",
         "backgroundColor": "#ffffff"
       },
-      "versionCode": 2,
+      "versionCode": 3,
       "package": "com.vp.mimart"
     },
     "web": {
