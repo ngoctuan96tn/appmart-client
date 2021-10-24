@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import {
   Image, Text, NativeBaseProvider, Center, Box, Stack, Heading, Button
 } from "native-base";
-import { Alert, TouchableOpacity } from "react-native";
+import { Alert, Dimensions, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import CartProvider, { IProduct} from "./CartProvider";
 import NumberFormat from "react-number-format";
 import { ToastAndroid } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
+
+const width = Dimensions.get('window').width;
+
 function ProductCard(data: any) {
   const dataProduct = data.data.data;
   const productImage = dataProduct.productImageBase64[0];
@@ -24,7 +27,7 @@ function ProductCard(data: any) {
       bg="white"
       shadow={2}
       rounded="lg"
-      width={120}
+      width={width/3.4}
       marginLeft={2}
     >
       <TouchableOpacity onPress={() => navigation.navigate('DetailProduct', { productId: dataProduct.productId })}>
