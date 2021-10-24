@@ -19,7 +19,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff'
   },
   title: {
     fontSize: 20,
@@ -193,7 +192,7 @@ export default function ShopScreen() {
               <View style={{ marginTop: '5%'}}>
                 <CategoryList data={data} />
               </View>
-              <View style={{ marginTop: '5%', backgroundColor: '#fff'}}>
+              <View style={{ marginTop: '5%'}}>
                 <StoreList data={dataStore}/>
               </View>
               <View style={{ marginTop: '5%' }}>
@@ -242,7 +241,7 @@ function SearchBar() {
   });
 
   return (
-    <View style={{ flexDirection: 'row', padding: '2%', backgroundColor:'#fff'}}>
+    <View style={{ flexDirection: 'row', padding: '2%',}}>
       <Input
         placeholder="  Tìm kiếm  "
         variant="filled"
@@ -252,8 +251,7 @@ function SearchBar() {
         width="85%"
         onTouchEnd={() => {navigation.navigate('SearchProduct')}}
         borderRadius={50}
-        borderWidth={1}
-        borderColor='#ffa500'
+        borderWidth={0}
       />
 
       <Button

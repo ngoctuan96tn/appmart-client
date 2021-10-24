@@ -4,7 +4,7 @@
     "slug": "MiMart",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon_ios.png",
+    "icon": "./assets/images/MiMartLogoGradientApp.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {

@@ -73,9 +73,9 @@ export default function Login() {
             <Text style={{ color: '#f0f9ff', marginLeft: '6%', fontSize: 13 }}>Đăng ký</Text>
           </TouchableOpacity>
         </View>
-        {/* <Text style={{ textAlign: 'center', marginTop: '10%', color: '#fff', fontSize: 12 }}> HOẶC ĐĂNG NHẬP BẰNG </Text>
+        <Text style={{ textAlign: 'center', marginTop: '10%', color: '#fff', fontSize: 12 }}> HOẶC ĐĂNG NHẬP BẰNG </Text>
         <Button marginTop='10%' width={'80%'} backgroundColor='#fff' borderRadius={25} onPress={() => console.log()}><Text style={{ color: '#4EC8F2', fontSize: 12 }}>SỐ ĐIỆN THOẠI</Text></Button>
-        <Button marginTop='5%' width={'80%'} backgroundColor="#1F67C9" borderRadius={25} onPress={() => console.log()}><Text style={{ fontSize: 12, color: '#fff' }}>FACEBOOK</Text></Button> */}
+        <Button marginTop='5%' width={'80%'} backgroundColor="#1F67C9" borderRadius={25} onPress={() => console.log()}><Text style={{ fontSize: 12, color: '#fff' }}>FACEBOOK</Text></Button>
       </View>
     </NativeBaseProvider>
   );
