@@ -107,7 +107,10 @@ export default function RegisterApartment(route: any) {
             return
         } else {
             const data = new FormData();
-            data.append('avatarImg', photo);
+            if (photo.uri != null) {
+                data.append('avatarImg', photo);
+            }
+            // data.append('avatarImg', photo);
             data.append('email', email);
             data.append('userName', userName);
             data.append('phone', phone);
