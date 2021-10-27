@@ -183,81 +183,6 @@ export default function RegisterApartment(route: any) {
         <NativeBaseProvider>
             <View style={styles.container}>
                 <Heading textAlign='center' size='md' color='#fff' marginTop={'30%'} fontWeight='400' marginBottom='20%'>ĐĂNG KÝ CĂN HỘ</Heading>
-                {/* <Input
-                    backgroundColor='#f0f9ff'
-                    width={300}
-                    marginTop={20}
-                    marginBottom='5'
-                    variant="outline"
-                    placeholder="Email"
-                    _light={{
-                        placeholderTextColor: "blueGray.400",
-                    }}
-                    _dark={{
-                        placeholderTextColor: "blueGray.50",
-                    }}
-                />
-                <Input
-                    backgroundColor='#f0f9ff'
-                    size="sm"
-                    marginBottom='5'
-                    type={show ? "text" : "password"}
-                    InputRightElement={
-                        <Button ml={1} roundedLeft={0} roundedRight="md" onPress={handleClick}>
-                            {show ? "Hide" : "Show"}
-                        </Button>
-                    }
-                    placeholder="Mật khẩu"
-                />
-                <Input
-                    backgroundColor='#f0f9ff'
-                    keyboardType='numeric'
-                    marginBottom='5'
-                    variant="outline"
-                    placeholder="Số điện thoại"
-                    _light={{
-                        placeholderTextColor: "blueGray.400",
-                    }}
-                    _dark={{
-                        placeholderTextColor: "blueGray.50",
-                    }}
-                /> */}
-                {/* <Select width={300} marginBottom={5} placeholder="Tòa nhà" backgroundColor='#f0f9ff'
-                    onValueChange={(itemBuildingValue) => {
-                        setItemBuildingValue(itemBuildingValue)
-                    }}>
-                    <Select.Item label="JavaScript" value="1" />
-                    <Select.Item label="TypeScript" value="2" />
-                </Select>
-                <Select marginBottom={5} placeholder="Tầng" backgroundColor='#f0f9ff'
-                    onValueChange={(itemFloorValue) => {
-                        setItemFloorValue(itemFloorValue)
-                    }}>
-                    <Select.Item label="JavaScript" value="1" />
-                    <Select.Item label="TypeScript" value="2" />
-                </Select>
-                <Select placeholder='Căn hộ' marginBottom='10' backgroundColor='#f0f9ff'
-                    onValueChange={(itemRoomValue) => {
-                        setItemRoomValue(itemRoomValue)
-                    }}>
-                    <Select.Item label="JavaScript" value="1" />
-                    <Select.Item label="TypeScript" value="2" />
-                </Select> */}
-                {/* <RNPickerSelect
-                    onValueChange={(value) => [setIsLoadFloors(true), setIdBuilding(value)]}
-                    placeholder={{
-                        label: 'Chọn tòa nhà',
-                        value: null,
-                        color: '#fff'
-                    }}
-                    items={data.map(item => {
-                        return {
-                            label: item.buildingName,
-                            value: item.id
-                        };
-                    })}
-                    style={pickerSelectStyles}
-                /> */}
 
                 <RNPickerSelect
                     placeholder={{
@@ -340,7 +265,12 @@ export default function RegisterApartment(route: any) {
                     }}
                 />
 
-                <Button marginTop={'20%'} width={'50%'} backgroundColor='#fff' borderRadius={25} onPress={() => onSave(photo, email, userName, phone, password, idBuilding, idFloor, idRoom, navigation, confirmPassWord)}><Text style={{ color: '#4EC8F2', fontSize: 12 }}>CẬP NHẬT</Text></Button>
+                {/* <Button marginTop={'20%'} width={'50%'} backgroundColor='#fff' borderRadius={25} onPress={() => onSave(photo, email, userName, phone, password, idBuilding, idFloor, idRoom, navigation, confirmPassWord)}><Text style={{ color: '#4EC8F2', fontSize: 12 }}>CẬP NHẬT</Text></Button> */}
+                <View style={{ flexDirection: "row", padding: "2%", marginTop:"20%" }}>
+                    <Button width={'50%'} backgroundColor='#fff' borderRadius={25} onPress={() => onSave(photo, email, userName, phone, password, idBuilding, idFloor, idRoom, navigation, confirmPassWord)}><Text style={{ color: '#4EC8F2', fontSize: 12 }}>CẬP NHẬT</Text></Button>
+                    <Button width={'50%'} backgroundColor='#fff' marginLeft="2%" borderRadius={25} onPress={() => navigation.goBack()}>
+                        <Text style={{ color: '#ff0000', fontSize: 12 }}>Quay lại</Text></Button>
+                </View>
             </View>
 
             <Modal isOpen={showModal} onClose={() => setShowModal(false)}>

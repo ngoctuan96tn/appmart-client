@@ -113,14 +113,19 @@ export default function Register(route: any) {
           }}
           placeholder="Nhập lại mật khẩu"
         />
-        <Button width={'80%'} backgroundColor='#fff' borderRadius={25} onPress={() => validateRegister(navigation,
-          userName,
-          email,
-          phoneNumber,
-          passWord,
-          avatarImg,
-          confirmPassWord,
-        )}><Text style={{ color: '#4EC8F2', fontSize: 12 }}>Tiếp theo</Text></Button>
+        <View style={{ flexDirection: "row", padding:"2%" }}>
+          <Button width={'50%'} backgroundColor='#fff' borderRadius={25} onPress={() => validateRegister(navigation,
+            userName,
+            email,
+            phoneNumber,
+            passWord,
+            avatarImg,
+            confirmPassWord,
+          )}><Text style={{ color: '#4EC8F2', fontSize: 12 }}>Tiếp theo</Text></Button>
+          <Button width={'50%'} backgroundColor='#fff' marginLeft="2%" borderRadius={25} onPress={() => navigation.goBack()}>
+            <Text style={{ color: '#ff0000', fontSize: 12 }}>Quay lại</Text></Button>
+        </View>
+
       </View>
     </NativeBaseProvider>
   );
