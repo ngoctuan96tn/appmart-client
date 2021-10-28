@@ -10,7 +10,7 @@ import {
 } from "native-base"
 import { useNavigation } from '@react-navigation/native';
 import ApiCommon from '../constants/ApiCommon';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage, { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Toast from 'react-native-root-toast';
 
@@ -20,7 +20,20 @@ export default function Login() {
   const [show, setShow] = React.useState(false)
 
   const handleClick = () => setShow(!show)
+  
+  const { getItem, setItem } = useAsyncStorage('token');
 
+  React.useEffect(() => {
+    const readToken = async () => {
+      const item = await getItem();
+      console.log(item);
+      if (item != null && item != '' && item != undefined) {
+        navigation.reset({ index: 0, routes: [{ name: 'Main', params: {index: 1} }]});
+      }
+    };
+    readToken();
+
+  }, []);
   const navigation = useNavigation();
   return (
     <NativeBaseProvider >
