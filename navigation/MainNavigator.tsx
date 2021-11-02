@@ -32,23 +32,25 @@ export default function MainNavigator(data: any) {
 
   React.useEffect(() => {
     // check index để gen init route name
-  if (params != null && params != undefined) {
-    if (params.index == 1) {
-      setInitName(tabMuaSam);
+    if (params != null && params != undefined) {
+      if (params.index == 1) {
+        setInitName(tabMuaSam);
+      }
+
+      if (params.index == 3) {
+        setInitName(tabThongBao);
+      }
     }
-  
-    if (params.index == 3) {
-      setInitName(tabThongBao);
-    }
-  }
   });
-  
-  
+
+
 
   return (
     <BottomTab.Navigator
       initialRouteName={initName}
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
+      // tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
+      tabBarOptions={{ activeTintColor: '#0ea5e9' }} // sửa color khi click vào icon
+    >
       <BottomTab.Screen
         name="Mua sắm"
         component={TabOneNavigator}
@@ -83,7 +85,7 @@ export default function MainNavigator(data: any) {
         options={{
           tabBarIcon: ({ color, size }) => (
             // <MaterialCommunityIcons name="message" color={color} size={size} />
-            <AntDesign name="message1" color={color} size={size}/>
+            <AntDesign name="message1" color={color} size={size} />
           ),
         }}
       />
@@ -116,7 +118,7 @@ function TabOneNavigator() {
       <TabOneStack.Screen
         name="TabOneScreen"
         component={ShopScreen}
-        options={{ headerTitle: 'Mua sắm', headerTitleAlign:'center', headerLeft: null, gestureEnabled: false }}
+        options={{ headerTitle: 'Mua sắm', headerTitleAlign: 'center', headerLeft: null, gestureEnabled: false }}
       />
     </TabOneStack.Navigator>
   );
@@ -130,7 +132,7 @@ function TabTwoNavigator() {
       <TabTwoStack.Screen
         name="TabTwoScreen"
         component={NotifyScreen}
-        options={{ headerTitle: 'Thông báo', headerTitleAlign:'center', headerLeft: null, gestureEnabled: false }}
+        options={{ headerTitle: 'Thông báo', headerTitleAlign: 'center', headerLeft: null, gestureEnabled: false }}
       />
     </TabTwoStack.Navigator>
   );
@@ -144,7 +146,7 @@ function TabThreeNavigator() {
       <TabThreeStack.Screen
         name="TabThreeScreen"
         component={NewFeedScreen}
-        options={{ headerTitle: 'Bảng tin', headerTitleAlign:'center', headerLeft: null, gestureEnabled: false }}
+        options={{ headerTitle: 'Bảng tin', headerTitleAlign: 'center', headerLeft: null, gestureEnabled: false }}
       />
     </TabThreeStack.Navigator>
   );
@@ -158,7 +160,7 @@ function TabFiveNavigator() {
       <TabFiveStack.Screen
         name="TabFiveScreen"
         component={MessageScreen}
-        options={{ headerTitle: 'Tin nhắn', headerTitleAlign:'center', headerLeft: null, gestureEnabled: false }}
+        options={{ headerTitle: 'Tin nhắn', headerTitleAlign: 'center', headerLeft: null, gestureEnabled: false }}
       />
     </TabFiveStack.Navigator>
   );
@@ -172,7 +174,7 @@ function TabSixNavigator() {
       <TabSixStack.Screen
         name="TabSixScreen"
         component={ProfileScreen}
-        options={{ headerTitle: 'Cá nhân', headerTitleAlign:'center',  headerLeft: null, gestureEnabled: false }}
+        options={{ headerTitle: 'Cá nhân', headerTitleAlign: 'center', headerLeft: null, gestureEnabled: false }}
       />
     </TabSixStack.Navigator>
   );
