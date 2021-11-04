@@ -115,12 +115,9 @@ export default function RegisterApartment(route: any) {
             data.append('userName', userName);
             data.append('phone', phone);
             data.append('password', password);
-            // data.append('roomId', idBuilding);
-            // data.append('floorId', idFloor);
-            // data.append('buildingId', idRoom);
-            data.append('roomId', idRoom);
+            data.append('roomId', idBuilding);
             data.append('floorId', idFloor);
-            data.append('buildingId', idBuilding);
+            data.append('buildingId', idRoom);
 
             fetch(ApiCommon.rootUrl + '/api/register', {
                 method: 'post',
