@@ -14,6 +14,7 @@ function CategoryCard(data: any) {
       shadow={2}
       rounded="lg"
       width={120}
+      height="96%"
       marginLeft={2}
       marginTop="5%"
     >

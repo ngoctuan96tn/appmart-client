@@ -97,7 +97,7 @@ export default function ShopScreen() {
     }
 
     if (isLoading) {
-      fetch(ApiCommon.rootUrl + '/api/categories')
+      fetch(ApiCommon.rootUrl + '/api/top-categories')
         .then((response) => response.json())
         .then((json) => setData(json))
         .catch((error) => console.error(error))

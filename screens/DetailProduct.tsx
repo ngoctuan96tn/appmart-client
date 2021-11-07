@@ -193,7 +193,7 @@ export function DetailProduct(route: any) {
                         <ProductSimilarSuggestList data={dataProduct} />
                     </View>
 
-                    <View style={{ height: 20 }}></View>
+                    <View style={{ height: 80 }}></View>
                 </ScrollView>
                 <View style={{ flex: 1 }}>
                     <View style={{ position: 'absolute', bottom: 0, backgroundColor: '#f8f8ff', flexDirection: "row", flexWrap: "wrap", justifyContent: 'center', width: '100%', height: 50 }}>
