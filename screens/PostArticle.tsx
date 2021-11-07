@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, StyleSheet, View, TextInput, Text, Platform, TouchableOpacity, Image } from 'react-native';
+import { SafeAreaView, StyleSheet, View, TextInput, Text, Platform, TouchableOpacity, Image, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import {
   Button,
   NativeBaseProvider,
@@ -56,49 +56,56 @@ export function PostArticle(route: any) {
     }
   };
   return (
-    <SafeAreaView style={styles.container}>
-      <NativeBaseProvider >
-        <View style={{ flexDirection: 'row', paddingLeft: 25, marginTop: 5 }}>
-          <View style={{ width: '20%' }}>
-            <Image style={styles.imageStatus} source={{ uri: `data:image/jpeg;base64,${userLogin.avatarHashCode}` }} />
-          </View>
-          <View style={{ width: '80%' }}>
-            <Text style={{ fontWeight: 'bold' }}>{userLogin.userName}</Text>
-          </View>
-        </View>
-        <View style={{ padding: 10 }}>
-          <TextInput
-            multiline={true}
-            style={{ fontSize: 15, padding: 10 }}
-            placeholder="Bạn đang nghĩ gì?"
-            onChangeText={text => setText(text)}
-          />
-        </View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <SafeAreaView style={styles.container}>
+          <NativeBaseProvider >
+            <View style={{ flexDirection: 'row', paddingLeft: 25, marginTop: 5 }}>
+              <View style={{ width: '20%' }}>
+                <Image style={styles.imageStatus} source={{ uri: `data:image/jpeg;base64,${userLogin.avatarHashCode}` }} />
+              </View>
+              <View style={{ width: '80%' }}>
+                <Text style={{ fontWeight: 'bold' }}>{userLogin.userName}</Text>
+              </View>
+            </View>
+            <View style={{ padding: 10 }}>
+              <TextInput
+                multiline={true}
+                style={{ fontSize: 15, padding: 10 }}
+                placeholder="Bạn đang nghĩ gì?"
+                onChangeText={text => setText(text)}
+              />
+            </View>
 
-        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-          {image && <Image source={{ uri: image }} style={{ width: '100%', height: 300 }} />}
-        </View>
+            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+              {image && <Image source={{ uri: image }} style={{ width: '100%', height: 300 }} />}
+            </View>
 
-        <View style={{ position: 'absolute', bottom: 1, flexDirection: "row", flexWrap: "wrap", width: '100%', height: 60 }}>
-          <View style={{ width: '70%' }}>
-            <Button width='30%' variant='link' onPress={() => pickImage()}  >
-              <Ionicons name="images-outline" size={25} />
-            </Button>
-          </View>
-          <View style={{ width: '25%', }}>
-            <Button onPress={() => {
-              const photo = {
-                uri: image,
-                type: 'image/jpeg',
-                name: Math.random() + new Date().getTimezoneOffset() + '.jpg',
-              };
-              saveStatus(photo, token, text, navigation)
-            }} >Đăng bài</Button>
-          </View>
-        </View>
+            <View style={{ position: 'absolute', bottom: 1, flexDirection: "row", flexWrap: "wrap", width: '100%', height: 60 }}>
+              <View style={{ width: '70%' }}>
+                <Button width='30%' variant='link' onPress={() => pickImage()}  >
+                  <Ionicons name="images-outline" size={25} />
+                </Button>
+              </View>
+              <View style={{ width: '25%', }}>
+                <Button onPress={() => {
+                  const photo = {
+                    uri: image,
+                    type: 'image/jpeg',
+                    name: Math.random() + new Date().getTimezoneOffset() + '.jpg',
+                  };
+                  saveStatus(photo, token, text, navigation)
+                }} >Đăng bài</Button>
+              </View>
+            </View>
 
-      </NativeBaseProvider>
-    </SafeAreaView>
+          </NativeBaseProvider>
+        </SafeAreaView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -136,7 +143,7 @@ const styles = StyleSheet.create({
 
 function saveStatus(photo: any, token: any, text: any, navigation: any) {
   const dataStatus = new FormData();
-  if (photo.uri != '' && photo.uri != null && photo.uri != undefined){
+  if (photo.uri != '' && photo.uri != null && photo.uri != undefined) {
     dataStatus.append('listMedia', photo);
   }
   dataStatus.append('content', text);
@@ -152,7 +159,7 @@ function saveStatus(photo: any, token: any, text: any, navigation: any) {
   }).then((response) => response.json())
     .then((responseJson) => {
       if (responseJson.code == 1) {
-        navigation.navigate('Main', {index : 3});
+        navigation.navigate('Main', { index: 3 });
       }
     })
     .catch((error) => {
