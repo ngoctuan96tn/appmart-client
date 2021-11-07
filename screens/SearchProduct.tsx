@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: '#fff'
     },
 
 });
@@ -90,7 +91,7 @@ export function SearchProduct() {
         <View style={styles.container}>
             <NativeBaseProvider>
                 <Animated.View>
-                    <View style={{ flexDirection: 'row', paddingTop: '5%', paddingLeft: '3%' }}>
+                    <View style={{ flexDirection: 'row', paddingTop: '5%', paddingLeft: '3%', backgroundColor: '#fff' }}>
                         <Input
                             placeholder="  Tìm kiếm  "
                             variant="filled"
@@ -98,7 +99,7 @@ export function SearchProduct() {
                             py={1}
                             px={2}
                             width="85%"
-                            borderColor='#0ea5e9'
+                            borderColor='#ffa500'
                             borderRadius={50}
                             onChangeText={(name) => { searchProduct(name) }}
                             onSubmitEditing={() => { searchProduct(name) }}
