@@ -2,7 +2,7 @@
   "expo": {
     "name": "MiMart",
     "slug": "MiMart",
-    "version": "2.2.2",
+    "version": "2.2.5",
     "orientation": "portrait",
     "icon": "./assets/images/icon_ios.png",
     "scheme": "myapp",
@@ -22,7 +22,8 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.vp.mimart",
       "infoPlist": {
-        "NSCameraUsageDescription": "Mi Mart uses your camera roll to allow you to select a custom avatar!"
+        "NSCameraUsageDescription": "Mi Mart uses your camera roll to allow you to select a custom avatar!",
+        "NSPhotoLibraryUsageDescription": "Mi Mart uses your photo library to allow you to select a custom avatar!"
       }
     },
     "android": {

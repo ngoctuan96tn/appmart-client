@@ -24,7 +24,7 @@ export function ListProduct(route: any) {
             <FlatList
                 data={data}
                 renderItem={({ item }) => (
-                    <View style={{ marginTop: '2%' }}><ProductCard data={item} /></View>
+                    <View style={{ marginTop: '2%', height:300 }}><ProductCard data={item} /></View>
                 )}
                 keyExtractor={item => item.id}
                 numColumns={3}
