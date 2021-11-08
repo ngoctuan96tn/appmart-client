@@ -122,7 +122,7 @@ export function Chat(route: any) {
                     </ScrollView>
 
                 </View>
-                <View style={{ position: 'absolute', bottom: 0, flexDirection: "row", width: '100%', height: 50, backgroundColor: '#f5f5f5' }}>
+                <View style={{ position: 'absolute', bottom: 5, flexDirection: "row", width: '100%', height: 50, backgroundColor: '#f5f5f5' }}>
 
                     <Input
                         variant="rounded"
