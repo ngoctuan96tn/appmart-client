@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, View, Platform, Alert } from 'react-native';
+import { SafeAreaView, StyleSheet, View, Platform, Alert, ActivityIndicator } from 'react-native';
 import {
     Input,
     Heading,
@@ -44,6 +44,7 @@ export default function RegisterApartment(route: any) {
     const [showModal, setShowModal] = useState(false)
     const [code, setCode] = useState('')
     const [userId, setUserId] = useState(0);
+    const [isLoadingSave, setLoadingSave] = useState(false);
 
     useEffect(() => {
         if (isLoading) {
@@ -86,7 +87,7 @@ export default function RegisterApartment(route: any) {
     });
 
     const onSave = (photo: any, email: any, userName: any, phone: any, password: any, idBuilding: any, idFloor: any, idRoom: any, navigation: any, confirmPassWord: any) => {
-
+        setLoadingSave(true);
         if (!idBuilding) {
             Alert.alert(
                 '',
@@ -129,6 +130,7 @@ export default function RegisterApartment(route: any) {
                     if (responseJson.code == 1) {
                         setShowModal(true);
                         setUserId(responseJson.listData[0].id);
+                        setLoadingSave(false);
                     } else {
                         Toast.show(responseJson.message, {
                             duration: Toast.durations.LONG,
@@ -141,10 +143,12 @@ export default function RegisterApartment(route: any) {
 
                         });
                         console.log(responseJson.message);
+                        setLoadingSave(false);
                     }
                 })
                 .catch((error) => {
-                    console.log(error)
+                    console.log(error);
+                    setLoadingSave(false);
                 });
         }
 
@@ -264,10 +268,15 @@ export default function RegisterApartment(route: any) {
                         return <Ionicons name="caret-down-sharp" size={24} color="gray" />;
                     }}
                 />
+                {isLoadingSave &&
+                    <View>
+                        <ActivityIndicator size="large" color="#ffffff" />
+                    </View>
+                }
 
                 {/* <Button marginTop={'20%'} width={'50%'} backgroundColor='#fff' borderRadius={25} onPress={() => onSave(photo, email, userName, phone, password, idBuilding, idFloor, idRoom, navigation, confirmPassWord)}><Text style={{ color: '#4EC8F2', fontSize: 12 }}>CẬP NHẬT</Text></Button> */}
-                <View style={{ flexDirection: "row", padding: "2%", marginTop:"20%" }}>
-                    <Button width={'50%'} backgroundColor='#fff' borderRadius={25} onPress={() => onSave(photo, email, userName, phone, password, idBuilding, idFloor, idRoom, navigation, confirmPassWord)}><Text style={{ color: '#4EC8F2', fontSize: 12 }}>CẬP NHẬT</Text></Button>
+                <View style={{ flexDirection: "row", padding: "2%", marginTop: "20%" }}>
+                    <Button width={'50%'} backgroundColor='#fff' borderRadius={25} isDisabled={isLoadingSave} onPress={() => onSave(photo, email, userName, phone, password, idBuilding, idFloor, idRoom, navigation, confirmPassWord)}><Text style={{ color: '#4EC8F2', fontSize: 12 }}>CẬP NHẬT</Text></Button>
                     <Button width={'50%'} backgroundColor='#fff' marginLeft="2%" borderRadius={25} onPress={() => navigation.goBack()}>
                         <Text style={{ color: '#ff0000', fontSize: 12 }}>Quay lại</Text></Button>
                 </View>
