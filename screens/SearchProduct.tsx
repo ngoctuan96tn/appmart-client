@@ -100,8 +100,8 @@ export function SearchProduct() {
                             width="85%"
                             borderColor='#0ea5e9'
                             borderRadius={50}
-                            onChangeText={(name) => { searchProduct(name) }}
-                            onSubmitEditing={() => { searchProduct(name) }}
+                            onChangeText={(name) => { setName(name) }}
+                            onBlur={() => { searchProduct(name) }}
                         />
 
                         <Button

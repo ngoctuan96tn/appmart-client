@@ -44,6 +44,7 @@ export default function RegisterApartment(route: any) {
     const [showModal, setShowModal] = useState(false)
     const [code, setCode] = useState('')
     const [userId, setUserId] = useState(0);
+    const [isLoadingSave, setLoadingSave] = useState(false)
 
     useEffect(() => {
         if (isLoading) {
@@ -86,7 +87,7 @@ export default function RegisterApartment(route: any) {
     });
 
     const onSave = (photo: any, email: any, userName: any, phone: any, password: any, idBuilding: any, idFloor: any, idRoom: any, navigation: any, confirmPassWord: any) => {
-
+        setLoadingSave(true);
         if (!idBuilding) {
             Alert.alert(
                 '',
@@ -130,6 +131,7 @@ export default function RegisterApartment(route: any) {
                     if (responseJson.code == 1) {
                         setShowModal(true);
                         setUserId(responseJson.listData[0].id);
+                        setLoadingSave(false);
                     } else {
                         Toast.show(responseJson.message, {
                             duration: Toast.durations.LONG,
@@ -142,10 +144,12 @@ export default function RegisterApartment(route: any) {
 
                         });
                         console.log(responseJson.message);
+                        setLoadingSave(false);
                     }
                 })
                 .catch((error) => {
-                    console.log(error)
+                    console.log(error);
+                    setLoadingSave(false);
                 });
         }
 
@@ -341,7 +345,7 @@ export default function RegisterApartment(route: any) {
                     }}
                 />
 
-                <Button marginTop={'20%'} width={'50%'} backgroundColor='#fff' borderRadius={25} onPress={() => onSave(photo, email, userName, phone, password, idBuilding, idFloor, idRoom, navigation, confirmPassWord)}><Text style={{ color: '#4EC8F2', fontSize: 12 }}>CẬP NHẬT</Text></Button>
+                <Button marginTop={'20%'} width={'50%'} backgroundColor='#fff' borderRadius={25} isDisabled={isLoadingSave} onPress={() => onSave(photo, email, userName, phone, password, idBuilding, idFloor, idRoom, navigation, confirmPassWord)}><Text style={{ color: '#4EC8F2', fontSize: 12 }}>CẬP NHẬT</Text></Button>
             </View>
 
             <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
