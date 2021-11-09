@@ -86,7 +86,7 @@ export function DetailStore(route: any) {
                 <FlatList
                     data={dataProduct}
                     renderItem={({ item }) => (
-                        <View style={{ marginTop: 3 }}><ProductCard data={item} /></View>
+                        <View style={{ marginTop: 3, height:300 }}><ProductCard data={item} /></View>
                     )}
                     keyExtractor={item => item.productId.toString()}
                     numColumns={3}
