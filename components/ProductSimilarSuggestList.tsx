@@ -11,7 +11,7 @@ export function ProductSuggestList(data: any) {
       <View style={{ flexDirection: 'row' }}>
         <Text style={{ marginLeft: 5, flex: 1, fontWeight: 'bold', marginTop:'3%'}}>SẢN PHẨM LIÊN QUAN</Text>
       </View>
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1 , marginTop:'2%' }}>
         <FlatList
           horizontal={true}
           data={itemList}
@@ -28,8 +28,7 @@ export function ProductSuggestList(data: any) {
 export default (data: any) => {
   return (
     <NativeBaseProvider>
-      <Box bg="white"
-        shadow={2}>
+      <Box bg="white">
         <ProductSuggestList data={data} />
       </Box>
     </NativeBaseProvider>
