@@ -65,7 +65,7 @@ export function OrderPayment() {
         }
       })
         .catch((err) => {
-          alert(err)
+          console.log(err)
         })
 
     }

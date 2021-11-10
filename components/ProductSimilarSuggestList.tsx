@@ -28,8 +28,7 @@ export function ProductSuggestList(data: any) {
 export default (data: any) => {
   return (
     <NativeBaseProvider>
-      <Box bg="white"
-        shadow={2}>
+      <Box bg="white">
         <ProductSuggestList data={data} />
       </Box>
     </NativeBaseProvider>

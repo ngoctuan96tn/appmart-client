@@ -23,7 +23,8 @@ function ProductSuggestCard(data: any) {
   return (
     <Box
       bg="white"
-      shadow={2}
+      border={0.5}
+      borderColor="#0ea5e9"
       rounded="lg"
       width={120}
       height="100%"

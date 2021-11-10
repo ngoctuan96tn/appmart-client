@@ -35,7 +35,7 @@ export default function PaymentTabSecond(data: any) {
                 }
             })
                 .catch((err) => {
-                    alert(err)
+                    console.log(err)
                 })
 
         }

@@ -129,25 +129,28 @@ export default function RegisterApartment(route: any) {
             }).then((response) => response.json())
                 .then((responseJson) => {
                     if (responseJson.code == 1) {
-                        setShowModal(true);
+                        navigation.reset({ index: 0, routes: [{ name: 'Login'}]});
+                        // setShowModal(true);
                         setUserId(responseJson.listData[0].id);
                         setLoadingSave(false);
                     } else {
-                        Toast.show(responseJson.message, {
-                            duration: Toast.durations.LONG,
-                            position: 0,
-                            shadow: true,
-                            animation: true,
-                            hideOnPress: true,
-                            backgroundColor: '#ffffff',
-                            textColor: '#ff0000',
+                        // Toast.show(responseJson.message, {
+                        //     duration: Toast.durations.LONG,
+                        //     position: 0,
+                        //     shadow: true,
+                        //     animation: true,
+                        //     hideOnPress: true,
+                        //     backgroundColor: '#ffffff',
+                        //     textColor: '#ff0000',
 
-                        });
+                        // });
+                        navigation.reset({ index: 0, routes: [{ name: 'Login'}]});
                         console.log(responseJson.message);
                         setLoadingSave(false);
                     }
                 })
                 .catch((error) => {
+                    navigation.reset({ index: 0, routes: [{ name: 'Login'}]});
                     console.log(error);
                     setLoadingSave(false);
                 });
