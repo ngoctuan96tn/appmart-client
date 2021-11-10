@@ -14,7 +14,8 @@ function CategoryCard(data: any) {
     <TouchableOpacity onPress={() => navigation.navigate('ListProduct', {categoryId: item.id, categoryName:item.categoryName})}>
     <Box
       bg="white"
-      shadow={2}
+      border={1}
+      borderColor="#0ea5e9"
       rounded="lg"
       width={width/3.4}
       height="96%"

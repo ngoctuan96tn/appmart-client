@@ -28,8 +28,7 @@ export function ProductList(data: any) {
 export default (data: any) => {
   return (
     <NativeBaseProvider>
-      <Box bg="white"
-        shadow={2}>
+      <Box bg="white">
         <ProductList data={data} />
       </Box>
     </NativeBaseProvider>

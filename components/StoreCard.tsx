@@ -13,7 +13,8 @@ function CategoryCard(data: any) {
     <TouchableOpacity onPress={() => navigation.navigate('DetailStore', {storeId: store.id})}>
       <Box
         bg="white"
-        shadow={2}
+        border={0.5}
+        borderColor="#0ea5e9"
         rounded="lg"
         width={width/3.4}
         marginLeft={1}

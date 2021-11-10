@@ -28,8 +28,7 @@ export function StoreList(data: any) {
 export default (data: any) => {
     return (
         <NativeBaseProvider>
-            <Box bg="white"
-                shadow={2}>
+            <Box bg="white">
                 <StoreList data={data} />
             </Box>
         </NativeBaseProvider>

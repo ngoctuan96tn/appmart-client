@@ -40,7 +40,7 @@ export class Cart extends Component<{}, any> {
       }
     })
       .catch((err) => {
-        alert(err)
+        console.log(err)
       })
 
   }

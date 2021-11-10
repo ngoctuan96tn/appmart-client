@@ -46,7 +46,7 @@ export function SearchProduct() {
             }
         })
             .catch((err) => {
-                alert(err)
+                console.log(err)
             })
 
     };

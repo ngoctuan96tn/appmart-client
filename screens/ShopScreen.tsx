@@ -187,7 +187,7 @@ export default function ShopScreen() {
             {/* end slide show */}
 
             <NativeBaseProvider>
-              <View style={{ marginTop: '5%' }}>
+              <View style={{ marginTop: '5%'}}>
                 <ProductList data={dataProduct} />
               </View>
               <View style={{ marginTop: '5%'}}>
@@ -228,7 +228,7 @@ function SearchBar() {
       }
     })
       .catch((err) => {
-        alert(err)
+        console.log(err)
       })
 
   };
