@@ -16,7 +16,7 @@ function ProductSuggestCard(data: any) {
   const navigation = useNavigation();
 
   const price = dataProduct.discount > 0 ? dataProduct.unitPrice - (dataProduct.unitPrice * dataProduct.discount / 100) : dataProduct.unitPrice;
-  const product: IProduct = { id: dataProduct.productId, name: dataProduct.productName, image: productImage, price: price };
+  const product: IProduct = { id: dataProduct.productId, name: dataProduct.productName, price: price };
 
   const addCart = async () => {
     const lineItems = await CartProvider.getItemFromStorage();
@@ -56,7 +56,7 @@ function ProductSuggestCard(data: any) {
             <Text color="#fff">{dataProduct.discount}%</Text>
           </Center>
         }
-        <Text color='black' left={1} fontWeight='200'>{dataProduct.productName}</Text>
+        <Text color='black' left={1} fontWeight='200' fontSize={12}>{dataProduct.productName}</Text>
         <NumberFormat
           value={dataProduct.unitPrice}
           displayType={'text'}

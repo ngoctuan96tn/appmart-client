@@ -219,7 +219,7 @@ export function OrderPayment() {
                     shadowRadius: 3.84,
                   }}>
                     <View width="30%" height="100%">
-                      <Image source={{ uri: `data:image/jpeg;base64,${item.product.image}` }} alt="image base" resizeMode="cover" height='100%' />
+                      {/* <Image source={{ uri: `data:image/jpeg;base64,${item.product.image}` }} alt="image base" resizeMode="cover" height='100%' /> */}
                     </View>
                     <View width="55%" left="10%" height="100%">
                       <Text>{item.product.name}</Text>
