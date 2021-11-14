@@ -77,6 +77,7 @@ export default function ShopScreen() {
   const { getItem, setItem } = useAsyncStorage('token');
   const [retrieve, setRetrieve] = useState(true);
   const [dataStore, setDataStore] = useState<any>([]);
+  const [dataProductCheapest, setDataproductCheapest] = useState([]);
 
   useEffect(() => {
     const readToken = async () => {
@@ -108,6 +109,12 @@ export default function ShopScreen() {
         .then((json) => setDataproduct(json))
         .catch((error) => console.error(error))
         .finally(() => setLoading(false));
+
+      fetch(ApiCommon.rootUrl + '/api/products/cheapest')
+      .then((response) => response.json())
+      .then((json) => setDataproductCheapest(json))
+      .catch((error) => console.error(error))
+      .finally(() => setLoading(false));
     }
   }, [retrieve]);
 
@@ -196,7 +203,7 @@ export default function ShopScreen() {
                 <StoreList data={dataStore}/>
               </View>
               <View style={{ marginTop: '5%' }}>
-                <ProductSuggestList data={dataProduct} />
+                <ProductSuggestList data={dataProductCheapest} />
               </View>
             </NativeBaseProvider>
           </ScrollView>

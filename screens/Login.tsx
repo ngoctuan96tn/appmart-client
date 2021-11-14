@@ -24,6 +24,7 @@ export default function Login() {
   const { getItem, setItem } = useAsyncStorage('token');
 
   React.useEffect(() => {
+    // AsyncStorage.clear();
     const readToken = async () => {
       const item = await getItem();
       console.log(item);

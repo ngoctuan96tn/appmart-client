@@ -60,7 +60,7 @@ export function DetailProduct(route: any) {
         productImage = productDetail.productImageBase64[0];
     }
     const price = productDetail.discount > 0 ? productDetail.unitPrice - (productDetail.unitPrice * productDetail.discount / 100) : productDetail.unitPrice;
-    const product: IProduct = { id: productDetail.productId, name: productDetail.productName, image: productImage, price: price };
+    const product: IProduct = { id: productDetail.productId, name: productDetail.productName, price: price };
 
     const addCart = async () => {
         const lineItems = await CartProvider.getItemFromStorage();

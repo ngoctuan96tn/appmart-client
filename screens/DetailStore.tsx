@@ -82,7 +82,7 @@ export function DetailStore(route: any) {
                 </View>
             </View>
 
-            <ScrollView style={{ marginTop: '3%' }}>
+            {/* <ScrollView style={{ marginTop: '3%' }}>
                 <FlatList
                     data={dataProduct}
                     renderItem={({ item }) => (
@@ -91,7 +91,7 @@ export function DetailStore(route: any) {
                     keyExtractor={item => item.productId.toString()}
                     numColumns={3}
                 />
-            </ScrollView>
+            </ScrollView> */}
         </SafeAreaView>
 
     )

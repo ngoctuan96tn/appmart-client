@@ -12,7 +12,7 @@ export interface ILineItem {
 export interface IProduct {
     id: number;
     name: string,
-    image: string,
+    // image: string,
     price: number;
 }
 
