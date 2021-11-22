@@ -66,7 +66,7 @@ function ProductSuggestCard(data: any) {
         />
       </TouchableOpacity>
       <View style={{ position: 'absolute', bottom: 1, }}>
-        <Button size="xs" variant='outline' borderColor='#0ea5e9' bottom={0} marginTop='10%' onPress={() => addCart()} marginLeft="6%" marginRight="6%" marginBottom="3%">
+        <Button size="xs" variant='outline' borderColor='#0ea5e9' bottom={0} marginTop='10%' onPress={() => addCart()} marginLeft="18%" marginBottom="3%">
           <Text fontSize={13} color='#0ea5e9'><FontAwesome name="cart-plus" size={13} />  Mua</Text>
         </Button>
       </View>
