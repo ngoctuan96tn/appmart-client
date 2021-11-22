@@ -15,7 +15,7 @@ export function ProductSuggestList(data: any) {
         <FlatList
           horizontal={true}
           data={itemList}
-          height={300}
+          height={260}
           renderItem={({ item }) => (
             <ProductSimilarCard data={item} />
           )}

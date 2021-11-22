@@ -101,14 +101,12 @@ export default function ShopScreen() {
       fetch(ApiCommon.rootUrl + '/api/top-categories')
         .then((response) => response.json())
         .then((json) => setData(json))
-        .catch((error) => console.error(error))
-        .finally(() => setLoading(false));
+        .catch((error) => console.error(error));
 
       fetch(ApiCommon.rootUrl + '/api/products/popular')
         .then((response) => response.json())
         .then((json) => setDataproduct(json))
-        .catch((error) => console.error(error))
-        .finally(() => setLoading(false));
+        .catch((error) => console.error(error));
 
       fetch(ApiCommon.rootUrl + '/api/products/cheapest')
       .then((response) => response.json())

@@ -5,12 +5,13 @@ import { ActivityIndicator, SafeAreaView, View } from "react-native"
 import ApiCommon from "../constants/ApiCommon";
 import { createStackNavigator } from "@react-navigation/stack";
 import { TabOneParamList } from "../types";
-export function AllCategoryList() {
+import ProductCard from "./ProductCard";
+export function AllProductPopular() {
     const [data, setData] = useState([]);
     const [isLoading, setLoading] = useState(true);
     useEffect(() => {
         if (isLoading) {
-            fetch(ApiCommon.rootUrl + '/api/categories')
+            fetch(ApiCommon.rootUrl + '/api/products/allpopular')
                 .then((response) => response.json())
                 .then((json) => setData(json))
                 .catch((error) => console.error(error))
@@ -23,7 +24,7 @@ export function AllCategoryList() {
                 <FlatList
                     data={data}
                     renderItem={({ item }) => (
-                        <View style={{ marginTop: 3 }}><CategoryCard data={item} /></View>
+                        <View style={{ marginTop: 3, height: 260 }}><ProductCard data={item} /></View>
                     )}
                     keyExtractor={item => item.id}
                     numColumns={3}
@@ -54,8 +55,8 @@ function TabOneNavigator() {
     <TabOneStack.Navigator>
       <TabOneStack.Screen
         name="TabOneScreen"
-        component={AllCategoryList}
-        options={{ headerTitle: 'DANH MỤC NGÀNH HÀNG' }}
+        component={AllProductPopular}
+        options={{ headerTitle: 'SẢN PHẨM PHỔ BIẾN' }}
       />
     </TabOneStack.Navigator>
   );

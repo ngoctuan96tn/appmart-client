@@ -143,7 +143,7 @@ export function SearchProduct() {
                         <FlatList
                             data={dataProduct}
                             renderItem={({ item }) => (
-                                <View style={{ marginTop: 3, height:300 }}><ProductCard data={item} /></View>
+                                <View style={{ marginTop: 3, height:260 }}><ProductCard data={item} /></View>
                             )}
                             keyExtractor={item => item.id}
                             numColumns={3}
