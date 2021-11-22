@@ -70,8 +70,8 @@ function ProductCard(data: any) {
           renderText={formattedValue => <Text left={1} color='red.500' fontSize={13}>{formattedValue}</Text>} // <--- Don't forget this!
         />
       </TouchableOpacity>
-      <View style={{ position: 'absolute', bottom: 1, }}>
-        <Button size="xs" variant='outline' borderColor='#0ea5e9' bottom={0} marginTop='10%' onPress={() => addCart()} marginLeft="18%" marginBottom="3%">
+      <View style={{ position: 'absolute', bottom: 1, alignSelf:'center' }}>
+        <Button size="xs" variant='outline' borderColor='#0ea5e9' bottom={0} marginTop='10%' onPress={() => addCart()} marginBottom="3%">
           <Text fontSize={13} color='#0ea5e9'><FontAwesome name="cart-plus" size={13} />  Mua</Text>
         </Button>
       </View>
