@@ -59,7 +59,9 @@ function ProductCard(data: any) {
           </Center>
         }
 
-        <Text color='black' left={1} fontWeight='200' fontSize={12}>{dataProduct.productName}</Text>
+        <Text color='black' left={1} fontWeight='200' fontSize={12}>{((dataProduct.productName).length > 30) ?
+          (((dataProduct.productName).substring(0, 27)) + '...') :
+          dataProduct.productName} </Text>
         <NumberFormat
           value={dataProduct.unitPrice}
           displayType={'text'}
@@ -69,8 +71,8 @@ function ProductCard(data: any) {
         />
       </TouchableOpacity>
       <View style={{ position: 'absolute', bottom: 1, }}>
-        <Button size="xs" variant='outline' borderColor='#0ea5e9' bottom={0} marginTop='10%' onPress={() => addCart()} marginLeft="6%" marginRight="6%" marginBottom="3%">
-          <Text fontSize={13} color='#0ea5e9'><FontAwesome name="cart-plus" size={13} />  Chọn mua</Text>
+        <Button size="xs" variant='outline' borderColor='#0ea5e9' bottom={0} marginTop='10%' onPress={() => addCart()} marginLeft="18%" marginBottom="3%">
+          <Text fontSize={13} color='#0ea5e9'><FontAwesome name="cart-plus" size={13} />  Mua</Text>
         </Button>
       </View>
     </Box>
