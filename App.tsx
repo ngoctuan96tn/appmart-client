@@ -31,6 +31,7 @@ import Chat from './screens/Chat';
 import ListStores from './screens/ListStoreBuilding';
 import DetailStore from './screens/DetailStore';
 import FeedBack from './screens/FeedBack';
+import AllProductPopular from './components/AllProductPopular';
 
 const Stack = createStackNavigator();
 
@@ -78,6 +79,7 @@ export default function App() {
             <Stack.Screen name="ListStores" component={ListStores} />
             <Stack.Screen name="DetailStore" component={DetailStore} />
             <Stack.Screen name="FeedBack" component={FeedBack} />
+            <Stack.Screen name="AllProductPopular" component={AllProductPopular} />
           </Stack.Navigator>
         </NavigationContainer>
       </RootSiblingParent>
