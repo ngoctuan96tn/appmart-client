@@ -14,8 +14,12 @@ export function ProductList(data: any) {
       <SafeAreaView style={{ flex: 1, marginTop:'2%' }}>
         <FlatList
           horizontal={true}
+          onEndReached={() => {
+            console.log("oke nha")
+          }}
+          onEndReachedThreshold={0.7}
           data={dataProduct}
-          height={300}
+          height={260}
           renderItem={({ item }) => (
             <ProductCard data={item} />
           )}
