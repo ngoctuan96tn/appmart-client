@@ -2,7 +2,7 @@
   "expo": {
     "name": "MiMart",
     "slug": "MiMart",
-    "version": "2.4.0",
+    "version": "2.6.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon_ios.png",
     "scheme": "myapp",
