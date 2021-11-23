@@ -14,7 +14,7 @@ export function ListProduct(route: any) {
     const [limit, setLimit] = useState(18);
     useEffect(() => {
         if (isLoading) {
-            fetch(ApiCommon.rootUrl + `/api/products/category-paging/${params.categoryId}?limit=${limit}`)
+            fetch(ApiCommon.rootUrl + `/api/products/category-paging/${params.categoryId}?limit=${limit}&offset=0`)
                 .then((response) => response.json())
                 .then((json) => setData(json))
                 .catch((error) => console.error(error))
@@ -25,10 +25,18 @@ export function ListProduct(route: any) {
     const fetchResult = () => {
         setLoadingPaging(true);
         const limitCalculate = limit + 6;
+        const offset = limit;
         setLimit(limitCalculate);
-        fetch(ApiCommon.rootUrl + `/api/products/category-paging/${params.categoryId}?limit=${limit}`)
+        fetch(ApiCommon.rootUrl + `/api/products/category-paging/${params.categoryId}?limit=${limit}&offset=${offset}`)
             .then((response) => response.json())
-            .then((json) => setData(json))
+            .then((json) => {
+                console.log(data[data.length-1].productId);
+                console.log(json[json.length-1].productId)
+                if (data[data.length-1].productId !== json[json.length-1].productId) {
+                    setData(data.concat(json))
+                }
+                
+            })
             .catch((error) => console.error(error))
             .finally(() => setLoadingPaging(false));
     }

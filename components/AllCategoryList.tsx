@@ -12,7 +12,7 @@ export function AllCategoryList() {
     const [isLoadingPaging, setLoadingPaging] = useState(false);
     useEffect(() => {
         if (isLoading) {
-            fetch(ApiCommon.rootUrl + `/api/categories-paging?limit=${limit}`)
+            fetch(ApiCommon.rootUrl + `/api/categories-paging?limit=${limit}&offset=0`)
                 .then((response) => response.json())
                 .then((json) => setData(json))
                 .catch((error) => console.error(error))
@@ -22,10 +22,18 @@ export function AllCategoryList() {
     const fetchResult = () => {
         setLoadingPaging(true);
         const limitCalculate = limit + 6;
+        const offset = limit;
         setLimit(limitCalculate);
-        fetch(ApiCommon.rootUrl + `/api/categories-paging?limit=${limitCalculate}`)
+        fetch(ApiCommon.rootUrl + `/api/categories-paging?limit=${limitCalculate}&offset=${offset}`)
             .then((response) => response.json())
-            .then((json) => setData(json))
+            .then((json) => {
+                console.log(data[data.length-1].id);
+                console.log(json[json.length-1].id)
+                if (data[data.length-1].id !== json[json.length-1].id) {
+                    setData(data.concat(json))
+                }
+                
+            })
             .catch((error) => console.error(error))
             .finally(() => setLoadingPaging(false));
     }
@@ -40,7 +48,7 @@ export function AllCategoryList() {
                 
                 <FlatList
                     onEndReached={fetchResult}
-                    onEndReachedThreshold={0.7}
+                    onEndReachedThreshold={0.1}
                     data={data}
                     renderItem={({ item }) => (
                         <View style={{ marginTop: 3 }}><CategoryCard data={item} /></View>
