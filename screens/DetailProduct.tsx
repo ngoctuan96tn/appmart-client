@@ -201,9 +201,16 @@ export function DetailProduct(route: any) {
                             <MaterialCommunityIcons name="message-processing-outline" color='#008000' size={22} />
                         </Button>
                         <View style={{ height: '100%', width: 1, backgroundColor: '#909090', }}></View>
-                        <Button borderColor='#f8f8ff' borderRadius={0} size="sm" variant="outline" onPress={() => addCart()} width='33%'>
-                            <FontAwesome name='cart-plus' color='#0ea5e9' size={22} />
-                        </Button>
+                        {productDetail.quantity > 0 ?
+                            <Button borderColor='#f8f8ff' borderRadius={0} size="sm" variant="outline" onPress={() => addCart()} width='33%'>
+                                <FontAwesome name='cart-plus' color='#0ea5e9' size={22} />
+                            </Button>
+                        :
+                            <Button borderColor='#f8f8ff' colorScheme="secondary" borderRadius={0} size="sm"  variant="outline" width='33%'>
+                                Hết hàng
+                            </Button>
+                        }
+                        
                         <View style={{ height: '100%', width: 1, backgroundColor: '#909090', }}></View>
                         <Button borderColor='#f8f8ff' borderRadius={0} size="sm" onPress={() => { payment() }} width='33%'>
                             Thanh toán

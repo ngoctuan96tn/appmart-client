@@ -66,9 +66,16 @@ function ProductSuggestCard(data: any) {
         />
       </TouchableOpacity>
       <View style={{ position: 'absolute', bottom: 1, alignSelf:'center'}}>
-        <Button size="xs" variant='outline' borderColor='#0ea5e9' bottom={0} marginTop='10%' onPress={() => addCart()} marginLeft="6%" marginRight="6%" marginBottom="3%">
-          <Text fontSize={13} color='#0ea5e9'><FontAwesome name="cart-plus" size={13} /> Mua </Text>
-        </Button>
+        {dataProduct.quantity > 0 ?
+          <Button size="xs" variant='outline' borderColor='#0ea5e9' bottom={0} marginTop='10%' onPress={() => addCart()} marginLeft="18%" marginBottom="3%">
+            <Text fontSize={13} color='#0ea5e9'><FontAwesome name="cart-plus" size={13} />  Mua</Text>
+          </Button>
+        :
+          <Button size="xs" variant='outline' borderColor='#ff0000' bottom={0} marginTop='10%' >
+            <Text fontSize={13} color='#ff0000'>Hết hàng</Text>
+          </Button>
+        }
+        
       </View>
     </Box>
   );

@@ -51,7 +51,7 @@ export function ListProduct(route: any) {
                 
                 <FlatList
                     onEndReached={fetchResult}
-                    onEndReachedThreshold={0.7}
+                    onEndReachedThreshold={0.1}
                     data={data}
                     renderItem={({ item }) => (
                         <View style={{ marginTop: '2%', height:260 }}><ProductCard data={item} /></View>
