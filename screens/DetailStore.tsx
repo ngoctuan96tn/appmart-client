@@ -12,6 +12,8 @@ export function DetailStore(route: any) {
     const [data, setData] = useState<any>({});
     const [isLoading, setLoading] = useState(true);
     const [dataProduct, setDataProduct] = useState([]);
+    const [isLoadingPaging, setLoadingPaging] = useState(false);
+    const [limit, setLimit] = useState(18);
     useEffect(() => {
         if (isLoading) {
             fetch(ApiCommon.rootUrl + `/api/store/${params.storeId}`)
@@ -25,7 +27,7 @@ export function DetailStore(route: any) {
                 .finally(() => setLoading(false));
 
 
-            fetch(ApiCommon.rootUrl + `/api/products/store/${params.storeId}`)
+            fetch(ApiCommon.rootUrl + `/api/products/store-paging/${params.storeId}?limit=${limit}&offset=0`)
                 .then((response) => response.json())
                 .then((json) => setDataProduct(json))
                 .catch((error) => console.error(error))
@@ -34,8 +36,32 @@ export function DetailStore(route: any) {
         }
     });
 
+    const fetchResult = () => {
+        
+        
+        setLoadingPaging(true);
+        const limitCalculate = limit + 6;
+        const offset = limit;
+        console.log(limitCalculate);
+        console.log(offset);
+        setLimit(limitCalculate);
+        fetch(ApiCommon.rootUrl + `/api/products/store-paging/${params.storeId}?limit=6&offset=${offset}`)
+            .then((response) => response.json())
+            .then((json) => {
+                if (dataProduct[dataProduct.length-1].productId !== json[json.length-1].productId) {
+                    setDataProduct(dataProduct.concat(json))
+                }
+                
+            })
+            .catch((error) => console.error(error))
+            .finally(() => setLoadingPaging(false));
+    }
+
     return (
         <SafeAreaView style={{ alignItems: 'center', justifyContent: 'center' }}>
+            <ScrollView
+             onMomentumScrollEnd={fetchResult}
+            >
             <View style={{ flexDirection: "row", flexWrap: "wrap", marginTop: '5%', marginLeft: '4%' }}>
                 <Image source={{ uri: `data:image/jpeg;base64,${data.image}` }} alt="image base" resizeMode="cover" width='12%' height={45} roundedTop="md" />
                 <Text style={{ marginLeft: '1%', marginTop: '3%' }} width='50%'>{data.name}</Text>
@@ -82,16 +108,25 @@ export function DetailStore(route: any) {
                 </View>
             </View>
 
-            {/* <ScrollView style={{ marginTop: '3%' }}>
-                <FlatList
-                    data={dataProduct}
-                    renderItem={({ item }) => (
-                        <View style={{ marginTop: 3, height:260 }}><ProductCard data={item} /></View>
-                    )}
-                    keyExtractor={item => item.productId.toString()}
-                    numColumns={3}
-                />
-            </ScrollView> */}
+             
+            <FlatList
+                onEndReached={fetchResult}
+                onEndReachedThreshold={0.7}
+                data={dataProduct}
+                renderItem={({ item }) => (
+                    <View style={{ marginTop: 3, height:260 }}><ProductCard data={item} /></View>
+                )}
+                keyExtractor={item => item.productId.toString()}
+                numColumns={3}
+            />
+            
+            {isLoadingPaging &&
+                <View>
+                    <ActivityIndicator size="large" color="#0000ff" />
+                </View>
+            } 
+            </ScrollView>
+            
         </SafeAreaView>
 
     )
