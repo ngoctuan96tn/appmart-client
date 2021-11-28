@@ -24,7 +24,7 @@ export function AllCategoryList() {
         const limitCalculate = limit + 6;
         const offset = limit;
         setLimit(limitCalculate);
-        fetch(ApiCommon.rootUrl + `/api/categories-paging?limit=${limitCalculate}&offset=${offset}`)
+        fetch(ApiCommon.rootUrl + `/api/categories-paging?limit=6&offset=${offset}`)
             .then((response) => response.json())
             .then((json) => {
                 console.log(data[data.length-1].id);
