@@ -60,7 +60,7 @@ export function DetailProduct(route: any) {
         productImage = productDetail.productImageBase64[0];
     }
     const price = productDetail.discount > 0 ? productDetail.unitPrice - (productDetail.unitPrice * productDetail.discount / 100) : productDetail.unitPrice;
-    const product: IProduct = { id: productDetail.productId, name: productDetail.productName, price: price };
+    const product: IProduct = { id: productDetail.productId, name: productDetail.productName, price: price, pQuantity: productDetail.quantity };
 
     const addCart = async () => {
         const lineItems = await CartProvider.getItemFromStorage();
@@ -154,7 +154,7 @@ export function DetailProduct(route: any) {
                                 ratingCount={5}
                                 imageSize={16}
                                 startingValue={productDetail.rating ? productDetail.rating : 0}
-                            /> {productDetail.rating ? productDetail.rating : 0}/5 ({productDetail.countRate ? productDetail.countRate : 0} đánh giá)</Text>
+                            /> {productDetail.rating ? productDetail?.rating?.toFixed(2) : 0}/5 ({productDetail.countRate ? productDetail.countRate : 0} đánh giá)</Text>
                         <FlatList
                             data={dataComment.listData}
                             renderItem={({ item }) => (
