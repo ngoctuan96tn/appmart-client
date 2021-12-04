@@ -38,6 +38,7 @@ export function OrderPayment() {
   const [loading, setLoading] = React.useState(true);
   const [dataCart, setDataCart] = React.useState<any>({});
   const [totalAmount, setTotalAmount] = React.useState<any>({});
+  const [isDisabled, setIsDisabled] = React.useState(false);
   // const [note, setNote] = React.useState('');
 
   React.useEffect(() => {
@@ -256,7 +257,11 @@ export function OrderPayment() {
               suffix={'đ'}
               renderText={formattedValue => <Text style={{ width: '50%', textAlign: 'right', color: '#ff0000', fontWeight: 'bold' }}>{formattedValue}</Text>} // <--- Don't forget this!
             />
-            <Button onPress={() => handlePayment(note, dataCart, userLogin, token, navigation)} width="100%" marginTop="5%">ĐẶT HÀNG</Button>
+            <Button isDisabled={isDisabled} onPress={() => {
+              setIsDisabled(true);
+              handlePayment(note, dataCart, userLogin, token, navigation);
+              setIsDisabled(false);
+              }} width="100%" marginTop="5%">ĐẶT HÀNG</Button>
           </View>
         </Box>
       );
