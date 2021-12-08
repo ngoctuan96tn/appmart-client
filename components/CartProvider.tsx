@@ -14,7 +14,7 @@ export interface IProduct {
     name: string;
     // image: string,
     price: number;
-    pQuantity: number;
+    // pQuantity: number;
 }
 
 export default class CartProvider {
@@ -42,18 +42,6 @@ export default class CartProvider {
             let check = lineItems.findIndex((_item: { product: { id: any; }; }) => {
                 return product.id === _item.product.id;
             });
-            if (lineItems[check].quantity >= product.pQuantity) {
-                Toast.show('Đặt hàng vượt quá số lượng', {
-                    duration: Toast.durations.LONG,
-                    position: -50,
-                    shadow: true,
-                    animation: true,
-                    hideOnPress: true,
-                    backgroundColor: '#ffffff',
-                    textColor: '#000000',
-    
-                });
-            } else {
                 if (check === -1) {
                     const newData: ILineItem = {
                         product: product,
@@ -66,7 +54,7 @@ export default class CartProvider {
                         ...lineItems.filter((_i: { product: { id: any; }; }) => _i.product.id !== product.id),
                         {
                             product: lineItems[check].product,
-                            quantity: (lineItems[check].quantity >= product.pQuantity ? lineItems[check].quantity : lineItems[check].quantity += 1),
+                            quantity: lineItems[check].quantity += 1,
                             timestamp: lineItems[check].timestamp,
                         },
                     ];
@@ -89,7 +77,6 @@ export default class CartProvider {
                 });
             }       
         }
-    }
 
     static minusToCart(product: IProduct, lineItems: ILineItem[]) {
         let newLineItems = [];

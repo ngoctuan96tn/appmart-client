@@ -13,7 +13,7 @@ function ProductCard(data: any) {
   const productImage = dataProduct.productImageBase64[0];
   const navigation = useNavigation();
   const price = dataProduct.discount > 0 ? dataProduct.unitPrice - (dataProduct.unitPrice * dataProduct.discount / 100) : dataProduct.unitPrice;
-  const product: IProduct = { id: dataProduct.productId, name: dataProduct.productName, price: price, pQuantity: dataProduct.quantity };
+  const product: IProduct = { id: dataProduct.productId, name: dataProduct.productName, price: price };
 
   const addCart = async () => {
     const lineItems = await CartProvider.getItemFromStorage();

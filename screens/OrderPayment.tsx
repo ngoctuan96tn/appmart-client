@@ -410,7 +410,7 @@ function handlePayment(note: any, dataCart: any, userLogin: any, token: any, nav
         });
         navigation.navigate('OrderPaymentSuccess', { orderCode: orderCode });
       } else {
-        Toast.show('Đặt hàng thất bại. Vui lòng thử lại!', {
+        Toast.show(responseJson.message, {
           duration: Toast.durations.LONG,
           position: 0,
           shadow: true,
