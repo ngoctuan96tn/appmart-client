@@ -39,6 +39,7 @@ export function OrderPayment() {
   const [dataCart, setDataCart] = React.useState<any>({});
   const [totalAmount, setTotalAmount] = React.useState<any>({});
   const [isDisabled, setIsDisabled] = React.useState(false);
+  // const [note, setNote] = React.useState('');
 
   React.useEffect(() => {
     const readToken = async () => {
@@ -256,7 +257,7 @@ export function OrderPayment() {
               suffix={'đ'}
               renderText={formattedValue => <Text style={{ width: '50%', textAlign: 'right', color: '#ff0000', fontWeight: 'bold' }}>{formattedValue}</Text>} // <--- Don't forget this!
             />
-              <Button isDisabled={isDisabled} onPress={() => {
+            <Button isDisabled={isDisabled} onPress={() => {
               setIsDisabled(true);
               handlePayment(note, dataCart, userLogin, token, navigation);
               setIsDisabled(false);
@@ -396,7 +397,7 @@ function handlePayment(note: any, dataCart: any, userLogin: any, token: any, nav
       console.log(orderCode);
       if (responseJson.code == 1) {
         CartProvider.clearCart();
-
+        // AsyncStorage.clear();
         Toast.show('Đặt hàng thành công!', {
           duration: Toast.durations.LONG,
           position: 0,
@@ -409,7 +410,7 @@ function handlePayment(note: any, dataCart: any, userLogin: any, token: any, nav
         });
         navigation.navigate('OrderPaymentSuccess', { orderCode: orderCode });
       } else {
-        Toast.show('Đặt hàng thất bại. Vui lòng thử lại!', {
+        Toast.show(responseJson.message, {
           duration: Toast.durations.LONG,
           position: 0,
           shadow: true,

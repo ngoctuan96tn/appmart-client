@@ -12,8 +12,9 @@ export interface ILineItem {
 export interface IProduct {
     id: number;
     name: string;
+    // image: string,
     price: number;
-    pQuantity: number;
+    // pQuantity: number;
 }
 
 export default class CartProvider {
@@ -32,61 +33,50 @@ export default class CartProvider {
     };
 
     static async addToCart(product: IProduct, lineItems: ILineItem[]) {
-
+        console.log(lineItems);
+        console.log(product);
+        
+        
         if (lineItems) {
             let newLineItems = lineItems;
             let check = lineItems.findIndex((_item: { product: { id: any; }; }) => {
                 return product.id === _item.product.id;
             });
-
-            if (check === -1) {
-                const newData: ILineItem = {
-                    product: product,
-                    quantity: 1,
-                    timestamp: Date.now(),
-                };
-                newLineItems = [...await lineItems, newData];
-            } else {
-                if (lineItems[check].quantity >= product.pQuantity) {
-                    Toast.show('Đặt hàng vượt quá số lượng', {
-                        duration: Toast.durations.LONG,
-                        position: -50,
-                        shadow: true,
-                        animation: true,
-                        hideOnPress: true,
-                        backgroundColor: '#ffffff',
-                        textColor: '#000000',
-        
-                    });
+                if (check === -1) {
+                    const newData: ILineItem = {
+                        product: product,
+                        quantity: 1,
+                        timestamp: Date.now(),
+                    };
+                    newLineItems = [...await lineItems, newData];
+                } else {
+                    newLineItems = [
+                        ...lineItems.filter((_i: { product: { id: any; }; }) => _i.product.id !== product.id),
+                        {
+                            product: lineItems[check].product,
+                            quantity: lineItems[check].quantity += 1,
+                            timestamp: lineItems[check].timestamp,
+                        },
+                    ];
                 }
-                newLineItems = [
-                    ...lineItems.filter((_i: { product: { id: any; }; }) => _i.product.id !== product.id),
-                    {
-                        product: lineItems[check].product,
-                        quantity: (lineItems[check].quantity >= product.pQuantity ? lineItems[check].quantity : lineItems[check].quantity += 1),
-                        timestamp: lineItems[check].timestamp,
-                    },
-                ];
-            }
-            this.setItemFromStorage(newLineItems.sort(function (a, b) {
-                return a.timestamp - b.timestamp;
-            })
-                .reverse(),
-            );
-
-            Toast.show('Đã thêm sản phẩm vào giỏ hàng!', {
-                duration: Toast.durations.LONG,
-                position: -50,
-                shadow: true,
-                animation: true,
-                hideOnPress: true,
-                backgroundColor: '#ffffff',
-                textColor: '#000000',
-
-            });
+                this.setItemFromStorage(newLineItems.sort(function (a, b) {
+                    return a.timestamp - b.timestamp;
+                })
+                    .reverse(),
+                );
+    
+                Toast.show('Đã thêm sản phẩm vào giỏ hàng!', {
+                    duration: Toast.durations.LONG,
+                    position: -50,
+                    shadow: true,
+                    animation: true,
+                    hideOnPress: true,
+                    backgroundColor: '#ffffff',
+                    textColor: '#000000',
+    
+                });
+            }       
         }
-
-    }
 
     static minusToCart(product: IProduct, lineItems: ILineItem[]) {
         let newLineItems = [];
