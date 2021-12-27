@@ -1,6 +1,7 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import moment from 'moment';
 import { Box, Center, Image, NativeBaseProvider, FlatList, ScrollView } from 'native-base';
 import * as React from 'react';
 import { useState } from 'react';
@@ -45,6 +46,37 @@ export default function MessageScreen() {
 
         clearTimeout(schedule);
     }, [retrieve, loading]);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            // Do something when the screen is focused
+            const readToken = async () => {
+                const item = await getItem();
+                setToken(item);
+                setRetrieve(false);
+            };
+  
+            if (retrieve) {
+                readToken();
+            }
+  
+            const headers = { 'Authorization': `Bearer ${token}` }
+  
+            if (retrieve === false) {
+                fetch(ApiCommon.rootUrl + '/api/clean-message-count', { headers })
+                    .then((response) => response.json())
+                    .then((responseJson) => {
+                        console.log("clean tin nhắn thành công");
+                        
+                    })
+            }
+            return () => {
+                // Do something when the screen is unfocused
+                // Useful for cleanup functions
+            };
+  
+        }, [retrieve])
+        );
     return (
         <NativeBaseProvider>
             <View style={{ flexDirection: 'row' }}>
@@ -93,6 +125,7 @@ export default function MessageScreen() {
                                     <Box width='100%' px={2} py={1} rounded="lg" height={55} >
                                         <Text style={{ fontWeight: 'bold' }}>{item.user.userName}</Text>
                                         <Text style={{ fontSize: 12, fontStyle: 'italic' }}>{item.lastContent}</Text>
+                                        <Text style={{ fontSize: 10, fontStyle: 'italic' }}>{moment(item.lastTime).format("DD-MM-YYYY hh:mm")}</Text>
                                     </Box>
                                 </View>
 

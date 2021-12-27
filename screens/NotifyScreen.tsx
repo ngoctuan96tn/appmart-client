@@ -5,7 +5,7 @@ import ApiCommon from "../constants/ApiCommon";
 import { Modal, Button } from "native-base";
 import { TouchableOpacity } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 export default function NotifyScreen() {
   const navigation = useNavigation();
   const { getItem, setItem } = useAsyncStorage('token');
@@ -16,6 +16,39 @@ export default function NotifyScreen() {
   const [open, setOpen] = useState(false)
   const [placement, setPlacement] = useState(undefined)
   const [content, setContent] = useState({})
+
+
+    useFocusEffect(
+      React.useCallback(() => {
+          // Do something when the screen is focused
+          const readToken = async () => {
+              const item = await getItem();
+              setToken(item);
+              setRetrieve(false);
+          };
+
+          if (retrieve) {
+              readToken();
+          }
+
+          const headers = { 'Authorization': `Bearer ${token}` }
+
+          if (retrieve === false) {
+              fetch(ApiCommon.rootUrl + '/api/clean-notify-count', { headers })
+                  .then((response) => response.json())
+                  .then((responseJson) => {
+                      console.log("clean notify thành công");
+                      
+                  })
+          }
+          return () => {
+              // Do something when the screen is unfocused
+              // Useful for cleanup functions
+          };
+
+      }, [retrieve])
+  );
+
   useEffect(() => {
     const readToken = async () => {
       const item = await getItem();
