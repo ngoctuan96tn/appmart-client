@@ -17,6 +17,9 @@ import MessageScreen from '../screens/MessageScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import { TabFiveParamList, TabFourParamList, TabOneParamList, TabSixParamList, TabThreeParamList, TabTwoParamList } from '../types';
 import { useNavigation } from '@react-navigation/core';
+import { useState } from 'react';
+import { useAsyncStorage } from '@react-native-async-storage/async-storage';
+import ApiCommon from '../constants/ApiCommon';
 
 const BottomTab = createBottomTabNavigator();
 
@@ -26,9 +29,17 @@ export default function MainNavigator(data: any) {
 
   const [initName, setInitName] = React.useState('Mua sắm');
   const colorScheme = useColorScheme();
+  
+  const [token, setToken] = useState<string | null>('');
+  const { getItem, setItem } = useAsyncStorage('token');
+  const [retrieve, setRetrieve] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [dataCount, setDataCount] = useState<any>({});
 
   const tabMuaSam = 'Mua sắm';
   const tabThongBao = 'Thông báo';
+
+  let schedule = setTimeout(() => setLoading(true), 5000);
 
   React.useEffect(() => {
     // check index để gen init route name
@@ -41,9 +52,33 @@ export default function MainNavigator(data: any) {
       setInitName(tabThongBao);
     }
   }
-  });
-  
-  
+
+  const readToken = async () => {
+    const item = await getItem();
+    setToken(item);
+    setRetrieve(false);
+  };
+
+  if (retrieve) {
+    readToken();
+  }
+  if (retrieve === false && loading === true) {
+    console.log('token',token);
+    
+    const headers = { 'Authorization': `Bearer ${token}` }
+    fetch(ApiCommon.rootUrl + '/api/get-msnt-count', { headers })
+      .then((response) => response.json())
+      .then((json) => {
+        console.log("data count",json);
+        setDataCount(json);
+      })
+      .catch((error) => console.error(error))
+      .finally(() => setLoading(false));
+  }
+
+  clearTimeout(schedule);
+
+}, [retrieve, loading]);
 
   return (
     <BottomTab.Navigator
@@ -65,6 +100,7 @@ export default function MainNavigator(data: any) {
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="earth" color={color} size={size} />
           ),
+          tabBarBadge:dataCount?.notifyCount?dataCount?.notifyCount:undefined
         }}
       />
       <BottomTab.Screen
@@ -85,6 +121,7 @@ export default function MainNavigator(data: any) {
             // <MaterialCommunityIcons name="message" color={color} size={size} />
             <AntDesign name="message1" color={color} size={size}/>
           ),
+          tabBarBadge:dataCount?.messageCount?dataCount?.messageCount:undefined
         }}
       />
       <BottomTab.Screen
