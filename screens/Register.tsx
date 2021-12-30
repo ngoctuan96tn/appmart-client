@@ -44,7 +44,7 @@ export default function Register(route: any) {
             placeholderTextColor: "#fff",
           }}
         />
-        <Input
+        {/* <Input
           width={'90%'}
           marginBottom={'5%'}
           paddingLeft={'1%'}
@@ -58,7 +58,7 @@ export default function Register(route: any) {
           _dark={{
             placeholderTextColor: "#fff",
           }}
-        />
+        /> */}
         <Input
           width={'90%'}
           keyboardType='numeric'
@@ -130,7 +130,7 @@ export function validateRegister(navigation: any, userName: any, email: any, pho
   const vnf_regex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
   const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-  if (!userName || !email || !phoneNumber || !passWord) {
+  if (!userName || !phoneNumber || !passWord) {
     Alert.alert(
       '',
       'Vui lòng nhập đủ thông tin!',
@@ -154,16 +154,17 @@ export function validateRegister(navigation: any, userName: any, email: any, pho
       'Số điện thoại không đúng định dạng!',
     );
     return
-  } else if (!re.test(String(email).toLowerCase())) {
-    Alert.alert(
-      '',
-      'Email không đúng định dạng!',
-    );
-    return
+  // } else if (!re.test(String(email).toLowerCase())) {
+  //   Alert.alert(
+  //     '',
+  //     'Email không đúng định dạng!',
+  //   );
+  //   return
   } else {
+    let emailSend = phoneNumber + "@gmail.com";
     navigation.navigate('RegisterApartment', {
       userName: userName,
-      email: email,
+      email: emailSend,
       phone: phoneNumber,
       password: passWord,
       avatarImg: avatarImg,

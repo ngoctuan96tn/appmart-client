@@ -47,7 +47,7 @@ export default function Login() {
           marginBottom={'5%'}
           paddingLeft={'1%'}
           variant="underlined"
-          placeholder="Email / Số điện thoại"
+          placeholder="Số điện thoại"
           onChangeText={email => setEmail(email)}
           _light={{
             placeholderTextColor: "#fff",
