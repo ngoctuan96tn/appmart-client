@@ -59,10 +59,10 @@ export function UserInfor(route: any) {
             <Icon name="phone" color="#777777" size={20} />
             <Text style={{ color: "#777777", marginLeft: 20 }}>{userLogin.phone}</Text>
           </View>
-          <View style={styles.row}>
+          {/* <View style={styles.row}>
             <Icon name="email" color="#777777" size={20} />
             <Text style={{ color: "#777777", marginLeft: 20 }}>{userLogin.email}</Text>
-          </View>
+          </View> */}
           <View style={styles.row}>
           <Icon name="map-marker-radius" color="#777777" size={20}/>
           <Text style={{color:"#777777", marginLeft: 20}}>{userLogin.roomName} - {userLogin.floorName} - {userLogin.buildingName}</Text>

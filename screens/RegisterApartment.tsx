@@ -128,10 +128,11 @@ export default function RegisterApartment(route: any) {
             }).then((response) => response.json())
                 .then((responseJson) => {
                     if (responseJson.code == 1) {
-                        // navigation.reset({ index: 0, routes: [{ name: 'Login'}]});
-                        setShowModal(true);
+                        
+                        // setShowModal(true);
                         setUserId(responseJson.listData[0].id);
                         setLoadingSave(false);
+                        navigation.reset({ index: 0, routes: [{ name: 'Login'}]});
                     } else {
                         Toast.show(responseJson.message, {
                             duration: Toast.durations.LONG,
