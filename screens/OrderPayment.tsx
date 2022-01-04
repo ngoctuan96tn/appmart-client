@@ -398,6 +398,7 @@ function handlePayment(note: any, dataCart: any, userLogin: any, token: any, nav
       if (responseJson.code == 1) {
         CartProvider.clearCart();
         // AsyncStorage.clear();
+        note= '';
         Toast.show('Đặt hàng thành công!', {
           duration: Toast.durations.LONG,
           position: 0,
