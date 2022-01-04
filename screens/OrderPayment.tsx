@@ -261,6 +261,7 @@ export function OrderPayment() {
               setIsDisabled(true);
               handlePayment(note, dataCart, userLogin, token, navigation);
               setIsDisabled(false);
+              note ='';
               }} width="100%" marginTop="5%">ĐẶT HÀNG</Button>
           </View>
         </Box>
@@ -398,7 +399,6 @@ function handlePayment(note: any, dataCart: any, userLogin: any, token: any, nav
       if (responseJson.code == 1) {
         CartProvider.clearCart();
         // AsyncStorage.clear();
-        note= '';
         Toast.show('Đặt hàng thành công!', {
           duration: Toast.durations.LONG,
           position: 0,
