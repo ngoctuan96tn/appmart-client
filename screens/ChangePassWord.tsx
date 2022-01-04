@@ -57,7 +57,7 @@ export default function ChangePassword() {
                     onChangeText={email => setEmail(email)}
                     marginBottom={'5%'}
                     variant="underlined"
-                    placeholder="Email"
+                    placeholder="Số điện thoại"
                     paddingLeft={'1%'}
                     _light={{
                         placeholderTextColor: "#fff",
@@ -130,7 +130,7 @@ export default function ChangePassword() {
 }
 
 function changePassWord(navigation: any, email: any, passWord: any, newPassWord: any, token: any, confirmPassWord: any) {
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    // const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (newPassWord != confirmPassWord) {
         Alert.alert(
             '',
@@ -141,12 +141,6 @@ function changePassWord(navigation: any, email: any, passWord: any, newPassWord:
         Alert.alert(
             '',
             'Mật khẩu tối thiểu 5 ký tự!',
-        );
-        return
-    } else if (!re.test(String(email).toLowerCase())) {
-        Alert.alert(
-            '',
-            'Email không đúng định dạng!',
         );
         return
     } else if (!email || !passWord || !newPassWord) {

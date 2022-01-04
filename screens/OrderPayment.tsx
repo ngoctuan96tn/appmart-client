@@ -261,6 +261,7 @@ export function OrderPayment() {
               setIsDisabled(true);
               handlePayment(note, dataCart, userLogin, token, navigation);
               setIsDisabled(false);
+              note = '';
               }} width="100%" marginTop="5%">ĐẶT HÀNG</Button>
           </View>
         </Box>
