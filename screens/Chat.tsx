@@ -22,6 +22,8 @@ export function Chat(route: any) {
     const [content, setContent] = useState('');
     const scrollViewRef = useRef();
     const [loading, setLoading] = useState(true);
+    const [reLoading, setReLoading] = useState(false);
+    let schedule = setTimeout(() => setReLoading(true), 3000);
 
     React.useEffect(() => {
         const readToken = async () => {
@@ -33,7 +35,7 @@ export function Chat(route: any) {
         if (retrieve) {
             readToken();
         }
-        if (retrieve === false) {
+        if (retrieve === false && reLoading == false) {
             const headers = { 'Authorization': `Bearer ${token}` }
             fetch(ApiCommon.rootUrl + `/api/messages/${params.receiveUserId}`, { headers })
                 .then((response) => response.json())
@@ -53,8 +55,18 @@ export function Chat(route: any) {
                 .catch((error) => console.error(error))
                 .finally(() => setLoading(false));
         }
+        if (reLoading == true) {
+            const headers = { 'Authorization': `Bearer ${token}` }
+            fetch(ApiCommon.rootUrl + `/api/messages/${params.receiveUserId}`, { headers })
+                .then((response) => response.json())
+                .then((json) => setDataChat(json))
+                .catch((error) => console.error(error))
+                .finally(() => setReLoading(false));
+        }
 
-    }, [retrieve, content]);
+        clearTimeout(schedule);
+
+    }, [retrieve, content, reLoading]);
 
 
     const sendMessage = () => {
