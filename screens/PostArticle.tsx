@@ -60,7 +60,7 @@ export function PostArticle(route: any) {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
         <SafeAreaView style={styles.container}>
           <NativeBaseProvider >
             <View style={{ flexDirection: 'row', paddingLeft: 25, marginTop: 5 }}>

@@ -2,9 +2,9 @@ import { Feather } from "@expo/vector-icons";
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Box, NativeBaseProvider, Image, Input } from "native-base";
+import { Box, NativeBaseProvider, Image, Input, KeyboardAvoidingView } from "native-base";
 import React, { useState, useRef } from "react";
-import { ActivityIndicator, Button, FlatList, ScrollView, Text } from "react-native";
+import { ActivityIndicator, Button, FlatList, Platform, ScrollView, Text, StyleSheet, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { View } from "../components/Themed";
 import ApiCommon from "../constants/ApiCommon";
 import { TabOneParamList } from "../types";
@@ -22,6 +22,9 @@ export function Chat(route: any) {
     const [content, setContent] = useState('');
     const scrollViewRef = useRef();
     const [loading, setLoading] = useState(true);
+    const [reLoading, setReLoading] = useState(false);
+
+    let schedule = setTimeout(() => setReLoading(true), 3000);
 
     React.useEffect(() => {
         const readToken = async () => {
@@ -33,7 +36,7 @@ export function Chat(route: any) {
         if (retrieve) {
             readToken();
         }
-        if (retrieve === false) {
+        if (retrieve === false && reLoading == false) {
             const headers = { 'Authorization': `Bearer ${token}` }
             fetch(ApiCommon.rootUrl + `/api/messages/${params.receiveUserId}`, { headers })
                 .then((response) => response.json())
@@ -54,7 +57,18 @@ export function Chat(route: any) {
                 .finally(() => setLoading(false));
         }
 
-    }, [retrieve, content]);
+        if (reLoading == true) {
+            const headers = { 'Authorization': `Bearer ${token}` }
+            fetch(ApiCommon.rootUrl + `/api/messages/${params.receiveUserId}`, { headers })
+                .then((response) => response.json())
+                .then((json) => setDataChat(json))
+                .catch((error) => console.error(error))
+                .finally(() => setReLoading(false));
+        }
+
+        clearTimeout(schedule);
+
+    }, [retrieve, content, reLoading]);
 
 
     const sendMessage = () => {
@@ -80,6 +94,11 @@ export function Chat(route: any) {
     }
     if (!loading) {
         return (
+            <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                style={styles.container}
+            >
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
             <NativeBaseProvider>
                 <View style={{ height: '100%', padding: '3%' }}>
                     <ScrollView
@@ -142,6 +161,8 @@ export function Chat(route: any) {
 
                 </View>
             </NativeBaseProvider>
+            </TouchableWithoutFeedback>
+            </KeyboardAvoidingView>
         );
     }
     else {
@@ -178,3 +199,12 @@ function TabOneNavigator(data: any) {
         </TabOneStack.Navigator>
     );
 }
+
+
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      paddingTop: '5%'
+    },
+  });
