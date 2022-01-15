@@ -181,6 +181,7 @@ export function ListComments(route: any) {
   return (
     <SafeAreaView style={styles.container}>
       <NativeBaseProvider>
+      <View style={{ height: '87%', padding: '3%' }}>
         <ScrollView>
 
           <FlatList
@@ -274,6 +275,7 @@ export function ListComments(route: any) {
           />
           <View style={{ height: 50 }}></View>
         </ScrollView>
+        </View>
         <Modal isOpen={open} onClose={() => setOpen(false)} mt={12}>
           <Modal.Content maxWidth="400px" style={styles.top}>
             <Modal.Body>
@@ -378,7 +380,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fff',
     position: 'absolute',
-    bottom: 0,
+    bottom: 5,
     width: '100%',
     height: 50
   },
