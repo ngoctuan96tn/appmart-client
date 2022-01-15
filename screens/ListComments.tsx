@@ -34,6 +34,8 @@ export function ListComments(route: any) {
   const [postArticles, setPostArticles] = useState([])
   const [userLogin, setUserLogin] = useState<any>({});
 
+  const [keyboardShow, setKeyboardShow] = useState(false);
+
   useEffect(() => {
 
     const readToken = async () => {
@@ -181,7 +183,7 @@ export function ListComments(route: any) {
   return (
     <SafeAreaView style={styles.container}>
       <NativeBaseProvider>
-      <View style={{ height: '87%', padding: '3%' }}>
+      <View style={{ height: keyboardShow ? '87%': '100%', padding: '3%' }}>
         <ScrollView>
 
           <FlatList
@@ -299,6 +301,8 @@ export function ListComments(route: any) {
                   placeholderTextColor: "blueGray.50",
                 }}
                 onChangeText={updateComment => setUpdateComment(updateComment)}
+                onFocus={() => {setKeyboardShow(true)}}
+                onBlur={() => {setKeyboardShow(false)}}
               />
             </Modal.Body>
             <Modal.Footer>
@@ -330,6 +334,8 @@ export function ListComments(route: any) {
               placeholderTextColor: "blueGray.50",
             }}
             onChangeText={comment => setComment(comment)}
+            onFocus={() => {setKeyboardShow(true)}}
+            onBlur={() => {setKeyboardShow(false)}}
           />
           <Feather name='send' size={30} style={{ width: '15%', paddingLeft: '3%', paddingTop: '3%' }} onPress={() => { saveComment(comment, token, postId) }} />
 

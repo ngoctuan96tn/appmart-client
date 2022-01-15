@@ -23,6 +23,7 @@ export function Chat(route: any) {
     const scrollViewRef = useRef();
     const [loading, setLoading] = useState(true);
     const [reLoading, setReLoading] = useState(false);
+    const [keyboardShow, setKeyboardShow] = useState(false);
 
     let schedule = setTimeout(() => setReLoading(true), 3000);
 
@@ -96,7 +97,7 @@ export function Chat(route: any) {
         return (
             <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
             <NativeBaseProvider>
-                <View style={{ height: '89%', padding: '3%' }}>
+                <View style={{ height: keyboardShow ? '89%': '100%', padding: '3%' }}>
                     <ScrollView
                         ref={scrollViewRef}
                         onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
@@ -145,6 +146,8 @@ export function Chat(route: any) {
                    onChangeText={(content) => { setContent(content) }}
                    value={content}
                     placeholder="Nhập tin nhắn..."
+                    onFocus={() => {setKeyboardShow(true)}}
+                    onBlur={() => {setKeyboardShow(false)}}
                 />
                     {/* <Input
                         variant="rounded"

@@ -21,6 +21,7 @@ export function PostArticle(route: any) {
   const { getItem, setItem } = useAsyncStorage('token');
   const [retrieve, setRetrieve] = useState(true);
   const [image, setImage] = useState(null);
+  const [keyboardShow, setKeyboardShow] = useState(false);
 
   useEffect(() => {
     const readToken = async () => {
@@ -63,7 +64,7 @@ export function PostArticle(route: any) {
       <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
         <SafeAreaView style={styles.container}>
           <NativeBaseProvider >
-          <View style={{ height: '83%' }}>
+          <View style={{ height: keyboardShow ? '83%': '100%' }}>
             <View style={{ flexDirection: 'row', paddingLeft: 25, marginTop: 5 }}>
               <View style={{ width: '20%' }}>
                 <Image style={styles.imageStatus} source={{ uri: `data:image/jpeg;base64,${userLogin.avatarHashCode}` }} />
@@ -78,6 +79,8 @@ export function PostArticle(route: any) {
                 style={{ fontSize: 15, padding: 10 }}
                 placeholder="Bạn đang nghĩ gì?"
                 onChangeText={text => setText(text)}
+                onFocus={() => {setKeyboardShow(true)}}
+                onBlur={() => {setKeyboardShow(false)}}
               />
             </View>
 
