@@ -12,6 +12,7 @@ import ApiCommon from '../constants/ApiCommon';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage, { useAsyncStorage } from '@react-native-async-storage/async-storage';
+import DanhMucList from '../components/DanhMucList';
 const { width } = Dimensions.get('window')
 
 const styles = StyleSheet.create({
@@ -195,7 +196,7 @@ export default function ShopScreen() {
                 <ProductList data={dataProduct} />
               </View>
               <View style={{ marginTop: '5%'}}>
-                <CategoryList data={data} />
+                <DanhMucList data={data} />
               </View>
               <View style={{ marginTop: '5%'}}>
                 <StoreList data={dataStore}/>

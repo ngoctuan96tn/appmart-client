@@ -28,8 +28,7 @@ export function CategoryList(data: any) {
 export default (data: any) => {
     return (
         <NativeBaseProvider>
-            <Box bg="white"
-                shadow={2}>
+            <Box bg="white">
                 <CategoryList data={data} />
             </Box>
         </NativeBaseProvider>

@@ -6,6 +6,8 @@ import { TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 function CategoryCard(data: any) {
   const item = data.data.data;
+  console.log("item",item);
+  
   const navigation = useNavigation();
   return (
     <TouchableOpacity onPress={() => navigation.navigate('ListProduct', {categoryId: item.id, categoryName:item.categoryName})}>
@@ -29,7 +31,7 @@ function CategoryCard(data: any) {
 export default function (data: any) {
   return (
     <NativeBaseProvider>
-      <Center flex={1}>
+      <Center>
         <CategoryCard data={data} />
       </Center>
     </NativeBaseProvider>
