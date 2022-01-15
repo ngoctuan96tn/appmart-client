@@ -1,5 +1,5 @@
 import {
-  NativeBaseProvider, Modal, Button, Input
+  NativeBaseProvider, Modal, Button, Input, KeyboardAvoidingView
 } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import {
@@ -313,6 +313,7 @@ export function ListComments(route: any) {
             </Modal.Footer>
           </Modal.Content>
         </Modal>
+        <KeyboardAvoidingView behavior='position' style = {{backgroundColor: '#f5f5f5', flex: 1}}>
         <View style={styles.searchSection}>
           <Input
             variant="rounded"
@@ -331,6 +332,7 @@ export function ListComments(route: any) {
           <Feather name='send' size={30} style={{ width: '15%', paddingLeft: '3%', paddingTop: '3%' }} onPress={() => { saveComment(comment, token, postId) }} />
 
         </View>
+        </KeyboardAvoidingView>
       </NativeBaseProvider>
     </SafeAreaView>
   );
