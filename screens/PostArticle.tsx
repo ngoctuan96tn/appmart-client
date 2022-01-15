@@ -63,6 +63,7 @@ export function PostArticle(route: any) {
       <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
         <SafeAreaView style={styles.container}>
           <NativeBaseProvider >
+          <View style={{ height: '83%' }}>
             <View style={{ flexDirection: 'row', paddingLeft: 25, marginTop: 5 }}>
               <View style={{ width: '20%' }}>
                 <Image style={styles.imageStatus} source={{ uri: `data:image/jpeg;base64,${userLogin.avatarHashCode}` }} />
@@ -101,7 +102,7 @@ export function PostArticle(route: any) {
                 }} >Đăng bài</Button>
               </View>
             </View>
-
+</View>
           </NativeBaseProvider>
         </SafeAreaView>
       </TouchableWithoutFeedback>
