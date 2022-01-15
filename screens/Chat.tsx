@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Box, NativeBaseProvider, Image, Input, KeyboardAvoidingView } from "native-base";
 import React, { useState, useRef } from "react";
-import { ActivityIndicator, Button, FlatList, Platform, ScrollView, Text, StyleSheet, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { ActivityIndicator, Button, FlatList, Platform, ScrollView, Text, StyleSheet, TouchableWithoutFeedback, Keyboard, TextInput } from "react-native";
 import { View } from "../components/Themed";
 import ApiCommon from "../constants/ApiCommon";
 import { TabOneParamList } from "../types";
@@ -143,7 +143,13 @@ export function Chat(route: any) {
                 </View>
                 <View style={{ position: 'absolute', bottom: 5, flexDirection: "row", width: '100%', height: 50, backgroundColor: '#f5f5f5' }}>
 
-                    <Input
+                <TextInput
+                   style={{width:'80%', margin: 2, marginLeft:5, backgroundColor:'white', borderRadius:50}}
+                   onChangeText={(content) => { setContent(content) }}
+                   value={content}
+                    placeholder="Nhập tin nhắn..."
+                />
+                    {/* <Input
                         variant="rounded"
                         placeholder="Nhập tin nhắn..."
                         m={1}
@@ -156,7 +162,7 @@ export function Chat(route: any) {
                             placeholderTextColor: "blueGray.50",
                         }}
                         onChangeText={(content) => { setContent(content) }}
-                    />
+                    /> */}
                     <Feather name='send' size={30} style={{ width: '15%', paddingLeft: '3%', paddingTop: '3%' }} onPress={() => { sendMessage() }} />
 
                 </View>
