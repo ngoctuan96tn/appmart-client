@@ -94,10 +94,6 @@ export function Chat(route: any) {
     }
     if (!loading) {
         return (
-            <KeyboardAvoidingView
-                behavior={Platform.OS === "ios" ? "padding" : "height"}
-                style={styles.container}
-            >
             <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
             <NativeBaseProvider>
                 <View style={{ height: '100%', padding: '3%' }}>
@@ -168,7 +164,6 @@ export function Chat(route: any) {
                 </View>
             </NativeBaseProvider>
             </TouchableWithoutFeedback>
-            </KeyboardAvoidingView>
         );
     }
     else {
