@@ -96,7 +96,7 @@ export function Chat(route: any) {
         return (
             <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
             <NativeBaseProvider>
-                <View style={{ height: '100%', padding: '3%' }}>
+                <View style={{ height: '89%', padding: '3%' }}>
                     <ScrollView
                         ref={scrollViewRef}
                         onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
@@ -137,6 +137,7 @@ export function Chat(route: any) {
                     </ScrollView>
 
                 </View>
+                <KeyboardAvoidingView behavior='position' style = {{backgroundColor: '#f5f5f5', flex: 1}}>
                 <View style={{ position: 'absolute', bottom: 5, flexDirection: "row", width: '100%', height: 50, backgroundColor: '#f5f5f5' }}>
 
                 <TextInput
@@ -162,6 +163,7 @@ export function Chat(route: any) {
                     <Feather name='send' size={30} style={{ width: '15%', paddingLeft: '3%', paddingTop: '3%' }} onPress={() => { sendMessage() }} />
 
                 </View>
+                </KeyboardAvoidingView>
             </NativeBaseProvider>
             </TouchableWithoutFeedback>
         );
